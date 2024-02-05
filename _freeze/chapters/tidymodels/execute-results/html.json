@@ -1,8 +1,8 @@
 {
-  "hash": "1a333f9472fd3fdc8c6ec3401465591d",
+  "hash": "5fd6768d33eda0d61fbcbb622fee5524",
   "result": {
     "engine": "knitr",
-    "markdown": "---\ntitle: \"tidymodels\"\nauthor: \"一把Fei刀\"\ndate: 2024-2-5\ndate-modified: last-modified\nnumber-sections: true\n---\n\n\n> 本篇是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。\n\n\n\n\n```{mermaid}\n---\ntitle: 建模的分类\n---\nflowchart LR\nA[模型] --- B[描述性模型]\nA --- C[推理模型]\nA --- D[预测模型]\nD --- E[无监督模型]\nD --- F[监督模型]\nE --- G[\"主成分分析(PCR)\"]\nE --- H[聚类]\nE --- I[自动编码器]\nF --- J[回归]\nF --- K[神经网络]\n```\n\n```{mermaid}\n---\ntitle: 模型建模的一般步骤\n---\nflowchart LR\nA[导入数据] --> B[\"清洗数据(tidy)\"] ---> C[\"探索性数据分析(EDA)\"] --> D[特征工程] --> E[建模与优化] --> F[评估] --> G[部署]\nF -.-> C\n```\n\n\n## \n",
+    "markdown": "---\ntitle: \"tidymodels\"\nauthor: \"一把Fei刀\"\ndate: 2024-2-5\ndate-modified: last-modified\nnumber-sections: true\n---\n\n\n> 本篇是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。\n\n\n\n\n```{mermaid}\n---\ntitle: 建模的分类\n---\nflowchart LR\nA[模型] --- B[描述性模型]\nA --- C[推理模型]\nA --- D[预测模型]\nD --- E[无监督模型]\nD --- F[监督模型]\nE --- G[\"主成分分析(PCR)\"]\nE --- H[聚类]\nE --- I[自动编码器]\nF --- J[回归]\nF --- K[神经网络]\n```\n\n```{mermaid}\n---\ntitle: 模型建模的一般步骤\n---\nflowchart LR\nA[导入数据] --> B[\"清洗数据(tidy)\"] ---> C[\"探索性数据分析(EDA)\"] --> D[特征工程] --> E[建模与优化] --> F[评估] --> G[部署]\nF -.-> C\n```\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
