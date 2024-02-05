@@ -34,7 +34,7 @@
     "href": "chapters/tidymodels.html",
     "title": "2  tidymodels",
     "section": "",
-    "text": "2.1",
+    "text": "本篇是tidymodels包的学习笔记，主要参考文档是Tidy Modeling with R。\n\n\n\n\n\n\n---\ntitle: 建模的分类\n---\nflowchart LR\nA[模型] --- B[描述性模型]\nA --- C[推理模型]\nA --- D[预测模型]\nD --- E[无监督模型]\nD --- F[监督模型]\nE --- G[\"主成分分析(PCR)\"]\nE --- H[聚类]\nE --- I[自动编码器]\nF --- J[回归]\nF --- K[神经网络]\n\n\n\n\n\n\n\n\n\n\n\n---\ntitle: 模型建模的一般步骤\n---\nflowchart LR\nA[导入数据] --&gt; B[\"清洗数据(tidy)\"] ---&gt; C[\"探索性数据分析(EDA)\"] --&gt; D[特征工程] --&gt; E[建模与优化] --&gt; F[评估] --&gt; G[部署]\nF -.-&gt; C",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
     ]
