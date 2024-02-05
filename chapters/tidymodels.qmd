@@ -6,7 +6,7 @@ date-modified: last-modified
 number-sections: true
 ---
 
-> 本文档是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。
+> 本篇是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。
 
 ```{r}
 #| label: setup
@@ -50,4 +50,4 @@ A[导入数据] --> B["清洗数据(tidy)"] ---> C["探索性数据分析(EDA)"]
 F -.-> C
 ```
 
-## 1
+## 
