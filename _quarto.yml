@@ -7,7 +7,7 @@ lang: zh
 book:
   title: "R语言学习笔记"
   author: "一把Fei刀"
-  date: 2023/2/6
+  date: 2023/2/5
   chapters:
     - index.qmd
     - chapters/tidymodels.qmd
@@ -29,29 +29,23 @@ format:
     code-fold: true
     code-overflow: wrap
     code-tools: true
-    execute:
-      tidy: true
-      echo: true
-      message: false
-      warning: false
   pdf:
     pdf-engine: xelatex
     documentclass: ctexbook
     toc: true
-    toc-depth: 3
     colorlinks: true
     number-sections: true
     execute:
-      tidy: true
       echo: false
-      message: false
-      warning: false
 
 crossref:
   chapters: true
 
-excute:
+execute:
   freeze: auto
-
+  tidy: true
+  echo: false
+  message: false
+  warning: false
 
 

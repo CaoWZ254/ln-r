@@ -1,11 +1,10 @@
 ---
 title: "tidymodels"
 author: "一把Fei刀"
+date: 2024-2-5
 date-modified: last-modified
 number-sections: true
 ---
-
-# tidymodels
 
 > 本文档是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。
 
