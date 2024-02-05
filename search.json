@@ -28,5 +28,15 @@
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>R语言学习笔记</span>"
     ]
+  },
+  {
+    "objectID": "chapters/tidymodels.html",
+    "href": "chapters/tidymodels.html",
+    "title": "2  tidymodels",
+    "section": "",
+    "text": "2.1 1",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
+    ]
   }
 ]
