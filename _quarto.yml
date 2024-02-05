@@ -19,5 +19,8 @@ format:
   pdf:
     documentclass: scrreprt
 
+excute:
+  freeze: auto
+
 
 
