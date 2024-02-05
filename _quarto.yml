@@ -10,7 +10,6 @@ book:
   date: 2023/2/5
   chapters:
     - index.qmd
-    - chapters/tidymodels.qmd
 
 bibliography: references.bib
 
