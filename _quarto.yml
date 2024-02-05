@@ -1,23 +1,54 @@
 project:
   type: book
 
+lang: zh
+
+
 book:
-  title: "ln-r"
-  author: "Norah Jones"
-  date: "2024/2/6"
+  title: "R语言学习笔记"
+  author: "一把Fei刀"
+  date: 2023/2/6
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    - chapters/tidymodels.qmd
 
 bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: flatly
+      dark: darkly
+    favicon: images/favicon.png
+    comments:
+      hypothesis: true
+    toc: true
+    toc_float: true
+    number-sections: true
+    lightbox: true
+    code-fold: true
+    code-overflow: wrap
+    code-tools: true
+    execute:
+      tidy: true
+      echo: true
+      message: false
+      warning: false
   pdf:
-    documentclass: scrreprt
+    pdf-engine: xelatex
+    documentclass: ctexbook
+    toc: true
+    toc-depth: 3
+    colorlinks: true
+    number-sections: true
+    execute:
+      tidy: true
+      echo: false
+      message: false
+      warning: false
+
+crossref:
+  chapters: true
 
 excute:
   freeze: auto

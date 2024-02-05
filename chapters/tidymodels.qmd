@@ -1,0 +1,37 @@
+---
+title: "tidymodels"
+author: "一把Fei刀"
+date-modified: last-modified
+number-sections: true
+---
+
+# tidymodels
+
+> 本文档是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。
+
+```{mermaid}
+---
+title: 建模的分类
+---
+flowchart LR
+A[模型] --- B[描述性模型]
+A --- C[推理模型]
+A --- D[预测模型]
+D --- E[无监督模型]
+D --- F[监督模型]
+E --- G["主成分分析(PCR)"]
+E --- H[聚类]
+E --- I[自动编码器]
+F --- J[回归]
+F --- K[神经网络]
+```
+
+```{mermaid}
+---
+title: 模型建模的一般步骤
+---
+flowchart LR
+A[导入数据] --> B["清洗数据(tidy)"] ---> C["探索性数据分析(EDA)"] --> D[特征工程] --> E[建模与优化] --> F[评估] --> G[部署]
+F -.-> C
+```
+
