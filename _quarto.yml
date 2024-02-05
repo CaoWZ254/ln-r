@@ -10,6 +10,7 @@ book:
   date: 2023/2/5
   chapters:
     - index.qmd
+    - chapters/tidymodels.qmd
 
 bibliography: references.bib
 
@@ -28,14 +29,6 @@ format:
     code-fold: true
     code-overflow: wrap
     code-tools: true
-  pdf:
-    pdf-engine: xelatex
-    documentclass: ctexbook
-    toc: true
-    colorlinks: true
-    number-sections: true
-    execute:
-      echo: false
 
 crossref:
   chapters: true
