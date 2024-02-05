@@ -8,7 +8,7 @@ bibliography: references.bib
 date-modified: last-modified
 ---
 
-# 笔记集 {.unnumbered}
+# 笔记集
 
 本笔记集整理了R语言在数据分析和可视化、统计建模、机器学习等方面的学习笔记，准备记录tidyverse、tidymodels、mlr3、R6、gt等R包的使用方法和实例。
 
