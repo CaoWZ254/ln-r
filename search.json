@@ -6,7 +6,7 @@
     "section": "",
     "text": "笔记集\n本笔记集整理了R语言在数据分析和可视化、统计建模、机器学习等方面的学习笔记，准备记录tidyverse、tidymodels、mlr3、R6、gt等R包的使用方法和实例。\n笔记集使用Quarto编写，并使用GitHub Pages托管，可以通过https://caowz254.github.io/ln-r/在线阅读和标注。代码部分除了参考书籍和官方文档，也使用了GitHub Copilot的AI自动补全功能，以提高编写效率。",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>R语言学习笔记</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>前言</span>"
     ]
   },
   {
@@ -14,9 +14,9 @@
     "href": "index.html#quarto",
     "title": "R语言学习笔记",
     "section": "0.1 Quarto",
-    "text": "0.1 Quarto\nQuarto是R Markdown的扩展，支持多种输出格式，包括HTML、PDF、Word等。Render的核心是一个R包，它提供了一些新的语法和功能，以便更好地支持多种输出格式。Quarto的官方文档是https://quarto.org/docs/guide/。\nQuarto 1.4 更新了Quarto Manuscripts格式，可以在主界面直接呈现像期刊论文成品一样的排版效果，同时可以包含笔记本，用来整理和展示原始数据和代码。另外，它也支持标注功能，可以直接划词、标注、评论，方便交流和更新。\n设置了三种输出格式，HTML、PDF和Word，其中HTML格式可以直接在网页上阅读和标注；PDF格式使用了TinyTex包（https://yihui.org/tinytex/cn/）和XeLaTeX的ctexart模板（https://texdoc.org/serve/ctex.pdf/0），基本上可以展示中文论文的排版效果；word格式没有研究过，用了默认设置。笔记集使用PDF和word格式的阅读效果很差，这里只是为了学习和熟悉Quarto的输出设置。",
+    "text": "0.1 Quarto\nQuarto是R Markdown的扩展，支持多种输出格式，包括HTML、PDF、Word等。Render的核心是一个R包，它提供了一些新的语法和功能，以便更好地支持多种输出格式。Quarto的官方文档是https://quarto.org/docs/guide/。",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>R语言学习笔记</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>前言</span>"
     ]
   },
   {
@@ -24,9 +24,9 @@
     "href": "index.html#github-pages",
     "title": "R语言学习笔记",
     "section": "0.2 GitHub Pages",
-    "text": "0.2 GitHub Pages\nGitHub Pages是GitHub提供的静态网页托管服务，笔记集在本地撰写和修改，提交到GitHub后，自动构建和发布网页。Quarto有一套完整的功能，可以基本实现网页自动化部署。\n\n\n\n\n\n\n重要\n\n\n\n部署网页流程，可在RStudio terminal操作：\nquarto render # 本地完整渲染\ngit status # 检查修改情况，每次git后最好都检查一下\ngit add . # 添加全部文件到暂存区\ngit commit -am # 将暂存区文件提交到本地仓库\ngit push --all # 将本地仓库文件推送到远程仓库\n\n\n123",
+    "text": "0.2 GitHub Pages\nGitHub Pages是GitHub提供的静态网页托管服务，笔记集在本地撰写和修改，提交到GitHub后，自动构建和发布网页。Quarto有一套完整的功能，可以基本实现网页自动化部署。\n\n\n\n\n\n\n重要\n\n\n\n部署网页流程，可在RStudio terminal操作：\nquarto render # 本地完整渲染\ngit status # 检查修改情况，每次git后都要检查一下\ngit add . # 添加全部文件到暂存区，可跳过\ngit commit -a # 将暂存区文件提交到本地仓库\ngit push --all # 将本地仓库文件推送到远程仓库",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>R语言学习笔记</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>前言</span>"
     ]
   },
   {
@@ -34,7 +34,7 @@
     "href": "chapters/tidymodels.html",
     "title": "2  tidymodels",
     "section": "",
-    "text": "2.1 1",
+    "text": "2.1",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
     ]
