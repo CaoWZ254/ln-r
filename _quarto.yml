@@ -36,7 +36,7 @@ crossref:
 execute:
   freeze: auto
   tidy: true
-  echo: false
+  echo: true
   message: false
   warning: false
 

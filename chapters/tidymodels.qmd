@@ -22,9 +22,13 @@ showtext_auto() # 自动显示图片中的文字
 library(reticulate) # 调用python
 library(gt) # 输出表格
 library(gtExtras)
+library(tidymodels)
 ```
 
+## 建模基础
+
 ```{mermaid}
+%%| echo: false
 ---
 title: 建模的分类
 ---
@@ -42,6 +46,7 @@ F --- K[神经网络]
 ```
 
 ```{mermaid}
+%%| echo: false
 ---
 title: 模型建模的一般步骤
 ---
@@ -50,4 +55,227 @@ A[导入数据] --> B["清洗数据(tidy)"] ---> C["探索性数据分析(EDA)"]
 F -.-> C
 ```
 
-## 01
+## 练习数据和探索性数据分析
+
+练习数据使用的是`modeldata`包中的`ames`数据集。数据集包括：
+
+- 房屋特征house characteristics，如bedrooms, garage, fireplace, pool, porch等；
+- 区位location；
+- 地块信息lot information，如zoning, shape, size等；
+- 条件和质量评级ratings of condition and quality；
+- 成交价格sale price。
+
+```{r}
+#| label: data_import
+data(ames)
+dim(ames)
+```
+
+### 探索性数据分析-探索住宅特点
+
+首先关注房屋的最终销售价格（美元）。使用直方图来查看销售价格的分布情况，如 @fig-0201 所示。
+
+```{r}
+#| label: sale_price
+tidymodels_prefer() # 用于处理包之间的函数冲突，不会输出结果
+
+ames |>
+  ggplot(aes(x = Sale_Price)) +
+  geom_histogram(bins = 50, col = "white") +
+  theme_bw() -> fig_0201
+```
+
+```{r}
+#| label: fig-0201
+#| fig-cap: 销售价格（美元）
+
+fig_0201
+```
+
+作图发现数据是偏态的，可以使用对数变换来处理。这种转换的优点是，不会预测出负销售价格的房屋，而且预测昂贵房屋的误差也不会对模型产生过大的影响。另外，对数变换还可以稳定方差，使得模型更容易拟合。结果如 @fig-0202 所示。
+
+```{r}
+#| label: log_sale_price
+
+fig_0201 +
+  scale_x_log10() -> fig_0202
+```
+
+```{r}
+#| label: fig-0202
+#| fig-cap: 对数变换后的销售价格（美元）
+
+fig_0202
+```
+
+::: {.callout-caution}
+对数转换结果的主要缺点涉及到对**模型结果**的解释。在对数变换后，模型的系数不再是直接解释的，而是对数解释。这意味着，模型的系数是对数销售价格的变化，而不是销售价格的变化。这种情况下，需要小心解释模型的结果。
+:::
+
+对数转换的结果相对较好，因此可以使用对数转换后的销售价格作为目标变量。
+
+```{r}
+#| label: log_ames
+
+ames |>
+  mutate(Sale_Price = log10(Sale_Price)) -> ames
+```
+
+```{r}
+#| label: save_02
+#| echo: false
+
+save(ames, file = "ames.RData")
+```
+
+## 数据分割
+
+```{r}
+#| label: load_02
+#| echo: false
+
+rm(list = ls())
+load("ames.RData")
+```
+
+一般会将数据集分为训练集和测试集。训练集用于拟合模型，测试集用于评估模型的性能。
+
+测试集只能使用一次，否则就会成为建模过程的一部分。这样会导致模型在测试集上的性能过于乐观，无法真实地评估模型的性能。
+
+### 简单随机抽样
+
+在`tidymodels`中，可以使用`initial_split()`函数来分割数据集。默认情况下，`initial_split()`函数会将数据集分为80%的训练集和20%的测试集。
+
+```{r}
+#| label: data_split_01
+
+set.seed(123)
+
+ames_split <- initial_split(ames, prop = 0.8)
+
+ames_split
+```
+
+`ames_split`是一个`rsplit`对象，仅包含分区信息，可以使用`training()`和`testing()`函数来提取训练集和测试集。
+
+```{r}
+#| label: data_split_02
+
+ames_train <- training(ames_split)
+ames_test <- testing(ames_split)
+
+dim(ames_train)
+```
+
+### 分层抽样
+
+在某些情况下，需要使用分层抽样。例如，如果数据集中有一个重要的类别变量，那么就需要使用分层抽样来确保训练集和测试集中都包含这个类别变量的各个水平。
+
+可以人为地将结果数据四等分，然后分别进行四次分层抽样，这样可以保持训练集和测试集的分布一致。
+
+```{r}
+#| label: fig-0203
+#| fig-cap: 房屋销售价格分布(log)，虚线代表四分位数
+
+ames |>
+  pull(Sale_Price) |> # 提取销售价格
+  density(n = 2^10) |> # 生成密度估计
+  tidy() -> sale_dens # 将结果转换为数据框
+
+tibble(prob = (1:3)/4, value = quantile(ames$Sale_Price, probs = prob)) |> # 计算四分位数
+  mutate(y = approx(sale_dens$x, sale_dens$y, xout = value)$y) -> quartiles # 计算四分位数的密度值
+
+ames |>
+  ggplot(aes(x = Sale_Price)) +
+  geom_line(stat = "density") +
+  geom_segment(data = quartiles,
+               aes(x = value, xend = value, y = 0, yend = y),
+               lty = 2) +
+  labs(x = "Sale Price (log-10 USD)", y = NULL) +
+  theme_bw() -> fig_0203
+fig_0203
+```
+
+销售价格的分布呈右偏态，廉价房屋的比例更大。因此，可以使用分层抽样来确保训练集和测试集中都包含廉价房屋。可以使用`strata`参数来指定分层变量。
+
+```{r}
+#| label: data_split_03
+
+set.seed(123)
+ames_split <- initial_split(ames, prop = 0.80, strata = Sale_Price)
+ames_train <- training(ames_split)
+ames_test  <-  testing(ames_split)
+
+dim(ames_train)
+```
+
+::: {.callout-caution}
+只能使用单列作为分层变量，不能使用多列。
+:::
+
+### 交叉验证-验证集的分割
+
+交叉验证通常用于解决模型过拟合的问题。为此，可以把数据集分为训练集、测试集和验证集，其中验证集用于调整模型的超参数。可以用`initial_vadilation_split()`函数来实现。
+
+```{r}
+#| label: data_split_04
+
+set.seed(123)
+ames_val_split <- initial_validation_split(ames, prop = c(0.6, 0.2))
+
+ames_val_split
+
+ames_val_train <- training(ames_val_split)
+ames_val_test  <- testing(ames_val_split)
+ames_val_val   <- validation(ames_val_split)
+```
+
+```{r}
+#| label: save_03
+#| echo: false
+
+save(ames_split, ames_train, ames_test, file = "ames_train_test.RData")
+```
+
+## 模型拟合-以线性回归为例
+
+```{r}
+#| label: load_03
+#| echo: false
+
+rm(list = ls())
+load("ames_train_test.RData")
+```
+
+对于一些相对简单的模型，可以使用`parsnip`包中的`fit`和`predict`函数来拟合和预测。`parsnip`包提供了统一的接口，可以使用相同的函数来拟合不同的模型。
+
+使用`parsnip`中的`linear_reg()`函数指定模型类型，`set_engine()`函数指定模型引擎，这里的引擎一般指的是具体建模使用的软件包名称。确定模型后，可以使用`fit()`函数或`fit_xy()`函数来拟合模型。以三种常用的线性回归模型为例。
+
+```{r}
+#| label: model_fit_translation
+
+linear_reg() |>
+  set_engine("lm") |>
+  translate()
+
+linear_reg(penalty = 1) |> # panalty是glmnet的特有参数
+  set_engine("glmnet") |>
+  translate()
+
+linear_reg() |>
+  set_engine("stan") |>
+  translate()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
