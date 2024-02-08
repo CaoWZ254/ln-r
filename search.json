@@ -34,7 +34,37 @@
     "href": "chapters/tidymodels.html",
     "title": "2  tidymodels",
     "section": "",
-    "text": "2.1 01",
+    "text": "2.1 建模基础\n---\ntitle: 建模的分类\n---\nflowchart LR\nA[模型] --- B[描述性模型]\nA --- C[推理模型]\nA --- D[预测模型]\nD --- E[无监督模型]\nD --- F[监督模型]\nE --- G[\"主成分分析(PCR)\"]\nE --- H[聚类]\nE --- I[自动编码器]\nF --- J[回归]\nF --- K[神经网络]\n---\ntitle: 模型建模的一般步骤\n---\nflowchart LR\nA[导入数据] --&gt; B[\"清洗数据(tidy)\"] ---&gt; C[\"探索性数据分析(EDA)\"] --&gt; D[特征工程] --&gt; E[建模与优化] --&gt; F[评估] --&gt; G[部署]\nF -.-&gt; C",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/tidymodels.html#练习数据和探索性数据分析",
+    "href": "chapters/tidymodels.html#练习数据和探索性数据分析",
+    "title": "2  tidymodels",
+    "section": "2.2 练习数据和探索性数据分析",
+    "text": "2.2 练习数据和探索性数据分析\n练习数据使用的是modeldata包中的ames数据集。数据集包括：\n\n房屋特征house characteristics，如bedrooms, garage, fireplace, pool, porch等；\n区位location；\n地块信息lot information，如zoning, shape, size等；\n条件和质量评级ratings of condition and quality；\n成交价格sale price。\n\n\n\n代码\ndata(ames)\ndim(ames)\n\n\n[1] 2930   74\n\n\n\n2.2.1 探索性数据分析-探索住宅特点\n首先关注房屋的最终销售价格（美元）。使用直方图来查看销售价格的分布情况，如 图 2.1 所示。\n\n\n代码\ntidymodels_prefer() # 用于处理包之间的函数冲突，不会输出结果\n\names |&gt;\n  ggplot(aes(x = Sale_Price)) +\n  geom_histogram(bins = 50, col = \"white\") +\n  theme_bw() -&gt; fig_0201\n\n\n\n\n代码\nfig_0201\n\n\n\n\n\n\n\n\n图 2.1: 销售价格（美元）\n\n\n\n\n\n作图发现数据是偏态的，可以使用对数变换来处理。这种转换的优点是，不会预测出负销售价格的房屋，而且预测昂贵房屋的误差也不会对模型产生过大的影响。另外，对数变换还可以稳定方差，使得模型更容易拟合。结果如 图 2.2 所示。\n\n\n代码\nfig_0201 +\n  scale_x_log10() -&gt; fig_0202\n\n\n\n\n代码\nfig_0202\n\n\n\n\n\n\n\n\n图 2.2: 对数变换后的销售价格（美元）\n\n\n\n\n\n\n\n\n\n\n\n注意\n\n\n\n对数转换结果的主要缺点涉及到对模型结果的解释。在对数变换后，模型的系数不再是直接解释的，而是对数解释。这意味着，模型的系数是对数销售价格的变化，而不是销售价格的变化。这种情况下，需要小心解释模型的结果。\n\n\n对数转换的结果相对较好，因此可以使用对数转换后的销售价格作为目标变量。\n\n\n代码\names |&gt;\n  mutate(Sale_Price = log10(Sale_Price)) -&gt; ames",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/tidymodels.html#数据分割",
+    "href": "chapters/tidymodels.html#数据分割",
+    "title": "2  tidymodels",
+    "section": "2.3 数据分割",
+    "text": "2.3 数据分割\n一般会将数据集分为训练集和测试集。训练集用于拟合模型，测试集用于评估模型的性能。\n测试集只能使用一次，否则就会成为建模过程的一部分。这样会导致模型在测试集上的性能过于乐观，无法真实地评估模型的性能。\n\n2.3.1 简单随机抽样\n在tidymodels中，可以使用initial_split()函数来分割数据集。默认情况下，initial_split()函数会将数据集分为80%的训练集和20%的测试集。\n\n\n代码\nset.seed(123)\n\names_split &lt;- initial_split(ames, prop = 0.8)\n\names_split\n\n\n&lt;Training/Testing/Total&gt;\n&lt;2344/586/2930&gt;\n\n\names_split是一个rsplit对象，仅包含分区信息，可以使用training()和testing()函数来提取训练集和测试集。\n\n\n代码\names_train &lt;- training(ames_split)\names_test &lt;- testing(ames_split)\n\ndim(ames_train)\n\n\n[1] 2344   74\n\n\n\n\n2.3.2 分层抽样\n在某些情况下，需要使用分层抽样。例如，如果数据集中有一个重要的类别变量，那么就需要使用分层抽样来确保训练集和测试集中都包含这个类别变量的各个水平。\n可以人为地将结果数据四等分，然后分别进行四次分层抽样，这样可以保持训练集和测试集的分布一致。\n\n\n代码\names |&gt;\n  pull(Sale_Price) |&gt; # 提取销售价格\n  density(n = 2^10) |&gt; # 生成密度估计\n  tidy() -&gt; sale_dens # 将结果转换为数据框\n\ntibble(prob = (1:3)/4, value = quantile(ames$Sale_Price, probs = prob)) |&gt; # 计算四分位数\n  mutate(y = approx(sale_dens$x, sale_dens$y, xout = value)$y) -&gt; quartiles # 计算四分位数的密度值\n\names |&gt;\n  ggplot(aes(x = Sale_Price)) +\n  geom_line(stat = \"density\") +\n  geom_segment(data = quartiles,\n               aes(x = value, xend = value, y = 0, yend = y),\n               lty = 2) +\n  labs(x = \"Sale Price (log-10 USD)\", y = NULL) +\n  theme_bw() -&gt; fig_0203\nfig_0203\n\n\n\n\n\n\n\n\n图 2.3: 房屋销售价格分布(log)，虚线代表四分位数\n\n\n\n\n\n销售价格的分布呈右偏态，廉价房屋的比例更大。因此，可以使用分层抽样来确保训练集和测试集中都包含廉价房屋。可以使用strata参数来指定分层变量。\n\n\n代码\nset.seed(123)\names_split &lt;- initial_split(ames, prop = 0.80, strata = Sale_Price)\names_train &lt;- training(ames_split)\names_test  &lt;-  testing(ames_split)\n\ndim(ames_train)\n\n\n[1] 2342   74\n\n\n\n\n\n\n\n\n注意\n\n\n\n只能使用单列作为分层变量，不能使用多列。\n\n\n\n\n2.3.3 交叉验证-验证集的分割\n交叉验证通常用于解决模型过拟合的问题。为此，可以把数据集分为训练集、测试集和验证集，其中验证集用于调整模型的超参数。可以用initial_vadilation_split()函数来实现。\n\n\n代码\nset.seed(123)\names_val_split &lt;- initial_validation_split(ames, prop = c(0.6, 0.2))\n\names_val_split\n\n\n&lt;Training/Validation/Testing/Total&gt;\n&lt;1758/586/586/2930&gt;\n\n\n代码\names_val_train &lt;- training(ames_val_split)\names_val_test  &lt;- testing(ames_val_split)\names_val_val   &lt;- validation(ames_val_split)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/tidymodels.html#模型拟合-以线性回归为例",
+    "href": "chapters/tidymodels.html#模型拟合-以线性回归为例",
+    "title": "2  tidymodels",
+    "section": "2.4 模型拟合-以线性回归为例",
+    "text": "2.4 模型拟合-以线性回归为例\n对于一些相对简单的模型，可以使用parsnip包中的fit和predict函数来拟合和预测。parsnip包提供了统一的接口，可以使用相同的函数来拟合不同的模型。\n使用parsnip中的linear_reg()函数指定模型类型，set_engine()函数指定模型引擎，这里的引擎一般指的是具体建模使用的软件包名称。确定模型后，可以使用fit()函数或fit_xy()函数来拟合模型。以三种常用的线性回归模型为例。\n\n\n代码\nlinear_reg() |&gt;\n  set_engine(\"lm\") |&gt;\n  translate()\n\n\nLinear Regression Model Specification (regression)\n\nComputational engine: lm \n\nModel fit template:\nstats::lm(formula = missing_arg(), data = missing_arg(), weights = missing_arg())\n\n\n代码\nlinear_reg(penalty = 1) |&gt; # panalty是glmnet的特有参数\n  set_engine(\"glmnet\") |&gt;\n  translate()\n\n\nLinear Regression Model Specification (regression)\n\nMain Arguments:\n  penalty = 1\n\nComputational engine: glmnet \n\nModel fit template:\nglmnet::glmnet(x = missing_arg(), y = missing_arg(), weights = missing_arg(), \n    family = \"gaussian\")\n\n\n代码\nlinear_reg() |&gt;\n  set_engine(\"stan\") |&gt;\n  translate()\n\n\nLinear Regression Model Specification (regression)\n\nComputational engine: stan \n\nModel fit template:\nrstanarm::stan_glm(formula = missing_arg(), data = missing_arg(), \n    weights = missing_arg(), family = stats::gaussian, refresh = 0)\n\n\n\n\n\n\n\n图 2.1: 销售价格（美元）\n图 2.2: 对数变换后的销售价格（美元）\n图 2.3: 房屋销售价格分布(log)，虚线代表四分位数",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>tidymodels</span>"
     ]
