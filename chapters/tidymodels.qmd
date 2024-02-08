@@ -125,7 +125,7 @@ ames |>
 #| label: save_02
 #| echo: false
 
-save(ames, file = "ames.RData")
+save(ames, file = "../datas/ames.RData")
 ```
 
 ## 数据分割
@@ -135,7 +135,7 @@ save(ames, file = "ames.RData")
 #| echo: false
 
 rm(list = ls())
-load("ames.RData")
+load("../datas/ames.RData")
 ```
 
 一般会将数据集分为训练集和测试集。训练集用于拟合模型，测试集用于评估模型的性能。
@@ -234,7 +234,7 @@ ames_val_val   <- validation(ames_val_split)
 #| label: save_03
 #| echo: false
 
-save(ames_split, ames_train, ames_test, file = "ames_train_test.RData")
+save(ames_split, ames_train, ames_test, file = "../datas/ames_train_test.RData")
 ```
 
 ## 模型拟合-以线性回归为例
@@ -244,7 +244,7 @@ save(ames_split, ames_train, ames_test, file = "ames_train_test.RData")
 #| echo: false
 
 rm(list = ls())
-load("ames_train_test.RData")
+load("../datas/ames_train_test.RData")
 ```
 
 对于一些相对简单的模型，可以使用`parsnip`包中的`fit`和`predict`函数来拟合和预测。`parsnip`包提供了统一的接口，可以使用相同的函数来拟合不同的模型。
