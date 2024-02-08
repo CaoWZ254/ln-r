@@ -3,11 +3,12 @@ project:
 
 lang: zh
 
-
 book:
   title: "R语言学习笔记"
   author: "一把Fei刀"
   date: 2023/2/5
+  search: true
+  favicon: images/favicon.png
   chapters:
     - index.qmd
     - chapters/tidymodels.qmd
@@ -19,7 +20,6 @@ format:
     theme:
       light: flatly
       dark: darkly
-    favicon: images/favicon.png
     comments:
       hypothesis: true
     toc: true
