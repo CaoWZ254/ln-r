@@ -38,7 +38,7 @@ A --- C[推理模型]
 A --- D[预测模型]
 D --- E[无监督模型]
 D --- F[监督模型]
-E --- G["主成分分析(PCR)"]
+E --- G["主成分分析(PCA)"]
 E --- H[聚类]
 E --- I[自动编码器]
 F --- J[回归]
@@ -59,11 +59,11 @@ F -.-> C
 
 练习数据使用的是`modeldata`包中的`ames`数据集。数据集包括：
 
-- 房屋特征house characteristics，如bedrooms, garage, fireplace, pool, porch等；
-- 区位location；
-- 地块信息lot information，如zoning, shape, size等；
-- 条件和质量评级ratings of condition and quality；
-- 成交价格sale price。
+-   房屋特征house characteristics，如bedrooms, garage, fireplace, pool, porch等；
+-   区位location；
+-   地块信息lot information，如zoning, shape, size等；
+-   条件和质量评级ratings of condition and quality；
+-   成交价格sale price。
 
 ```{r}
 #| label: data_import
@@ -108,7 +108,7 @@ fig_0201 +
 fig_0202
 ```
 
-::: {.callout-caution}
+::: callout-caution
 对数转换结果的主要缺点涉及到对**模型结果**的解释。在对数变换后，模型的系数不再是直接解释的，而是对数解释。这意味着，模型的系数是对数销售价格的变化，而不是销售价格的变化。这种情况下，需要小心解释模型的结果。
 :::
 
@@ -122,20 +122,20 @@ ames |>
 ```
 
 ```{r}
-#| label: save_02
+#| label: save_tidymodels_0101
 #| echo: false
 
-save(ames, file = "../datas/ames.RData")
+save(ames, file = "../datas/tidymodels_0101.RData")
 ```
 
 ## 数据分割
 
 ```{r}
-#| label: load_02
+#| label: load_tidymodels_0101
 #| echo: false
 
 rm(list = ls())
-load("../datas/ames.RData")
+load("../datas/tidymodels_0101.RData")
 ```
 
 一般会将数据集分为训练集和测试集。训练集用于拟合模型，测试集用于评估模型的性能。
@@ -209,7 +209,7 @@ ames_test  <-  testing(ames_split)
 dim(ames_train)
 ```
 
-::: {.callout-caution}
+::: callout-caution
 只能使用单列作为分层变量，不能使用多列。
 :::
 
@@ -231,20 +231,20 @@ ames_val_val   <- validation(ames_val_split)
 ```
 
 ```{r}
-#| label: save_03
+#| label: save_tidymodels_0102
 #| echo: false
 
-save(ames_split, ames_train, ames_test, file = "../datas/ames_train_test.RData")
+save(ames, ames_split, ames_train, ames_test, file = "../datas/tidymodels_0102.RData")
 ```
 
 ## 模型拟合-以线性回归为例
 
 ```{r}
-#| label: load_03
+#| label: load_tidymodels_0102
 #| echo: false
 
 rm(list = ls())
-load("../datas/ames_train_test.RData")
+load("../datas/tidymodels_0102.RData")
 ```
 
 对于一些相对简单的模型，可以使用`parsnip`包中的`fit`和`predict`函数来拟合和预测。`parsnip`包提供了统一的接口，可以使用相同的函数来拟合不同的模型。
@@ -267,7 +267,7 @@ linear_reg() |>
   translate()
 ```
 
-> `translate()`函数可以提供模型转换的详细参数信息。  
+> `translate()`函数可以提供模型转换的详细参数信息。\
 > `missing_arg()`是占位符，表示数据未提供。
 
 以经度和纬度为自变量，销售价格为因变量，拟合线性回归模型。
@@ -292,7 +292,7 @@ lm_form_fit
 lm_xy_fit
 ```
 
-## 使用模型结果
+## 提取模型结果
 
 `lm_form_fit`和`lm_xy_fit`是`parsnip`模型对象，拟合模型储存在`fit`属性中。可以使用`extract_fit_engine()`函数提取拟合模型。
 
@@ -351,13 +351,232 @@ ames_test_small |>
   bind_cols(predict(tree_fit, ames_test_small)) # 预测值
 ```
 
-:::callout-important
-可以在[https://www.tidymodels.org/find/](https://www.tidymodels.org/find/)找所有可用的模型。
+::: callout-important
+可以在<https://www.tidymodels.org/find/>找所有可用的模型。
+
 `parsnip_addin()`函数可以在RStudio中搜索模型。
 :::
 
+```{r}
+#| label: save_tidymodels_0103
+#| echo: false
 
+save(ames, ames_split, ames_train, ames_test, lm_model, file = "../datas/tidymodels_0103.RData")
+```
 
+## workflow
 
+### 创建workflow对象
 
+使用`lm_model`来创建`workflow`对象，`workflow`对象可以将数据预处理和模型拟合整合在一起。
 
+```{r}
+#| label: load_tidymodels_0103
+#| echo: false
+
+rm(list = ls())
+load("../datas/tidymodels_0103.RData")
+```
+
+```{r}
+#| label: lm_model
+#| eval: false
+
+linear_reg() |>
+  set_engine("lm") -> lm_workflow
+```
+
+```{r}
+#| label: workflow_01
+
+workflow() |>
+  add_model(lm_model) -> lm_workflow
+
+lm_workflow
+```
+
+::: callout-note
+`lm_workflow`中，`Preprocessor`为空，代表没有数据预处理。
+:::
+
+### 添加预处理器
+
+使用`add_formula`函数输入标准公式作为预处理器：
+
+```{r}
+#| label: workflow_02
+
+lm_workflow |>
+  add_formula(Sale_Price ~ Longitude + Latitude) -> lm_workflow
+
+lm_workflow
+```
+
+`workflow`对象可以使用`fit()`函数拟合模型，使用`predict()`函数进行预测。
+
+```{r}
+#| label: workflow_03
+
+lm_workflow |>
+  fit(data = ames_train) -> lm_fit
+
+lm_fit
+
+lm_fit |>
+  predict(new_data = ames_test |>
+            slice(1:3)) # 预测
+
+```
+
+可以使用`update_formula`函数更新预处理器：
+
+```{r}
+#| label: workflow_04
+
+lm_fit |>
+  update_formula(Sale_Price ~ Longitude)
+```
+
+### 添加变量
+
+使用`add_variables`函数添加变量。函数有两个参数：`outcomes`和`predictors`。支持使用`c()`函数添加多个变量。
+
+```{r}
+#| label: workflow_05
+
+lm_workflow |>
+  remove_formula() |>
+  add_variables(outcome = Sale_Price, predictors = c(Longitude, Latitude)) -> lm_workflow # 和上面的add_formula等价
+
+lm_workflow
+```
+
+拟合模型：
+
+```{r}
+#| label: workflow_06
+
+fit(lm_workflow, data = ames_train) # 拟合模型
+```
+
+### 为`workflow`使用公式
+
+#### 基于树的模型
+
+使用`Orthodont`数据集，拟合一个受试者具有随机效应的回归模型。
+
+在`workflow`中，使用`add_variables()`函数添加变量，使用`add_model()`函数添加模型。
+
+```{r}
+#| label: workflow_07
+
+library(multilevelmod) # parsnip扩展包，主要用于多层次模型（混合效应模型、贝叶斯层次模型等）
+
+data(Orthodont, package = "nlme")
+
+linear_reg() |>
+  set_engine("lmer") -> multilevel_spec # lmer是lme4包中的函数，用于拟合线性混合效应模型
+  
+workflow() |>
+  add_variables(outcome = distance, predictors = c(Sex, age, Subject)) |> 
+  add_model(multilevel_spec, 
+            formula = distance ~ Sex + (age | Subject)) -> multilevel_workflow # age | Subject表示age是Subject的随机效应
+
+multilevel_workflow |>
+  fit(data = Orthodont) -> multilevel_fit
+
+multilevel_fit
+```
+
+可以进一步使用`survival`包中的`strata`函数进行生存分析.
+
+```{r}
+#| label: workflow_08
+
+library(censored) # parsnip扩展包，主要用于删减回归和生存分析模型
+
+survival_reg() -> parametric_spec
+
+data(cancer, package = "survival")
+
+workflow() |>
+  add_variables(outcome = c(fustat, futime), predictors = c(age, rx)) |>
+  add_model(parametric_spec, 
+            formula = Surv(futime, fustat) ~ age + strata(rx)) -> parametric_workflow
+
+parametric_workflow |>
+  fit(data = ovarian) -> parametric_fit
+
+parametric_fit
+```
+
+### 同时创建多个workflow
+
+做预测模型时，一般需要评估多个不同的模型。例如**筛选预测因子**。可以创建一组`formula`来罗列不同的预测因子组合。
+
+```{r}
+#| label: workflow_09
+
+list(
+  longitude = Sale_Price ~ Longitude,
+  latitude = Sale_Price ~ Latitude,
+  coords = Sale_Price ~ Longitude + Latitude,
+  neighborhood = Sale_Price ~ Neighborhood) -> location
+
+```
+
+使用`workflow_set()`函数创建一个`workflow`集合。
+
+```{r}
+#| label: workflow_10
+
+workflow_set(preproc = location, models = list(lm = lm_model)) -> location_models
+
+location_models
+
+location_models$info[[1]] # 查看第一个workflow的信息
+
+extract_workflow(location_models, id = "coords_lm") # 提取一个workflow
+```
+
+为每个`formula`创建`fit`对象：
+
+```{r}
+#| label: workflow_11
+
+location_models |>
+  mutate(fit = map(info, ~ fit(.x$workflow[[1]], ames_train))) -> location_models # 使用map函数对每个workflow进行拟合
+
+location_models
+
+location_models$fit[[1]] # 查看第一个workflow的拟合结果
+```
+
+### 评估测试集
+
+使用`last_fit`函数，可以把模型拟合到整个训练集，然后评估测试集。
+
+```{r}
+#| label: workflow_12
+
+last_fit(lm_workflow, ames_split) -> final_lm_res # 用法：last_fit(模型, 数据分割)
+
+final_lm_res
+
+final_lm_res |>
+  extract_workflow() # 提取workflow
+
+final_lm_res |>
+  collect_metrics() # 收集模型评估指标
+
+final_lm_res |>
+  collect_predictions() |> # 收集预测结果
+  head()
+```
+
+```{r}
+#| label: save_tidymodels_0104
+#| echo: false
+
+save(ames, ames_split, ames_train, ames_test, lm_model, lm_workflow, lm_fit, file = "../datas/tidymodels_0104.RData")
+```
