@@ -26,8 +26,9 @@ format:
     toc_float: true
     number-sections: true
     lightbox: true
-    code-fold: true
+    code-fold: show
     code-overflow: wrap
+    code-link: true
     code-tools: true
 
 crossref:
