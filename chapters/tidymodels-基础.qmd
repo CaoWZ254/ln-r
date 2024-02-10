@@ -1,0 +1,1095 @@
+---
+title: "tidymodels-基础"
+author: "一把Fei刀"
+date: 2024-2-5
+date-modified: last-modified
+number-sections: true
+---
+
+> 本篇是tidymodels包的学习笔记，主要参考文档是[Tidy Modeling with R](https://www.tmwr.org/)。
+
+```{r}
+#| label: setup
+#| include: false
+# tinytex::install_tinytex(bundle = 'TinyTeX-2', dir = "D:/TinyTex")
+library(tinytex) # 用于转换pdf格式
+# 其他包都用"install.packages()"安装
+library(rticles) # 用于输出中文pdf
+library(tidyverse) # 代码风格
+library(knitr) # 用于输出
+library(showtext) # 显示pdf中图片的字体
+showtext_auto() # 自动显示图片中的文字
+library(reticulate) # 调用python
+library(gt) # 输出表格
+library(gtExtras)
+library(tidymodels)
+```
+
+## 建模基础
+
+```{mermaid}
+%%| echo: false
+---
+title: 建模的分类
+---
+flowchart LR
+A[模型] --- B[描述性模型]
+A --- C[推理模型]
+A --- D[预测模型]
+D --- E[无监督模型]
+D --- F[监督模型]
+E --- G["主成分分析(PCA)"]
+E --- H[聚类]
+E --- I[自动编码器]
+F --- J[回归]
+F --- K[神经网络]
+```
+
+```{mermaid}
+%%| echo: false
+---
+title: 模型建模的一般步骤
+---
+flowchart LR
+A[导入数据] --> B["清洗数据(tidy)"] ---> C["探索性数据分析(EDA)"] --> D[特征工程] --> E[建模与优化] --> F[评估] --> G[部署]
+F -.-> C
+```
+
+## 练习数据和探索性数据分析
+
+练习数据使用的是`modeldata`包中的`ames`数据集。数据集包括：
+
+-   房屋特征house characteristics，如bedrooms, garage, fireplace, pool, porch等；
+-   区位location；
+-   地块信息lot information，如zoning, shape, size等；
+-   条件和质量评级ratings of condition and quality；
+-   成交价格sale price。
+
+```{r}
+#| label: data_import
+data(ames)
+dim(ames)
+```
+
+### 探索性数据分析-探索住宅特点
+
+首先关注房屋的最终销售价格（美元）。使用直方图来查看销售价格的分布情况，如 @fig-0201 所示。
+
+```{r}
+#| label: sale_price
+tidymodels_prefer() # 用于处理包之间的函数冲突，不会输出结果
+
+ames |>
+  ggplot(aes(x = Sale_Price)) +
+  geom_histogram(bins = 50, col = "white") +
+  theme_bw() -> fig_0201
+```
+
+```{r}
+#| label: fig-0201
+#| fig-cap: 销售价格（美元）
+
+fig_0201
+```
+
+作图发现数据是偏态的，可以使用对数变换来处理。这种转换的优点是，不会预测出负销售价格的房屋，而且预测昂贵房屋的误差也不会对模型产生过大的影响。另外，对数变换还可以稳定方差，使得模型更容易拟合。结果如 @fig-0202 所示。
+
+```{r}
+#| label: log_sale_price
+
+fig_0201 +
+  scale_x_log10() -> fig_0202
+```
+
+```{r}
+#| label: fig-0202
+#| fig-cap: 对数变换后的销售价格（美元）
+
+fig_0202
+```
+
+::: callout-caution
+对数转换结果的主要缺点涉及到对**模型结果**的解释。在对数变换后，模型的系数不再是直接解释的，而是对数解释。这意味着，模型的系数是对数销售价格的变化，而不是销售价格的变化。这种情况下，需要小心解释模型的结果。
+:::
+
+对数转换的结果相对较好，因此可以使用对数转换后的销售价格作为目标变量。
+
+```{r}
+#| label: log_ames
+
+ames |>
+  mutate(Sale_Price = log10(Sale_Price)) -> ames
+```
+
+```{r}
+#| label: save_tidymodels_0101
+#| echo: false
+
+save(ames, file = "../data/tidymodels_0101.rda")
+```
+
+## 数据分割
+
+```{r}
+#| label: load_tidymodels_0101
+#| echo: false
+
+rm(list = ls())
+load("../data/tidymodels_0101.rda")
+```
+
+一般会将数据集分为训练集和测试集。训练集用于拟合模型，测试集用于评估模型的性能。
+
+测试集只能使用一次，否则就会成为建模过程的一部分。这样会导致模型在测试集上的性能过于乐观，无法真实地评估模型的性能。
+
+### 简单随机抽样
+
+在`tidymodels`中，可以使用`initial_split()`函数来分割数据集。默认情况下，`initial_split()`函数会将数据集分为80%的训练集和20%的测试集。
+
+```{r}
+#| label: data_split_01
+
+set.seed(123)
+
+ames_split <- initial_split(ames, prop = 0.8)
+
+ames_split
+```
+
+`ames_split`是一个`rsplit`对象，仅包含分区信息，可以使用`training()`和`testing()`函数来提取训练集和测试集。
+
+```{r}
+#| label: data_split_02
+
+ames_train <- training(ames_split)
+ames_test <- testing(ames_split)
+
+dim(ames_train)
+```
+
+### 分层抽样
+
+在某些情况下，需要使用分层抽样。例如，如果数据集中有一个重要的类别变量，那么就需要使用分层抽样来确保训练集和测试集中都包含这个类别变量的各个水平。
+
+可以人为地将结果数据四等分，然后分别进行四次分层抽样，这样可以保持训练集和测试集的分布一致。
+
+```{r}
+#| label: fig-0203
+#| fig-cap: 房屋销售价格分布(log)，虚线代表四分位数
+
+ames |>
+  pull(Sale_Price) |> # 提取销售价格
+  density(n = 2^10) |> # 生成密度估计
+  tidy() -> sale_dens # 将结果转换为数据框
+
+tibble(prob = (1:3)/4, value = quantile(ames$Sale_Price, probs = prob)) |> # 计算四分位数
+  mutate(y = approx(sale_dens$x, sale_dens$y, xout = value)$y) -> quartiles # 计算四分位数的密度值
+
+ames |>
+  ggplot(aes(x = Sale_Price)) +
+  geom_line(stat = "density") +
+  geom_segment(data = quartiles,
+               aes(x = value, xend = value, y = 0, yend = y),
+               lty = 2) +
+  labs(x = "Sale Price (log-10 USD)", y = NULL) +
+  theme_bw() -> fig_0203
+fig_0203
+```
+
+销售价格的分布呈右偏态，廉价房屋的比例更大。因此，可以使用分层抽样来确保训练集和测试集中都包含廉价房屋。可以使用`strata`参数来指定分层变量。
+
+```{r}
+#| label: data_split_03
+
+set.seed(123)
+ames_split <- initial_split(ames, prop = 0.80, strata = Sale_Price)
+ames_train <- training(ames_split)
+ames_test  <-  testing(ames_split)
+
+dim(ames_train)
+```
+
+::: callout-caution
+只能使用单列作为分层变量，不能使用多列。
+:::
+
+### 交叉验证-验证集的分割
+
+交叉验证通常用于解决模型过拟合的问题。为此，可以把数据集分为训练集、测试集和验证集，其中验证集用于调整模型的超参数。可以用`initial_vadilation_split()`函数来实现。
+
+```{r}
+#| label: data_split_04
+
+set.seed(123)
+ames_val_split <- initial_validation_split(ames, prop = c(0.6, 0.2))
+
+ames_val_split
+
+ames_val_train <- training(ames_val_split)
+ames_val_test  <- testing(ames_val_split)
+ames_val_val   <- validation(ames_val_split)
+```
+
+```{r}
+#| label: save_tidymodels_0102
+#| echo: false
+
+save(ames, ames_split, ames_train, ames_test, file = "../data/tidymodels_0102.rda")
+```
+
+## 模型拟合-以线性回归为例
+
+```{r}
+#| label: load_tidymodels_0102
+#| echo: false
+
+rm(list = ls())
+load("../data/tidymodels_0102.rda")
+```
+
+对于一些相对简单的模型，可以使用`parsnip`包中的`fit`和`predict`函数来拟合和预测。`parsnip`包提供了统一的接口，可以使用相同的函数来拟合不同的模型。
+
+使用`parsnip`中的`linear_reg()`函数指定模型类型，`set_engine()`函数指定模型引擎，这里的引擎一般指的是具体建模使用的软件包名称。确定模型后，可以使用`fit()`函数或`fit_xy()`函数来拟合模型。以三种常用的线性回归模型为例。
+
+```{r}
+#| label: model_fit_translation
+
+linear_reg() |>
+  set_engine("lm") |>
+  translate()
+
+linear_reg(penalty = 1) |> # panalty是glmnet的特有参数
+  set_engine("glmnet") |>
+  translate()
+
+linear_reg() |>
+  set_engine("stan") |>
+  translate()
+```
+
+> `translate()`函数可以提供模型转换的详细参数信息。\
+> `missing_arg()`是占位符，表示数据未提供。
+
+以经度和纬度为自变量，销售价格为因变量，拟合线性回归模型。
+
+```{r}
+#| label: model_fit_01
+
+linear_reg() |>
+  set_engine("lm") -> lm_model
+
+lm_model |>
+  fit(Sale_Price ~ Longitude + Latitude, data = ames_train) -> lm_form_fit
+
+lm_model |>
+  fit_xy(x = ames_train |>
+           select(Longitude, Latitude),
+         y = ames_train |>
+           pull(Sale_Price)
+  ) -> lm_xy_fit
+
+lm_form_fit
+lm_xy_fit
+```
+
+## 提取模型结果
+
+`lm_form_fit`和`lm_xy_fit`是`parsnip`模型对象，拟合模型储存在`fit`属性中。可以使用`extract_fit_engine()`函数提取拟合模型。
+
+```{r}
+#| label: model_fit_get
+
+lm_form_fit |>
+  tidy() # 最简单的提取模型系数的方法（提取为tibble）
+
+lm_form_fit |>
+  extract_fit_engine() |> # 提取模型
+  vcov() # 提取模型的协方差矩阵
+
+lm_form_fit |>
+  extract_fit_engine() |>
+  summary() |> # 提取模型的摘要信息
+  coef() # 提取模型的系数
+
+lm_form_fit |>
+  extract_fit_engine() |>
+  gtsummary::tbl_regression() # 生成模型摘要信息
+```
+
+## 模型预测
+
+使用`predict()`函数进行预测。
+
+```{r}
+#| label: model_predict
+
+ames_test |>
+  slice(1:5) -> ames_test_small # 选择前五行数据
+
+predict(lm_form_fit, new_data = ames_test_small) # 预测结果
+
+ames_test_small |>
+  select(Sale_Price) |> # 真实值
+  bind_cols(predict(lm_form_fit, ames_test_small)) |> # 预测值
+  bind_cols(predict(lm_form_fit, ames_test_small, type = "pred_int")) # 预测区间
+```
+
+以决策树为例，对数据进行建模
+
+```{r}
+#| label: model_fit_02
+
+decision_tree(min_n = 2) |>
+  set_engine("rpart") |>
+  set_mode("regression") -> tree_model
+
+tree_model |>
+  fit(Sale_Price ~ Longitude + Latitude, data = ames_train) -> tree_fit
+
+ames_test_small |>
+  select(Sale_Price) |> # 真实值
+  bind_cols(predict(tree_fit, ames_test_small)) # 预测值
+```
+
+::: callout-important
+可以在<https://www.tidymodels.org/find/>找所有可用的模型。
+
+`parsnip_addin()`函数可以在RStudio中搜索模型。
+:::
+
+```{r}
+#| label: save_tidymodels_0103
+#| echo: false
+
+save(ames, ames_split, ames_train, ames_test, lm_model, file = "../data/tidymodels_0103.rda")
+```
+
+## workflow
+
+### 创建workflow对象
+
+使用`lm_model`来创建`workflow`对象，`workflow`对象可以将数据预处理和模型拟合整合在一起。
+
+```{r}
+#| label: load_tidymodels_0103
+#| echo: false
+
+rm(list = ls())
+load("../data/tidymodels_0103.rda")
+```
+
+```{r}
+#| label: lm_model
+#| eval: false
+
+linear_reg() |>
+  set_engine("lm") -> lm_workflow
+```
+
+```{r}
+#| label: workflow_01
+
+workflow() |>
+  add_model(lm_model) -> lm_workflow
+
+lm_workflow
+```
+
+::: callout-note
+`lm_workflow`中，`Preprocessor`为空，代表没有数据预处理。
+:::
+
+### 添加预处理器
+
+使用`add_formula`函数输入标准公式作为预处理器：
+
+```{r}
+#| label: workflow_02
+
+lm_workflow |>
+  add_formula(Sale_Price ~ Longitude + Latitude) -> lm_workflow
+
+lm_workflow
+```
+
+`workflow`对象可以使用`fit()`函数拟合模型，使用`predict()`函数进行预测。
+
+```{r}
+#| label: workflow_03
+
+lm_workflow |>
+  fit(data = ames_train) -> lm_fit
+
+lm_fit
+
+lm_fit |>
+  predict(new_data = ames_test |>
+            slice(1:3)) # 预测
+
+```
+
+可以使用`update_formula`函数更新预处理器：
+
+```{r}
+#| label: workflow_04
+
+lm_fit |>
+  update_formula(Sale_Price ~ Longitude)
+```
+
+### 添加变量
+
+使用`add_variables`函数添加变量。函数有两个参数：`outcomes`和`predictors`。支持使用`c()`函数添加多个变量。
+
+```{r}
+#| label: workflow_05
+
+lm_workflow |>
+  remove_formula() |>
+  add_variables(outcome = Sale_Price, predictors = c(Longitude, Latitude)) -> lm_workflow # 和上面的add_formula等价
+
+lm_workflow
+```
+
+拟合模型：
+
+```{r}
+#| label: workflow_06
+
+fit(lm_workflow, data = ames_train) # 拟合模型
+```
+
+### 为`workflow`使用公式
+
+#### 基于树的模型
+
+使用`Orthodont`数据集，拟合一个受试者具有随机效应的回归模型。
+
+在`workflow`中，使用`add_variables()`函数添加变量，使用`add_model()`函数添加模型。
+
+```{r}
+#| label: workflow_07
+
+library(multilevelmod) # parsnip扩展包，主要用于多层次模型（混合效应模型、贝叶斯层次模型等）
+
+data(Orthodont, package = "nlme")
+
+linear_reg() |>
+  set_engine("lmer") -> multilevel_spec # lmer是lme4包中的函数，用于拟合线性混合效应模型
+  
+workflow() |>
+  add_variables(outcome = distance, predictors = c(Sex, age, Subject)) |> 
+  add_model(multilevel_spec, 
+            formula = distance ~ Sex + (age | Subject)) -> multilevel_workflow # age | Subject表示age是Subject的随机效应
+
+multilevel_workflow |>
+  fit(data = Orthodont) -> multilevel_fit
+
+multilevel_fit
+```
+
+可以进一步使用`survival`包中的`strata`函数进行生存分析.
+
+```{r}
+#| label: workflow_08
+
+library(censored) # parsnip扩展包，主要用于删减回归和生存分析模型
+
+survival_reg() -> parametric_spec
+
+data(cancer, package = "survival")
+
+workflow() |>
+  add_variables(outcome = c(fustat, futime), predictors = c(age, rx)) |>
+  add_model(parametric_spec, 
+            formula = Surv(futime, fustat) ~ age + strata(rx)) -> parametric_workflow
+
+parametric_workflow |>
+  fit(data = ovarian) -> parametric_fit
+
+parametric_fit
+```
+
+### 同时创建多个workflow
+
+做预测模型时，一般需要评估多个不同的模型。例如**筛选预测因子**。可以创建一组`formula`来罗列不同的预测因子组合。
+
+```{r}
+#| label: workflow_09
+
+list(
+  longitude = Sale_Price ~ Longitude,
+  latitude = Sale_Price ~ Latitude,
+  coords = Sale_Price ~ Longitude + Latitude,
+  neighborhood = Sale_Price ~ Neighborhood) -> location
+
+```
+
+使用`workflow_set()`函数创建一个`workflow`集合。
+
+```{r}
+#| label: workflow_10
+
+workflow_set(preproc = location, models = list(lm = lm_model)) -> location_models
+
+location_models
+
+location_models$info[[1]] # 查看第一个workflow的信息
+
+extract_workflow(location_models, id = "coords_lm") # 提取一个workflow
+```
+
+为每个`formula`创建`fit`对象：
+
+```{r}
+#| label: workflow_11
+
+location_models |>
+  mutate(fit = map(info, ~ fit(.x$workflow[[1]], ames_train))) -> location_models # 使用map函数对每个workflow进行拟合
+
+location_models
+
+location_models$fit[[1]] # 查看第一个workflow的拟合结果
+```
+
+### 评估测试集
+
+使用`last_fit`函数，可以把模型拟合到整个训练集，然后评估测试集。
+
+```{r}
+#| label: workflow_12
+
+last_fit(lm_workflow, ames_split) -> final_lm_res # 用法：last_fit(模型, 数据分割)
+
+final_lm_res
+
+final_lm_res |>
+  extract_workflow() # 提取workflow
+
+final_lm_res |>
+  collect_metrics() # 收集模型评估指标
+
+final_lm_res |>
+  collect_predictions() |> # 收集预测结果
+  head()
+```
+
+```{r}
+#| label: save_tidymodels_0104
+#| echo: false
+
+save(ames, ames_split, ames_train, ames_test, lm_model, lm_workflow, lm_fit, file = "../data/tidymodels_0104.rda")
+```
+
+## 特征工程
+
+```{r}
+#| label: load_tidymodels_0104
+#| echo: false
+
+load("../data/tidymodels_0104.rda")
+```
+
+特征工程指对预测值进行重新格式化，使其更容易被模型有效利用。特征工程的方法一般分为以下几种：
+
+1. **dummy**，哑变量，将分类变量分为多个哑变量（0-1变量）。
+2. **zv**， zero variance，删除方差为0的变量，也就是只有单一值的变量。
+3. **impute**，估算，填补缺失值。
+4. **decorrelate**，去相关，删除相关性较高的变量。一般使用PCA方法或者VIF方法。
+5. **normalize**，标准化，将变量居中并缩放到单位方差。
+6. **transform**，转换，将变量转换成更对称的分布。
+
+使用`recipe`包可以把不同的特征工程方法组合在一起，并应用到数据集上。
+
+### 创建特征工程
+
+从`ames`数据集中挑选以下预测因子：
+
+1. `Neighborhood`，分类变量，指房屋所在的社区，有29个水平。
+2. `Gr_Liv_Area`，数值变量，指房屋的居住面积。
+3. `Year_Built`，数值变量，指房屋建造的年份。
+4. `Bldg_Type`，分类变量，指房屋的类型，有5个水平，分别是`OneFam`，`TwoFmCon`，`Duplex`，`Twnhs`，`TwnhsE`。
+
+使用这些预测因子对`Sale_Price`进行预测，公式如下：
+
+```{r}
+#| label: recipe_formula
+#| eval: false
+
+lm(Sale_Price ~ Neighborhood + log10(Gr_Liv_Area) + Year_Built + Bldg_Type, data = ames) # 由于Sale_Price取过对数，所以Gr_Liv_Area也取对数
+```
+
+根据预测因子的性质和上述公式，使用`recipe`创建一个特征工程流程。
+
+```{r}
+#| label: recipe_01
+
+recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type,
+       data = ames) |> # 创建recipe对象，声明结果变量和预测因子
+  step_log(Gr_Liv_Area) |> # 对Gr_Liv_Area取对数
+  step_dummy(all_nominal_predictors()) -> simple_ames # 对分类变量创建哑变量
+
+simple_ames
+```
+
+:::callout-tip
+`all_nominal_predictors()`函数用于选择所有的分类变量。
+
+`all_numeric_predictors()`函数用于选择所有的数值变量。
+
+`all_predictors()`函数用于选择所有的预测因子。
+
+`all_outcomes()`函数用于选择所有的结果变量。
+
+`all_numeric()`函数用于选择所有的数值变量。
+:::
+
+### 应用特征工程
+
+将特征工程`simple_ames`应用到workflow`lm_workflow`上。
+
+```{r}
+#| label: recipe_02
+
+lm_workflow |>
+  remove_variables() |> # 删除所有的预测因子
+  remove_recipe() |> # 删除所有的特征工程
+  add_recipe(simple_ames) -> lm_workflow # 添加特征工程
+
+lm_workflow
+```
+
+```{r}
+#| label: recipe_03
+
+fit(lm_workflow, ames_train) -> lm_fit # 拟合模型
+
+predict(lm_fit, ames_test) |> # 预测测试集
+  head()
+```
+
+使用`extract_*`函数可以提取`fit`对象的不同信息，如模型参数、特征工程等。
+
+```{r}
+#| label: recipe_04
+
+lm_fit |>
+  extract_recipe(estimated = TRUE) # 提取特征工程，estimated = TRUE表示提取特征工程的估计值
+
+lm_fit |>
+  extract_fit_parsnip() |> # 提取模型参数
+  tidy() |>
+  head()
+```
+
+### 其他特征工程示例
+
+#### 定性变量的处理
+
+:::callout-tip
+`step_unknown()`函数用于将缺失值转化为专用因子水平。
+
+`step_novel()`函数用于将未知的水平转化为新的水平。
+
+`step_other()`函数用于将频率较低的多个水平合并为一个水平，频率阈值可以指定。
+:::
+
+上述函数可以用于处理定性变量的缺失值和未知水平，以及合并频率较低的水平，在此基础上，可以使用`step_dummy()`函数创建哑变量。
+
+#### 交互项的处理
+
+交互项是指两个或多个变量的乘积，可以用于捕捉变量之间的关系。使用`step_interact(~*:*)`函数可以创建交互项。
+
+在ames数据集中，不同建筑类型的房屋可能与不同的居住面积存在交互，如 @fig-ames-interact 所示，可以使用交互项来捕捉这种关系。
+
+```{r}
+#| label: fig-ames-interact
+#| fig-cap: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）
+
+ggplot(ames_train, aes(x = Gr_Liv_Area, y = 10^Sale_Price)) + 
+  geom_point(alpha = .2) + 
+  facet_wrap(~ Bldg_Type) + 
+  geom_smooth(method = lm, formula = y ~ x, se = FALSE, color = "lightblue") + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = "Gross Living Area", y = "Sale Price (USD)")
+```
+
+```{r}
+#| label: recipe_05
+
+recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type,
+         data = ames_train) |> # 创建recipe对象并声明结果变量和预测因子
+  step_log(Gr_Liv_Area, base = 10) |> # 对Gr_Liv_Area取对数
+  step_other(Neighborhood, threshold = 0.01) |> # 合并频率较低的水平
+  step_dummy(all_nominal_predictors()) |> # 对分类变量创建哑变量
+  step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_")) -> simple_ames # 创建交互项，其中:表示交互，可以使用+添加多组交互项
+
+simple_ames
+```
+
+:::callout-warning
+一般来说，交互项需要在创建哑变量后才能创建，否则可能会报错。
+:::
+
+#### 样条函数
+
+样条函数是一种非参数拟合方法，可以用于拟合非线性关系。使用`step_ns()`函数可以创建样条函数。
+
+在ames数据集中，经度和纬度可能与销售价格存在非线性关系，如 @fig-ames-spline 所示，可以使用样条函数来捕捉这种关系。
+
+```{r}
+#| label: fig-ames-spline
+#| fig-cap: 销售价格与纬度的关系
+
+library(splines) # 样条函数
+library(patchwork) # 绘图拼接
+
+plot_smoother <- function(deg_free) { # 创建一个函数，用于绘制不同自由度的样条函数
+  ggplot(ames_train, aes(x = Latitude, y = 10^Sale_Price)) +  # 还原对数变换
+    geom_point(alpha = .2) +  # 添加散点图，alpha表示透明度
+    scale_y_log10() + # 对y轴进行对数变换
+    geom_smooth(
+      method = lm,
+      formula = y ~ ns(x, df = deg_free),
+      color = "lightblue",
+      se = FALSE
+    ) + # 添加样条函数，ns表示样条函数，df表示自由度
+    labs(title = paste(deg_free, "Spline Terms"),
+         y = "Sale Price (USD)")
+}
+
+( plot_smoother(2) + plot_smoother(5) ) / ( plot_smoother(20) + plot_smoother(100) ) # 绘制不同自由度的样条函数
+```
+
+由 @fig-ames-spline 可以看出，自由度为5和20时，样条函数能较好地拟合数据，这里选择自由度为20的样条函数来捕捉纬度与销售价格的关系。
+
+```{r}
+#| label: recipe_06
+
+recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + Latitude,
+         data = ames_train) |>
+  step_log(Gr_Liv_Area, base = 10) |>
+  step_other(Neighborhood, threshold = 0.01) |>
+  step_dummy(all_nominal_predictors()) %>% 
+  step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_") ) |>
+  step_ns(Latitude, deg_free = 20) # 创建样条函数，自由度为20
+```
+
+#### 特征提取（PCA）
+
+特征提取是指将多个原始特征合并为少数几个新特征，以减少数据维度。使用`step_pca()`函数可以进行主成分分析（PCA）。
+
+PCA是一种线性提取方法，其优点是每个主成分之间互不相关，因此可以减少多重共线性的影响。但是，PCA的缺点是提取的特征不易解释，而且新特征可能与结果无关。
+
+在ames数据集中，有几个预测因子测量了房产的面积，如地下室总面积`Total_Bsmt_SF`、一楼面积`First_Flr_SF`、总居住面积`Gr_Liv_Area`等。PCA 可以将这些潜在的冗余变量表示为一个较小的特征集。除了总居住面积外，这些预测因子的名称中都有后缀`SF`（表示平方英尺）。
+
+PCA假定所有预测因子的单位相同，因此在使用PCA之前，最好使用`step_normalize()`对这些预测因子进行标准化。
+
+```{r}
+#| label: recipe_07
+#| eval: false
+
+step_normalize(matches("(SF$)|(Gr_Liv)")) |>
+step_pca(matches("(SF$)|(Gr_Liv)"))
+```
+
+:::callout-tip
+特征提取的其他方法还包括独立成分分析（ICA），非负矩阵分解（NMF），多维缩放（MDS），均匀流形近似（UMAP），t-分布邻域嵌入（t-SNE）等。
+:::
+
+#### 抽样技术
+
+类别不平衡问题是指分类问题中不同类别的样本数量差异较大。在这种情况下，模型可能会偏向于预测样本数量较多的类别，而忽略样本数量较少的类别。针对类别不平衡问题，可以采用子采样技术，它通常不会提高整体性能，但可以生成表现更好的预测类概率分布。子采样技术分类如下：
+
+1. 下抽样(Downsampling)：保留少数类样本，对多数类样本进行随机抽样，以平衡频率。
+2. 扩大抽样(Upsampling)：合成新的少数类样本，或直接复制少数类样本，以平衡频率。
+3. Hybrid：结合上述两种方法。
+
+在`themis`包中，`step_downsample()`和`step_upsample()`函数可以实现下抽样和扩大抽样。
+
+:::callout-tip
+`step_filter()`函数可以用于删除不需要的样本，如异常值、缺失值等。
+
+`step_sample()`函数可以用于随机抽样。
+
+`step_slice()`函数可以用于分割数据集。
+
+`step_arrange()`函数可以用于排序数据集。
+:::
+
+#### 一般变换
+
+一般变换是指对数据进行一般性的变换，如对数变换、幂变换、指数变换等。在`recipes`包中，`step_log()`、`step_sqrt()`、`step_YeoJohnson()`、`step_boxcox()`等函数可以实现对数变换、平方根变换、Yeo-Johnson变换、Box-Cox变换等。`step_mutate()`函数可以利用已有变量计算并创建新的变量。
+
+:::callout-warning
+进行一般变换是，需要格外注意避免数据泄露。转换应该在拆分数据集之前进行。
+:::
+
+#### 自然语言处理
+
+自然语言处理（NLP）是指对文本数据进行处理，如分词、词干提取、词形还原、停用词过滤、词频统计、TF-IDF计算等。
+
+`textrecipes`包是`recipes`包的扩展，提供了一系列用于文本数据处理的函数。`step_tokenize()`、`step_stem()`、`step_lemma()`、`step_stopwords()`、`step_tf()`、`step_tfidf()`等函数可以实现分词、词干提取、词形还原、停用词过滤、词频统计、TF-IDF计算等。可以在[Cookbook - Using more complex recipes involving text](https://textrecipes.tidymodels.org/articles/cookbook---using-more-complex-recipes-involving-text.html)中参考相关函数的使用方法。但是，`textrecipes`包目前还不支持中文文本的处理，可能需要使用`jiebaR`包（[jiebaR 中文分词文档](https://qinwenfeng.com/jiebaR/index.html)）等其他包来处理中文文本。
+
+### tidy
+
+首先，为ames数据集创建一个`recipe`对象。然后，使用`tidy()`函数查看`recipe`对象的内容摘要。
+
+`id`参数可以用于指定`recipe`步骤函数的标识符。在多次添加相同的步骤函数时，可以使用`id`参数来区分这些步骤函数。
+
+```{r}
+#| label: recipe_08
+
+recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
+         Latitude + Longitude, data = ames_train) |>
+  step_log(Gr_Liv_Area, base = 10) |>
+  step_other(Neighborhood, threshold = 0.01, id = "my_id") |> # 指定id参数
+  step_dummy(all_nominal_predictors()) |>
+  step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_")) |>
+  step_ns(Latitude, Longitude, deg_free = 20) -> ames_recipe
+
+ames_recipe |>
+  tidy()
+```
+
+使用`ames_recipe`对象建立workflow：
+
+```{r}
+#| label: recipe_09
+
+workflow() |>
+  add_model(lm_model) |>
+  add_recipe(ames_recipe) -> lm_workflow
+
+lm_workflow |>
+  fit(data = ames_train) -> lm_fit
+```
+
+可以使用`tidy()`函数并指定`id`参数，查看对应`id`步骤的结果，也可以指定`number`参数，查看对应的结果：
+
+```{r}
+#| label: recipe_10
+
+lm_fit |>
+  extract_recipe(estimated = TRUE) |>
+  tidy(id = "my_id")
+
+lm_fit |>
+  extract_recipe(estimated = TRUE) |>
+  tidy(number = 3)
+```
+
+### "roles"变量
+
+有一部分变量，既不是预测变量，也不是因子变量，但在数据集中可能起到建模之外的作用。可以使用`add_role()`, `remove_role()`和`update_role()`函数来指定这些变量的角色。同时，可以为`step_*()`函数指定`roles`参数，不过大部分`step_*()`函数都会自动给定变量的角色。
+
+代码示例：
+
+```{r}
+#| label: recipe_11
+#| eval: false
+
+ames_recipe |>
+  update_role(address, new_role = "street address") # 对于已建好的recipe对象，使用update_role()函数来更新变量的角色，在构建recipe对象时，应使用add_role()函数。
+```
+  
+```{r}
+#| label: save_tidymodels_0105
+#| echo: false
+
+save(ames, ames_split, ames_train, ames_test, ames_recipe, lm_model, lm_workflow, lm_fit, file = "../data/tidymodels_0105.rda")
+```
+
+## 模型性能评估
+
+```{r}
+#| label: load_tidymodels_0105
+#| echo: false
+
+rm(list = ls())
+load("../data/tidymodels_0105.rda")
+```
+
+:::callout-important
+重采样方法是最有效的验证方法。
+:::
+
+`yardstick`包是`tidymodels`核心包之一，可以用于模型性能评估。按结果变量的类型，即数值变量、二分类变量和多分类变量，模型性能评估的指标也有所不同。
+
+### 数值变量-回归模型
+
+`ames`数据集的预测模型`lm_fit`包含了回归模型和预测集，同时有交互作用和经纬度样条函数。首先，使用`predict()`函数计算预测值。
+
+```{r}
+#| label: yardstick_01
+
+lm_fit |>
+  predict(new_data = ames_test |>
+            select(-Sale_Price)) -> ames_test_results
+
+ames_test_results |>
+  head()
+```
+
+将预测值和实际值放在一起，使用`bind_cols()`函数：
+
+```{r}
+#| label: yardstick_02
+
+ames_test_results |>
+  bind_cols(ames_test |>
+              select(Sale_Price)) -> ames_test_results
+
+ames_test_results |>
+  head()
+```
+
+首先，作图查看预测值和实际值的关系：
+
+```{r}
+#| label: fig-yardstick_01
+#| fig-cap: 预测值和实际值的关系(log10)
+
+ggplot(ames_test_results, aes(x = Sale_Price, y = .pred)) + 
+  geom_abline(lty = 2) + # 添加对角线
+  geom_point(alpha = 0.5) + 
+  labs(y = "Predicted Sale Price (log10)", x = "Sale Price (log10)") +
+  coord_obs_pred() # 使x轴和y轴的刻度一致
+```
+
+由 @fig-yardstick_01 发现，有几个预测值和实际值的偏差较大。使用`rmse()`函数计算均方根误差，`rsq`函数计算R^2，`mae`函数计算平均绝对误差。
+
+```{r}
+#| label: yardstick_03
+
+ames_test_results |>
+  rmse(truth = Sale_Price, estimate = .pred) # 计算单一指标
+
+ames_metrics <- metric_set(rmse, rsq, mae) # 创建指标集
+
+ames_test_results |>
+  ames_metrics(truth = Sale_Price, estimate = .pred) # 同时计算多个指标
+```
+
+### 二分类变量-logistic回归模型
+
+使用`modeldata`包（`tidymodels`核心包之一）中的`two_class_example`数据集，这是一个模拟了logistic回归模型预测结果的数据集。
+
+```{r}
+#| label: yardstick_04
+
+data(two_class_example, package = "modeldata")
+tibble(two_class_example) |>
+  head()
+```
+
+对于logistic回归模型，模型性能评估指标有很多，列举如下：
+
+- `conf_mat`：混淆矩阵
+
+```{r}
+#| label: yardstick_05
+
+two_class_example |>
+  conf_mat(truth = truth, estimate = predicted)
+```
+
+- `accuracy`：准确率
+
+```{r}
+#| label: yardstick_06
+
+two_class_example |>
+  accuracy(truth = truth, estimate = predicted)
+```
+
+- `mcc`：Matthews相关系数
+
+```{r}
+#| label: yardstick_07
+
+two_class_example |>
+  mcc(truth = truth, estimate = predicted)
+```
+
+- `f_meas`：F1值，精确率和召回率的调和平均数
+
+```{r}
+#| label: yardstick_08
+
+two_class_example |>
+  f_meas(truth = truth, estimate = predicted)
+```
+
+- `roc_curve`和`roc_auc`：ROC曲线和AUC
+
+```{r}
+#| label: yardstick_09
+
+two_class_example |>
+  roc_curve(truth = truth, Class1) -> two_class_curve
+
+two_class_curve
+
+two_class_example |>
+  roc_auc(truth = truth, Class1)
+```
+
+```{r}
+#| label: fig-yardstick_02
+#| fig-cap: ROC曲线
+
+two_class_curve |>
+  autoplot()
+```
+
+### 多分类变量-多分类模型
+
+```{r}
+#| label: yardstick_10
+
+data(hpc_cv)
+tibble(hpc_cv) |>
+  head()
+```
+
+对于多分类模型，使用离散类预测的指标函数与二进制指标函数相同，如`accuracy`, `mcc`, `f_meas`等。
+
+其他指标函数包括：
+
+- `sensitivity`：灵敏度，需要用`estimator`参数指定函数
+
+```{r}
+#| label: yardstick_11
+
+hpc_cv |>
+  sensitivity(truth = obs, estimate = pred, estimator = "macro") # macro表示宏平均
+
+hpc_cv |>
+  sensitivity(truth = obs, estimate = pred, estimator = "micro") # micro表示微平均
+
+hpc_cv |>
+  sensitivity(truth = obs, estimate = pred, estimator = "macro_weighted") # macro_weighted表示加权宏平均
+```
+
+- `roc_auc`：多分类模型的AUC，必须向函数提供所有的类别概率列
+
+```{r}
+#| label: yardstick_12
+
+hpc_cv |>
+  roc_auc(truth = obs, VF, F, M, L) # 这里也可以指定estimator参数
+```
+
+`hpc_cv`数据集中，有`Resample`列，是交叉验证的分组。可以利用`group_by()`函数为每个分组计算指标或作图，如 @fig-yardstick_03 所示。
+
+```{r}
+#| label: fig-yardstick_03
+#| fig-cap: 分组ROC曲线
+
+hpc_cv |>
+  group_by(Resample) |>
+  roc_curve(obs, VF, F, M, L) |>
+  autoplot()
+```

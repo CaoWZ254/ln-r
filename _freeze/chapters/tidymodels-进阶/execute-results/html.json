@@ -1,0 +1,15 @@
+{
+  "hash": "b7f13eeefcd6cb6e0a0a436024faef32",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"tidymodels-进阶\"\nauthor: \"一把Fei刀\"\ndate: 2024-2-11\ndate-modified: last-modified\nnumber-sections: true\n---\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
