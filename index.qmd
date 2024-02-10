@@ -6,6 +6,8 @@ authors:
 bibliography: references.bib
 
 date-modified: last-modified
+
+number-sections: false
 ---
 
 # 笔记集

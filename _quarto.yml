@@ -8,10 +8,14 @@ book:
   author: "一把Fei刀"
   date: 2023/2/5
   search: true
+  page-navigation: true
   favicon: images/favicon.png
   chapters:
     - index.qmd
-    - chapters/tidymodels.qmd
+    - part: tidymodels
+      chapters:
+        - chapters/tidymodels-基础.qmd
+        - chapters/tidymodels-进阶.qmd
 
 bibliography: references.bib
 
