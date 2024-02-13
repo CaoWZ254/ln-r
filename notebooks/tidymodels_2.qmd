@@ -1,0 +1,79 @@
+
+```{r}
+#| label: chapter1
+
+library(tidymodels)
+
+rm(list = ls())
+
+data(ames)
+ames <-
+  ames |>
+  mutate(Sale_Price = log10(Sale_Price))
+
+set.seed(123)
+ames_split <-
+  ames |>
+  initial_split(prop = 0.80, strata = Sale_Price)
+
+ames_train <-
+  ames_split |>
+  training()
+
+ames_test <-
+  ames_split |>
+  testing() -> ames_test
+
+ames_rec <- 
+  recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
+           Latitude + Longitude, data = ames_train) |>
+  step_log(Gr_Liv_Area, base = 10) |> 
+  step_other(Neighborhood, threshold = 0.01) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_") ) |> 
+  step_ns(Latitude, Longitude, deg_free = 20)
+
+lm_model <- 
+  linear_reg() |> 
+  set_engine("lm")
+
+lm_wflow <- 
+  workflow() |> 
+  add_model(lm_model) |> 
+  add_recipe(ames_rec)
+
+lm_fit <- 
+  lm_wflow |>
+  fit(data = ames_train)
+
+rf_model <- 
+  rand_forest(trees = 1000) |> 
+  set_engine("ranger") |> 
+  set_mode("regression")
+
+rf_wflow <- 
+  workflow() |> 
+  add_formula(
+    Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
+      Latitude + Longitude) |> 
+  add_model(rf_model) 
+
+set.seed(123)
+ames_folds <- 
+  ames_train |>
+  vfold_cv(v = 10)
+
+keep_pred <- 
+  control_resamples(save_pred = TRUE, save_workflow = TRUE)
+
+set.seed(123)
+rf_res <- 
+  rf_wflow |>
+  fit_resamples(resamples = ames_folds, control = keep_pred)
+```
+
+```{r}
+#| label: save_chapter1
+
+save(ames, ames_split, ames_train, ames_test, ames_rec, lm_model, lm_wflow, lm_fit, rf_model, rf_wflow, ames_folds, keep_pred, rf_res, file = "../data/tidymodels_2_1.rda")
+```

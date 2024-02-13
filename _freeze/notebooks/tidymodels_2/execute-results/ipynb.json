@@ -1,0 +1,17 @@
+{
+  "hash": "5b2a53061f1fb205d2b4b6320bb0e685",
+  "result": {
+    "engine": "knitr",
+    "markdown": "::: {.cell}\n\n```{.r .cell-code}\n#| label: chapter1\n\nlibrary(tidymodels)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching packages ────────────────────────────────────── tidymodels 1.1.1 ──\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\n✔ broom        1.0.5     ✔ recipes      1.0.9\n✔ dials        1.2.0     ✔ rsample      1.2.0\n✔ dplyr        1.1.4     ✔ tibble       3.2.1\n✔ ggplot2      3.4.4     ✔ tidyr        1.3.1\n✔ infer        1.0.6     ✔ tune         1.1.2\n✔ modeldata    1.3.0     ✔ workflows    1.1.3\n✔ parsnip      1.1.1     ✔ workflowsets 1.0.1\n✔ purrr        1.0.2     ✔ yardstick    1.3.0\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──\n✖ purrr::discard() masks scales::discard()\n✖ dplyr::filter()  masks stats::filter()\n✖ dplyr::lag()     masks stats::lag()\n✖ recipes::step()  masks stats::step()\n• Learn how to get started at https://www.tidymodels.org/start/\n```\n\n\n:::\n\n```{.r .cell-code}\n#| label: chapter1\n\nrm(list = ls())\n\ndata(ames)\names <- mutate(ames, Sale_Price = log10(Sale_Price))\n\nset.seed(123)\names_split <- initial_split(ames, prop = 0.80, strata = Sale_Price)\names_train <- training(ames_split)\names_test  <-  testing(ames_split)\n\names_rec <- \n  recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + \n           Latitude + Longitude, data = ames_train) |>\n  step_log(Gr_Liv_Area, base = 10) |> \n  step_other(Neighborhood, threshold = 0.01) |> \n  step_dummy(all_nominal_predictors()) |> \n  step_interact( ~ Gr_Liv_Area:starts_with(\"Bldg_Type_\") ) |> \n  step_ns(Latitude, Longitude, deg_free = 20)\n\nlm_model <- linear_reg() |> set_engine(\"lm\")\n\nlm_wflow <- \n  workflow() |> \n  add_model(lm_model) |> \n  add_recipe(ames_rec)\n\nlm_fit <- fit(lm_wflow, ames_train)\n\nrf_model <- \n  rand_forest(trees = 1000) |> \n  set_engine(\"ranger\") |> \n  set_mode(\"regression\")\n\nrf_wflow <- \n  workflow() |> \n  add_formula(\n    Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + \n      Latitude + Longitude) |> \n  add_model(rf_model) \n\nset.seed(123)\names_folds <- vfold_cv(ames_train, v = 10)\n\nkeep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)\n\nset.seed(123)\nrf_res <- rf_wflow |> fit_resamples(resamples = ames_folds, control = keep_pred)\n```\n:::\n\n::: {#cell-fig-1 .cell}\n\n```{.r .cell-code}\n#| label: fig-1\n#| fig-cap: 散点图\n\nlibrary(ggplot2)\n# 正弦函数\nx <- seq(0, 2 * pi, length.out = 100)\ny <- sin(x)\n# 绘制散点图\nggplot() +\n  geom_point(aes(x, y))\n```\n\n::: {.cell-output-display}\n![散点图](tidymodels_2_files/figure-ipynb/fig-1-1.png){#fig-1}\n:::\n:::\n",
+    "supporting": [
+      "tidymodels_2_files\\figure-ipynb"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": null,
+    "postProcess": false
+  }
+}

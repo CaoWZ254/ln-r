@@ -11,14 +11,8 @@ number-sections: true
 ```{r}
 #| label: setup
 #| include: false
-# tinytex::install_tinytex(bundle = 'TinyTeX-2', dir = "D:/TinyTex")
-library(tinytex) # 用于转换pdf格式
-# 其他包都用"install.packages()"安装
-library(rticles) # 用于输出中文pdf
 library(tidyverse) # 代码风格
 library(knitr) # 用于输出
-library(showtext) # 显示pdf中图片的字体
-showtext_auto() # 自动显示图片中的文字
 library(reticulate) # 调用python
 library(gt) # 输出表格
 library(gtExtras)

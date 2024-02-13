@@ -4,21 +4,424 @@ author: "一把Fei刀"
 date: 2024-2-11
 date-modified: last-modified
 number-sections: true
+notebook-view: 
+  - notebook: "../notebooks/tidymodels_2.qmd"
+    title: "完整代码笔记本"
+notebook-links: global
 ---
 
 ```{r}
 #| label: setup
 #| include: false
-# tinytex::install_tinytex(bundle = 'TinyTeX-2', dir = "D:/TinyTex")
-library(tinytex) # 用于转换pdf格式
-# 其他包都用"install.packages()"安装
-library(rticles) # 用于输出中文pdf
 library(tidyverse) # 代码风格
 library(knitr) # 用于输出
-library(showtext) # 显示pdf中图片的字体
-showtext_auto() # 自动显示图片中的文字
 library(reticulate) # 调用python
 library(gt) # 输出表格
 library(gtExtras)
 library(tidymodels)
 ```
+
+## 重采样方法
+
+```{r}
+#| label: load_tidymodels_0105
+#| echo: false
+
+rm(list = ls())
+load("../data/tidymodels_0105.rda")
+```
+
+```{mermaid}
+%%| label: fig-mermaid_1
+%%| echo: false
+---
+title: 重采样方法的数据分割
+---
+flowchart TD
+A(原始数据) --> B[[训练集]]
+A --> C[[测试集]]
+B --> D{{重采样1}}
+B --> E{{重采样2}}
+B --> F{{重采样n}}
+D --> G[[分析集]]
+D --> H[[评估集]]
+E --> I[[分析集]]
+E --> J[[评估集]]
+F --> K[[分析集]]
+F --> L[[评估集]]
+D -.- E
+E -.- F
+```
+
+偏倚*bias*：数据中的真实模式或关系与模型所能模拟的模式类型之间的差异。运用合理的重采样方法，可以有效减小偏倚。
+
+重采样只在训练集上进行，测试集不参与重采样。每次重采样，训练集都会被划分为分析集和评估集。分析集用于训练模型，评估集用于评估模型的性能，如 @fig-mermaid_1 所示。模型性能的最终估计值是所有评估集重复统计的平均值。
+
+### 交叉验证CV
+
+#### k折交叉验证k-CV {.unnumbered}
+
+交叉验证是一种重采样方法，最常见的是k折交叉验证。在k折交叉验证中，数据被分为k个子集，其中一个子集被保留作为评估集，其余k-1个子集被用于训练模型。这个过程重复k次，每个子集都有一次机会作为评估集。最后，模型性能的最终估计值是所有评估集重复统计的平均值。
+
+`vfold_cv()`函数可以用于创建k折交叉验证。
+
+:::callout-important
+k值越大，重取样估计值偏倚越小，但方差越大。通常k值取5或10。
+:::
+
+```{r}
+#| label: cv_1
+
+set.seed(123)
+tidymodels_prefer()
+
+# 10折交叉验证
+ames_train |>
+  vfold_cv(v = 10) -> ames_folds
+ames_folds
+```
+
+#### 重复k折交叉验证repeated k-CV {.unnumbered}
+
+重复k折交叉验证是k折交叉验证的扩展，它重复k折交叉验证多次。重复k折交叉验证的优点是它提供了更准确的模型性能估计，但是计算成本更高。
+
+在`vfold_cv()`函数中，可以使用`repeats`参数指定重复次数。
+
+```{r}
+#| label: cv_2
+
+ames_train |>
+  vfold_cv(v = 10, repeats = 5)
+```
+
+#### 留一法LOO {.unnumbered}
+
+留一法LOO是k折交叉验证的一个特例，其中k等于训练集的观测数。这时，每个评估集只包含一个观测。LOO的优点是它提供了最小的偏倚，但是计算成本很高。一般来说，LOO不适用于大型数据集。
+
+#### 蒙特卡罗交叉验证MCCV {.unnumbered}
+
+蒙特卡罗交叉验证是一种重复随机划分数据的方法。在每次重复中，数据被随机划分为训练集和评估集，且最终产生的评估集互斥。这种方法的优点是它可以提供更准确的模型性能估计，但是计算成本更高。
+
+`mc_cv()`函数可以用于创建蒙特卡罗交叉验证。其中，`prop`参数指定训练集的比例，`times`参数指定重复次数。
+
+```{r}
+#| label: cv_3
+
+ames_train |>
+  mc_cv(prop = 9/10, times = 20)
+```
+
+### 验证集
+
+验证集方法其实是只进行一次重采样，将数据分为训练集和验证集。验证集方法的优点是计算成本低，但是它提供的模型性能估计可能不准确。
+
+```{r}
+#| label: vds
+
+ames |>
+  initial_validation_split(prop = c(0.6, 0.2)) |> # 训练集60%，验证集20%，测试集20%
+  validation_set() # 验证集
+```
+
+### Bootstrap
+
+Bootstrap是一种重采样方法，它通过有放回地抽样来创建新的数据集。在每次重采样中，数据集的大小保持不变，但是每个观测可以被多次抽样。Bootstrap的优点是产生的性能估计方差较小，但是它可能产生较大的偏倚，尤其会低估准确率。
+
+`bootstraps()`函数可以用于创建Bootstrap。
+
+```{r}
+#| label: boot_1
+
+ames_train |>
+  bootstraps(times = 10)
+```
+
+### 滚动抽样-时间序列
+
+滚动预测原点重采样方法是一种时间序列数据的重采样方法。初始训练集和评估集的大小是指定的。重采样的第一次迭代从序列的起点开始。第二次迭代向后移位一定数量的样本。流程如 @fig-rolling 所示。
+
+![滚动预测原点重采样](../images/rolling.svg){#fig-rolling}
+
+假设有一个时间序列数据集，由6组30天的数据块组成。可以设置初始训练集和评估集的大小为30天。第一次迭代，训练集包含第1-30天的数据，评估集包含第31-60天的数据。第二次迭代，训练集包含第31-60天的数据，评估集包含第61-90天的数据。以此类推。
+
+`rolling_origin()`函数可以用于创建滚动预测原点重采样。
+
+```{r}
+#| label: rolling_1
+
+tibble(x = 1:365) |>
+  rolling_origin(initial = 6 * 30, # 初始训练集大小
+                 assess = 30, # 评估集大小
+                 skip = 29, # 每次迭代的跳跃步长
+                 cumulative = FALSE) -> time_slices # 是否累积
+
+data_range <- function(x) {
+  summarise(x, first = min(x), last = max(x))
+}
+
+time_slices$splits |>
+  map_dfr(~ analysis(.x) |>
+            data_range())
+
+time_slices$splits |>
+  map_dfr(~ assessment(.x) |>
+            data_range())
+```
+
+## 评估重采样性能
+
+首先建立一个随机森林模型。
+
+```{r}
+#| label: rf_1
+
+rf_model <- 
+  rand_forest(trees = 1000) |>
+  set_engine("ranger") |>
+  set_mode("regression")
+
+rf_workflow <- 
+  workflow() |>
+  add_formula(
+    Sale_Price ~ Neighborhood + Gr_Liv_Area +
+      Year_Built + Bldg_Type + Latitude + Longitude
+  ) |>
+  add_model(rf_model)
+
+rf_fit <- 
+  rf_workflow |>
+  fit(data = ames_train)
+```
+
+### 十折交叉验证
+
+使用`control_resamples()`函数设置模型重采样控制参数；使用`fit_resamples()`函数对模型进行重采样训练和评估。
+
+```{r}
+#| label: resample_1
+
+keep_pred <-
+  control_resamples(save_pred = TRUE, save_workflow = TRUE)
+
+ames_train |>
+  vfold_cv(v = 10) -> ames_folds
+
+set.seed(123)
+rf_workflow |>
+  fit_resamples(
+    resamples = ames_folds,
+    control = keep_pred
+  ) -> rf_res
+
+rf_res
+```
+
+在`rf_res`中，包含了每次重采样的模型性能评估结果。可以使用`collect_metrics()`函数提取模型性能指标。
+
+```{r}
+#| label: resample_2
+
+rf_res |>
+  collect_metrics()
+```
+
+方法的模型性能评估结果可以使用`collect_predictions()`函数提取。
+
+```{r}
+#| label: resample_3
+
+rf_res |>
+  collect_predictions() -> assess_res
+
+assess_res
+```
+
+对性能评估结果`assess_res`进行可视化，如 @fig-resample_1 所示。
+
+```{r}
+#| label: fig-resample_1
+#| fig-cap: 重采样性能评估结果(log10)
+
+assess_res |>
+  ggplot(aes(x = Sale_Price, y = .pred)) +
+  geom_point(alpha = 0.15) +
+  # 把x<4.5的点标记成红色
+  geom_point(data = filter(assess_res, Sale_Price < 4.5), color = "red", alpha = 0.25) +
+  geom_abline(color = "red") + 
+  coord_obs_pred() +
+  theme_bw() +
+  ylab("Predicted")
+```
+
+@fig-resample_1 中，标红的两个点表示销售价格较低的这两个房屋预测值大大偏高。可以在assess_res中定位到这两个数据，进而分析特定预测性能较差的可能原因。
+
+```{r}
+#| label: resample_4
+
+over_predicted <-
+  assess_res |>
+  mutate(residual = Sale_Price - .pred) |> # 计算残差
+  arrange(desc(abs(residual))) |> # 按残差绝对值降序排列
+  slice(1:2) # 取前两个数据
+
+over_predicted
+
+ames_train |>
+  slice(over_predicted$.row) |> # 取出这两个数据
+  select(Gr_Liv_Area, Neighborhood, Year_Built, Bedroom_AbvGr, Full_Bath) # 选择感兴趣的变量
+```
+
+### 验证集
+
+使用`fit_resamples()`函数对模型进行重采样训练和评估。
+
+```{r}
+#| label: resample_5
+
+ames |>
+  initial_validation_split(prop = c(0.6, 0.2)) |>
+  validation_set() -> val_set # 划分验证集
+
+rf_workflow |>
+  fit_resamples(resamples = val_set) -> val_res # 对验证集进行重采样训练和评估
+
+val_res
+
+collect_metrics(val_res) # 提取模型性能指标
+```
+
+## 并行计算
+
+`tune`包使用`foreach`包来进行并行计算。
+
+`parallel`包可以计算本机的并行计算能力。
+
+```{r}
+#| label: parallel_1
+
+parallel::detectCores(logical = FALSE) # 物理核心数
+
+parallel::detectCores(logical = TRUE) # 逻辑核心数，包括超线程
+```
+
+`doParallel`包可以使用`registerDoParallel()`函数注册并行计算。
+
+```{r}
+#| label: parallel_2
+#| eval: FALSE
+
+library(doParallel)
+
+cl <- makePSOCKcluster(4) # 创建4个核心的并行计算集群
+registerDoParallel(cl) # 注册并行计算
+
+## 运行fit_resamples()函数----------------
+
+stopCluster(cl) # 关闭并行计算集群
+```
+
+## 利用重采样方法比较模型
+
+```{r}
+#| label: load_1
+#| eval: FALSE
+
+rm(list = ls())
+load("../data/tidymodels_2_1.rda")
+```
+
+### 建立多个模型
+
+建立三个不同的线性回归模型。
+
+```{r}
+#| label: model_1
+
+## 基本模型----------------
+basic_rec <-
+  ames_train |>
+  recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
+           Latitude + Longitude) |>
+  step_log(Gr_Liv_Area, base = 10) |>
+  step_other(Neighborhood, threshold = 0.01) |>
+  step_dummy(all_nominal_predictors())
+
+## 基本模型 + 交互项----------------
+interaction_rec <-
+  basic_rec |>
+  step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_"))
+
+## 基本模型 + 交互项 + 自然样条----------------
+spline_rec <- 
+  interaction_rec |> 
+  step_ns(Latitude, Longitude, deg_free = 50)
+
+## 建立模型----------------
+preproc <- 
+  list(basic = basic_rec, 
+       interact = interaction_rec, 
+       splines = spline_rec
+  )
+
+lm_models <-
+  preproc |>
+  workflow_set(list(lm = linear_reg()), cross = FALSE) # 建立线性回归模型，不进行重采样
+
+lm_models
+```
+
+使用`workflow_map()`函数对三个模型进行重采样。`verbose = TRUE`参数可以显示进度条，`seed = 123`参数可以设置随机种子。
+
+```{r}
+#| label: model_2
+
+lm_models <-
+  lm_models |>
+  workflow_map(
+    "fit_resamples",
+    seed = 123,
+    verbose = TRUE,
+    resamples = ames_folds,
+    control = keep_pred
+  )
+
+lm_models
+```
+
+使用`collect_metrics()`函数提取模型性能指标。
+
+```{r}
+#| label: model_3
+
+lm_models |>
+  collect_metrics() |>
+  filter(.metric == "rmse")
+```
+
+添加其他模型时，需要提前在其他模型重采样流程中设置`save_workflow = TRUE`。使用`as_workflow_set()`函数将保存的工作流转换为`workflow_set`对象。
+
+```{r}
+#| label: model_4
+
+four_models <-
+  as_workflow_set(random_forest = rf_res) |>
+  bind_rows(lm_models)
+
+four_models
+```
+
+使用`autoplot()`函数对模型进行可视化。
+
+```{r}
+#| label: fig-model_1
+
+library(ggrepel)
+four_models |>
+  autoplot(metric = "rsq") + # 可视化R^2
+  geom_text_repel(aes(label = wflow_id), nudge_x = 1/8, nudge_y = 1/100) + # 添加模型名称
+  theme(legend.position = "none") # 隐藏图例
+```
+
+由 @fig-model_1 可以看出，随机森林模型的R^2值最高，且随着模型复杂度的增加，R^2值也在增加，说明线性模型有细微的改进。
+
+### 比较重采样方法的性能
