@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -213,8 +213,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#利用重采样方法比较模型" id="toc-利用重采样方法比较模型" class="nav-link" data-scroll-target="#利用重采样方法比较模型"><span class="header-section-number">3.4</span> 利用重采样方法比较模型</a>
   <ul class="collapse">
   <li><a href="#建立多个模型" id="toc-建立多个模型" class="nav-link" data-scroll-target="#建立多个模型"><span class="header-section-number">3.4.1</span> 建立多个模型</a></li>
-  <li><a href="#比较重采样方法的性能" id="toc-比较重采样方法的性能" class="nav-link" data-scroll-target="#比较重采样方法的性能"><span class="header-section-number">3.4.2</span> 比较重采样方法的性能</a></li>
+  <li><a href="#比较重采样的性能统计" id="toc-比较重采样的性能统计" class="nav-link" data-scroll-target="#比较重采样的性能统计"><span class="header-section-number">3.4.2</span> 比较重采样的性能统计</a></li>
   </ul></li>
+  <li><a href="#模型参数调优" id="toc-模型参数调优" class="nav-link" data-scroll-target="#模型参数调优"><span class="header-section-number">3.5</span> 模型参数调优</a></li>
   </ul>
 </nav>
     </div>
@@ -247,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">修改的</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024年2月13日</p>
+      <p class="date-modified">2024年2月17日</p>
     </div>
   </div>
     
@@ -467,7 +468,7 @@ E -.- F
 <div id="fig-rolling" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rolling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../images/rolling.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="../images/rolling.svg" class="img-fluid figure-img"></a>
+<a href="../images/rolling.svg" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="../images/rolling.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rolling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;3.2: 滚动预测原点重采样
@@ -646,7 +647,7 @@ E -.- F
 <div id="fig-resample_1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resample_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-进阶_files/figure-html/fig-resample_1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="tidymodels-进阶_files/figure-html/fig-resample_1-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-进阶_files/figure-html/fig-resample_1-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="tidymodels-进阶_files/figure-html/fig-resample_1-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resample_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;3.3: 重采样性能评估结果(log10)
@@ -893,7 +894,7 @@ E -.- F
 <div id="fig-model_1" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-model_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-进阶_files/figure-html/fig-model_1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="tidymodels-进阶_files/figure-html/fig-model_1-1.png" id="fig-model_1" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-进阶_files/figure-html/fig-model_1-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="tidymodels-进阶_files/figure-html/fig-model_1-1.png" id="fig-model_1" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-model_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;3.4
@@ -904,8 +905,220 @@ E -.- F
 </div>
 <p>由 <a href="#fig-model_1" class="quarto-xref">图&nbsp;<span>3.4</span></a> 可以看出，随机森林模型的R<sup>2</sup>值最高，且随着模型复杂度的增加，R<sup>2</sup>值也在增加，说明线性模型有细微的改进。</p>
 </section>
-<section id="比较重采样方法的性能" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="比较重采样方法的性能"><span class="header-section-number">3.4.2</span> 比较重采样方法的性能</h3>
+<section id="比较重采样的性能统计" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="比较重采样的性能统计"><span class="header-section-number">3.4.2</span> 比较重采样的性能统计</h3>
+<p>在不同的线性模型之间，R<sup>2</sup>值的差异并不大。但是，这种差异是否具有统计学意义仍需进一步检验。</p>
+<section id="假设检验" class="level4" data-number="3.4.2.1">
+<h4 data-number="3.4.2.1" class="anchored" data-anchor-id="假设检验"><span class="header-section-number">3.4.2.1</span> 假设检验</h4>
+<p>可以用配对t检验方法检验不同模型之间的R<sup>2</sup>值差异是否具有统计学意义。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>rsq_indiv_estimates <span class="ot">&lt;-</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  four_models <span class="sc">|&gt;</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>(<span class="at">summarize =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> <span class="co"># 提取模型性能指标</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rsq"</span>) <span class="co"># 提取R^2^值</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="ot">&lt;-</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  rsq_indiv_estimates <span class="sc">|&gt;</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(wflow_id, .estimate, id) <span class="sc">|&gt;</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="st">"id"</span>, <span class="at">names_from =</span> <span class="st">"wflow_id"</span>, <span class="at">values_from =</span> <span class="st">".estimate"</span>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>corrr<span class="sc">::</span><span class="fu">correlate</span>(rsq_wider <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>id), <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="co"># 计算R^2^值的相关系数</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  term          random_forest basic_lm interact_lm splines_lm
+  &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+1 random_forest        NA        0.925       0.933      0.915
+2 basic_lm              0.925   NA           0.996      0.977
+3 interact_lm           0.933    0.996      NA          0.977
+4 splines_lm            0.915    0.977       0.977     NA    </code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 基本模型和交互模型-------------------------------------------------------</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="sc">|&gt;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">t.test</span>(splines_lm, basic_lm, <span class="at">paired =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">|&gt;</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, p.value, <span class="fu">starts_with</span>(<span class="st">"conf"</span>)) <span class="co"># 提取估计值、p值和置信区间</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  estimate p.value conf.low conf.high
+     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1  0.00770  0.0391 0.000480    0.0149</code></pre>
+</div>
+</div>
+<p>根据假设检验结果，p值不显著，且R<sup>2</sup>值差异仅为0.77%。因此，不同模型之间的R<sup>2</sup>值差异不具有统计学意义。</p>
+</section>
+<section id="贝叶斯" class="level4" data-number="3.4.2.2">
+<h4 data-number="3.4.2.2" class="anchored" data-anchor-id="贝叶斯"><span class="header-section-number">3.4.2.2</span> 贝叶斯</h4>
+<section id="随机截距模型" class="level5" data-number="3.4.2.2.1">
+<h5 data-number="3.4.2.2.1" class="anchored" data-anchor-id="随机截距模型"><span class="header-section-number">3.4.2.2.1</span> 随机截距模型</h5>
+<p>使用<code>tidyposterior</code>包中的<code>perf_mod()</code>函数可以建立贝叶斯模型，并将其与重采样统计量拟合。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyposterior"</span>, <span class="st">"rstanarm"</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> packages) {</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 建立贝叶斯先验模型--------------------------------------------------------</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="ot">&lt;-</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  four_models <span class="sc">|&gt;</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">perf_mod</span>(</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">metric =</span> <span class="st">"rsq"</span>,</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior_intercept =</span> rstanarm<span class="sc">::</span><span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">1</span>), <span class="co"># 指定拟合模型时用于截距项的先验分布</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">refresh =</span> <span class="dv">0</span> <span class="co"># 不显示进度条</span></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取模型后验信息-----------------------------------------------------------</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>model_post <span class="ot">&lt;-</span></span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">seed =</span> <span class="dv">1103</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>model_post <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(model)) <span class="sc">|&gt;</span> <span class="co"># 对模型名称进行排序</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior)) <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> model, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bayes_1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tidymodels-进阶_files/figure-html/fig-bayes_1-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="tidymodels-进阶_files/figure-html/fig-bayes_1-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;3.5: 后验分布
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-bayes_1" class="quarto-xref">图&nbsp;<span>3.5</span></a> 和 <a href="#fig-bayes_2" class="quarto-xref">图&nbsp;<span>3.6</span></a> 分别展示了不同模型的平均R<sup>2</sup>值的估计概率分布和置信区间。可以看出，各个模型的后验分布有所重叠，尤其是三个线性模型之间，说明不同模型之间的R<sup>2</sup>值差异不具有统计学意义。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bayes_2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tidymodels-进阶_files/figure-html/fig-bayes_2-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5"><img src="tidymodels-进阶_files/figure-html/fig-bayes_2-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;3.6: 后验分布的置信区间
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>使用<code>contrast_models()</code>函数对不同模型的R<sup>2</sup>差异的后验分布进行比较。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="ot">&lt;-</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contrast_models</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">list_1 =</span> <span class="st">"splines_lm"</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">list_2 =</span> <span class="st">"basic_lm"</span>,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="sc">|&gt;</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> difference)) <span class="sc">+</span></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bayes_3" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes_3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tidymodels-进阶_files/figure-html/fig-bayes_3-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-6" data-gallery="quarto-lightbox-gallery-6"><img src="tidymodels-进阶_files/figure-html/fig-bayes_3-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes_3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;3.7: 决定系数差异的后验分布
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>如 <a href="#fig-bayes_3" class="quarto-xref">图&nbsp;<span>3.7</span></a> 所示，不同模型之间的R<sup>2</sup>值差异的后验分布均值接近于0，且置信区间包含0，说明不同模型之间的R<sup>2</sup>值差异不具有统计学意义。可以进一步使用<code>summary</code>函数计算分布的平均值以及可信区间。其中，<code>probability</code>表示差异大于0的概率，<code>mean</code>表示差异的平均值。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="sc">|&gt;</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 9
+  contrast        probability    mean   lower  upper  size pract_neg pract_equiv
+  &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+1 splines_lm vs …       0.990 0.00768 0.00232 0.0130     0        NA          NA
+# ℹ 1 more variable: pract_pos &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">"ROPE"</span>, <span class="at">size =</span> <span class="fl">0.02</span>) <span class="sc">+</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow)) <span class="sc">+</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bayes_4" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes_4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tidymodels-进阶_files/figure-html/fig-bayes_4-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-7" data-gallery="quarto-lightbox-gallery-7"><img src="tidymodels-进阶_files/figure-html/fig-bayes_4-1.png" class="img-fluid figure-img" width="672"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes_4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;3.8: 效应大小为 2% 的实际等效概率
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>重采样的次数越多，后验分布的形状越接近于正态分布。因此，可以通过增加重采样次数来提高模型的稳定性。</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="模型参数调优" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="模型参数调优"><span class="header-section-number">3.5</span> 模型参数调优</h2>
 
 
 <!-- -->
@@ -914,8 +1127,11 @@ E -.- F
 <span class="glightbox-desc lightbox-desc-1">图&nbsp;3.2: 滚动预测原点重采样</span>
 <span class="glightbox-desc lightbox-desc-2">图&nbsp;3.3: 重采样性能评估结果(log10)</span>
 <span class="glightbox-desc lightbox-desc-3">图&nbsp;3.4: </span>
+<span class="glightbox-desc lightbox-desc-4">图&nbsp;3.5: 后验分布</span>
+<span class="glightbox-desc lightbox-desc-5">图&nbsp;3.6: 后验分布的置信区间</span>
+<span class="glightbox-desc lightbox-desc-6">图&nbsp;3.7: 决定系数差异的后验分布</span>
+<span class="glightbox-desc lightbox-desc-7">图&nbsp;3.8: 效应大小为 2% 的实际等效概率</span>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1503,444 +1719,584 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/tidymodels-基础.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="../chapters/tidymodels-基础.html" class="pagination-link" aria-label="tidymodels-基础">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">tidymodels-基础</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">源代码</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb46" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "tidymodels-进阶"</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "一把Fei刀"</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2024-2-11</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> last-modified</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> true</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="an">notebook-view:</span><span class="co"> </span></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - notebook: "../notebooks/tidymodels_2.qmd"</span></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co">    title: "完整代码笔记本"</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="an">notebook-links:</span><span class="co"> global</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># 代码风格</span></span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># 用于输出</span></span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate) <span class="co"># 调用python</span></span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt) <span class="co"># 输出表格</span></span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## 重采样方法</span></span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load_tidymodels_0105</span></span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/tidymodels_0105.rda"</span>)</span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
-<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a><span class="in">%%| label: fig-mermaid_1</span></span>
-<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a><span class="in">%%| echo: false</span></span>
-<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
-<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a><span class="in">title: 重采样方法的数据分割</span></span>
-<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
-<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a><span class="in">flowchart TD</span></span>
-<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a><span class="in">A(原始数据) --&gt; B[[训练集]]</span></span>
-<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a><span class="in">A --&gt; C[[测试集]]</span></span>
-<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; D{{重采样1}}</span></span>
-<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; E{{重采样2}}</span></span>
-<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; F{{重采样n}}</span></span>
-<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a><span class="in">D --&gt; G[[分析集]]</span></span>
-<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a><span class="in">D --&gt; H[[评估集]]</span></span>
-<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a><span class="in">E --&gt; I[[分析集]]</span></span>
-<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a><span class="in">E --&gt; J[[评估集]]</span></span>
-<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a><span class="in">F --&gt; K[[分析集]]</span></span>
-<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a><span class="in">F --&gt; L[[评估集]]</span></span>
-<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a><span class="in">D -.- E</span></span>
-<span id="cb46-59"><a href="#cb46-59" aria-hidden="true" tabindex="-1"></a><span class="in">E -.- F</span></span>
-<span id="cb46-60"><a href="#cb46-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-61"><a href="#cb46-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-62"><a href="#cb46-62" aria-hidden="true" tabindex="-1"></a>偏倚*bias*：数据中的真实模式或关系与模型所能模拟的模式类型之间的差异。运用合理的重采样方法，可以有效减小偏倚。</span>
-<span id="cb46-63"><a href="#cb46-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-64"><a href="#cb46-64" aria-hidden="true" tabindex="-1"></a>重采样只在训练集上进行，测试集不参与重采样。每次重采样，训练集都会被划分为分析集和评估集。分析集用于训练模型，评估集用于评估模型的性能，如 @fig-mermaid_1 所示。模型性能的最终估计值是所有评估集重复统计的平均值。</span>
-<span id="cb46-65"><a href="#cb46-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-66"><a href="#cb46-66" aria-hidden="true" tabindex="-1"></a><span class="fu">### 交叉验证CV</span></span>
-<span id="cb46-67"><a href="#cb46-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-68"><a href="#cb46-68" aria-hidden="true" tabindex="-1"></a><span class="fu">#### k折交叉验证k-CV {.unnumbered}</span></span>
-<span id="cb46-69"><a href="#cb46-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-70"><a href="#cb46-70" aria-hidden="true" tabindex="-1"></a>交叉验证是一种重采样方法，最常见的是k折交叉验证。在k折交叉验证中，数据被分为k个子集，其中一个子集被保留作为评估集，其余k-1个子集被用于训练模型。这个过程重复k次，每个子集都有一次机会作为评估集。最后，模型性能的最终估计值是所有评估集重复统计的平均值。</span>
-<span id="cb46-71"><a href="#cb46-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-72"><a href="#cb46-72" aria-hidden="true" tabindex="-1"></a><span class="in">`vfold_cv()`</span>函数可以用于创建k折交叉验证。</span>
-<span id="cb46-73"><a href="#cb46-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-74"><a href="#cb46-74" aria-hidden="true" tabindex="-1"></a>:::callout-important</span>
-<span id="cb46-75"><a href="#cb46-75" aria-hidden="true" tabindex="-1"></a>k值越大，重取样估计值偏倚越小，但方差越大。通常k值取5或10。</span>
-<span id="cb46-76"><a href="#cb46-76" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb46-77"><a href="#cb46-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-80"><a href="#cb46-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-81"><a href="#cb46-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_1</span></span>
-<span id="cb46-82"><a href="#cb46-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-83"><a href="#cb46-83" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb46-84"><a href="#cb46-84" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
-<span id="cb46-85"><a href="#cb46-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-86"><a href="#cb46-86" aria-hidden="true" tabindex="-1"></a><span class="co"># 10折交叉验证</span></span>
-<span id="cb46-87"><a href="#cb46-87" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-88"><a href="#cb46-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>) <span class="ot">-&gt;</span> ames_folds</span>
-<span id="cb46-89"><a href="#cb46-89" aria-hidden="true" tabindex="-1"></a>ames_folds</span>
-<span id="cb46-90"><a href="#cb46-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-91"><a href="#cb46-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-92"><a href="#cb46-92" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 重复k折交叉验证repeated k-CV {.unnumbered}</span></span>
-<span id="cb46-93"><a href="#cb46-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-94"><a href="#cb46-94" aria-hidden="true" tabindex="-1"></a>重复k折交叉验证是k折交叉验证的扩展，它重复k折交叉验证多次。重复k折交叉验证的优点是它提供了更准确的模型性能估计，但是计算成本更高。</span>
-<span id="cb46-95"><a href="#cb46-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-96"><a href="#cb46-96" aria-hidden="true" tabindex="-1"></a>在<span class="in">`vfold_cv()`</span>函数中，可以使用<span class="in">`repeats`</span>参数指定重复次数。</span>
-<span id="cb46-97"><a href="#cb46-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-100"><a href="#cb46-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-101"><a href="#cb46-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_2</span></span>
-<span id="cb46-102"><a href="#cb46-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-103"><a href="#cb46-103" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-104"><a href="#cb46-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>, <span class="at">repeats =</span> <span class="dv">5</span>)</span>
-<span id="cb46-105"><a href="#cb46-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-106"><a href="#cb46-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-107"><a href="#cb46-107" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 留一法LOO {.unnumbered}</span></span>
-<span id="cb46-108"><a href="#cb46-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-109"><a href="#cb46-109" aria-hidden="true" tabindex="-1"></a>留一法LOO是k折交叉验证的一个特例，其中k等于训练集的观测数。这时，每个评估集只包含一个观测。LOO的优点是它提供了最小的偏倚，但是计算成本很高。一般来说，LOO不适用于大型数据集。</span>
-<span id="cb46-110"><a href="#cb46-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-111"><a href="#cb46-111" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 蒙特卡罗交叉验证MCCV {.unnumbered}</span></span>
-<span id="cb46-112"><a href="#cb46-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-113"><a href="#cb46-113" aria-hidden="true" tabindex="-1"></a>蒙特卡罗交叉验证是一种重复随机划分数据的方法。在每次重复中，数据被随机划分为训练集和评估集，且最终产生的评估集互斥。这种方法的优点是它可以提供更准确的模型性能估计，但是计算成本更高。</span>
-<span id="cb46-114"><a href="#cb46-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-115"><a href="#cb46-115" aria-hidden="true" tabindex="-1"></a><span class="in">`mc_cv()`</span>函数可以用于创建蒙特卡罗交叉验证。其中，<span class="in">`prop`</span>参数指定训练集的比例，<span class="in">`times`</span>参数指定重复次数。</span>
-<span id="cb46-116"><a href="#cb46-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-119"><a href="#cb46-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-120"><a href="#cb46-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_3</span></span>
-<span id="cb46-121"><a href="#cb46-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-122"><a href="#cb46-122" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-123"><a href="#cb46-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mc_cv</span>(<span class="at">prop =</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">10</span>, <span class="at">times =</span> <span class="dv">20</span>)</span>
-<span id="cb46-124"><a href="#cb46-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-125"><a href="#cb46-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-126"><a href="#cb46-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### 验证集</span></span>
-<span id="cb46-127"><a href="#cb46-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-128"><a href="#cb46-128" aria-hidden="true" tabindex="-1"></a>验证集方法其实是只进行一次重采样，将数据分为训练集和验证集。验证集方法的优点是计算成本低，但是它提供的模型性能估计可能不准确。</span>
-<span id="cb46-129"><a href="#cb46-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-132"><a href="#cb46-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-133"><a href="#cb46-133" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: vds</span></span>
-<span id="cb46-134"><a href="#cb46-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-135"><a href="#cb46-135" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">|&gt;</span></span>
-<span id="cb46-136"><a href="#cb46-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_validation_split</span>(<span class="at">prop =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>)) <span class="sc">|&gt;</span> <span class="co"># 训练集60%，验证集20%，测试集20%</span></span>
-<span id="cb46-137"><a href="#cb46-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">validation_set</span>() <span class="co"># 验证集</span></span>
-<span id="cb46-138"><a href="#cb46-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-139"><a href="#cb46-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-140"><a href="#cb46-140" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bootstrap</span></span>
-<span id="cb46-141"><a href="#cb46-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-142"><a href="#cb46-142" aria-hidden="true" tabindex="-1"></a>Bootstrap是一种重采样方法，它通过有放回地抽样来创建新的数据集。在每次重采样中，数据集的大小保持不变，但是每个观测可以被多次抽样。Bootstrap的优点是产生的性能估计方差较小，但是它可能产生较大的偏倚，尤其会低估准确率。</span>
-<span id="cb46-143"><a href="#cb46-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-144"><a href="#cb46-144" aria-hidden="true" tabindex="-1"></a><span class="in">`bootstraps()`</span>函数可以用于创建Bootstrap。</span>
-<span id="cb46-145"><a href="#cb46-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-148"><a href="#cb46-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-149"><a href="#cb46-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: boot_1</span></span>
-<span id="cb46-150"><a href="#cb46-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-151"><a href="#cb46-151" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-152"><a href="#cb46-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bootstraps</span>(<span class="at">times =</span> <span class="dv">10</span>)</span>
-<span id="cb46-153"><a href="#cb46-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-154"><a href="#cb46-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-155"><a href="#cb46-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### 滚动抽样-时间序列</span></span>
-<span id="cb46-156"><a href="#cb46-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-157"><a href="#cb46-157" aria-hidden="true" tabindex="-1"></a>滚动预测原点重采样方法是一种时间序列数据的重采样方法。初始训练集和评估集的大小是指定的。重采样的第一次迭代从序列的起点开始。第二次迭代向后移位一定数量的样本。流程如 @fig-rolling 所示。</span>
-<span id="cb46-158"><a href="#cb46-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-159"><a href="#cb46-159" aria-hidden="true" tabindex="-1"></a><span class="al">![滚动预测原点重采样](../images/rolling.svg)</span>{#fig-rolling}</span>
-<span id="cb46-160"><a href="#cb46-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-161"><a href="#cb46-161" aria-hidden="true" tabindex="-1"></a>假设有一个时间序列数据集，由6组30天的数据块组成。可以设置初始训练集和评估集的大小为30天。第一次迭代，训练集包含第1-30天的数据，评估集包含第31-60天的数据。第二次迭代，训练集包含第31-60天的数据，评估集包含第61-90天的数据。以此类推。</span>
-<span id="cb46-162"><a href="#cb46-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-163"><a href="#cb46-163" aria-hidden="true" tabindex="-1"></a><span class="in">`rolling_origin()`</span>函数可以用于创建滚动预测原点重采样。</span>
-<span id="cb46-164"><a href="#cb46-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-167"><a href="#cb46-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-168"><a href="#cb46-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rolling_1</span></span>
-<span id="cb46-169"><a href="#cb46-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-170"><a href="#cb46-170" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-171"><a href="#cb46-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rolling_origin</span>(<span class="at">initial =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="co"># 初始训练集大小</span></span>
-<span id="cb46-172"><a href="#cb46-172" aria-hidden="true" tabindex="-1"></a>                 <span class="at">assess =</span> <span class="dv">30</span>, <span class="co"># 评估集大小</span></span>
-<span id="cb46-173"><a href="#cb46-173" aria-hidden="true" tabindex="-1"></a>                 <span class="at">skip =</span> <span class="dv">29</span>, <span class="co"># 每次迭代的跳跃步长</span></span>
-<span id="cb46-174"><a href="#cb46-174" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cumulative =</span> <span class="cn">FALSE</span>) <span class="ot">-&gt;</span> time_slices <span class="co"># 是否累积</span></span>
-<span id="cb46-175"><a href="#cb46-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-176"><a href="#cb46-176" aria-hidden="true" tabindex="-1"></a>data_range <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb46-177"><a href="#cb46-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(x, <span class="at">first =</span> <span class="fu">min</span>(x), <span class="at">last =</span> <span class="fu">max</span>(x))</span>
-<span id="cb46-178"><a href="#cb46-178" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb46-179"><a href="#cb46-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-180"><a href="#cb46-180" aria-hidden="true" tabindex="-1"></a>time_slices<span class="sc">$</span>splits <span class="sc">|&gt;</span></span>
-<span id="cb46-181"><a href="#cb46-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">analysis</span>(.x) <span class="sc">|&gt;</span></span>
-<span id="cb46-182"><a href="#cb46-182" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data_range</span>())</span>
-<span id="cb46-183"><a href="#cb46-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-184"><a href="#cb46-184" aria-hidden="true" tabindex="-1"></a>time_slices<span class="sc">$</span>splits <span class="sc">|&gt;</span></span>
-<span id="cb46-185"><a href="#cb46-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">assessment</span>(.x) <span class="sc">|&gt;</span></span>
-<span id="cb46-186"><a href="#cb46-186" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data_range</span>())</span>
-<span id="cb46-187"><a href="#cb46-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-188"><a href="#cb46-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-189"><a href="#cb46-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## 评估重采样性能</span></span>
-<span id="cb46-190"><a href="#cb46-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-191"><a href="#cb46-191" aria-hidden="true" tabindex="-1"></a>首先建立一个随机森林模型。</span>
-<span id="cb46-192"><a href="#cb46-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-195"><a href="#cb46-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-196"><a href="#cb46-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rf_1</span></span>
-<span id="cb46-197"><a href="#cb46-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-198"><a href="#cb46-198" aria-hidden="true" tabindex="-1"></a>rf_model <span class="ot">&lt;-</span> </span>
-<span id="cb46-199"><a href="#cb46-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-200"><a href="#cb46-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-201"><a href="#cb46-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb46-202"><a href="#cb46-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-203"><a href="#cb46-203" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="ot">&lt;-</span> </span>
-<span id="cb46-204"><a href="#cb46-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb46-205"><a href="#cb46-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
-<span id="cb46-206"><a href="#cb46-206" aria-hidden="true" tabindex="-1"></a>    Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span></span>
-<span id="cb46-207"><a href="#cb46-207" aria-hidden="true" tabindex="-1"></a>      Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> Latitude <span class="sc">+</span> Longitude</span>
-<span id="cb46-208"><a href="#cb46-208" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb46-209"><a href="#cb46-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_model)</span>
-<span id="cb46-210"><a href="#cb46-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-211"><a href="#cb46-211" aria-hidden="true" tabindex="-1"></a>rf_fit <span class="ot">&lt;-</span> </span>
-<span id="cb46-212"><a href="#cb46-212" aria-hidden="true" tabindex="-1"></a>  rf_workflow <span class="sc">|&gt;</span></span>
-<span id="cb46-213"><a href="#cb46-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(<span class="at">data =</span> ames_train)</span>
-<span id="cb46-214"><a href="#cb46-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-215"><a href="#cb46-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-216"><a href="#cb46-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### 十折交叉验证</span></span>
-<span id="cb46-217"><a href="#cb46-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-218"><a href="#cb46-218" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`control_resamples()`</span>函数设置模型重采样控制参数；使用<span class="in">`fit_resamples()`</span>函数对模型进行重采样训练和评估。</span>
-<span id="cb46-219"><a href="#cb46-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-222"><a href="#cb46-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-223"><a href="#cb46-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_1</span></span>
-<span id="cb46-224"><a href="#cb46-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-225"><a href="#cb46-225" aria-hidden="true" tabindex="-1"></a>keep_pred <span class="ot">&lt;-</span></span>
-<span id="cb46-226"><a href="#cb46-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb46-227"><a href="#cb46-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-228"><a href="#cb46-228" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-229"><a href="#cb46-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>) <span class="ot">-&gt;</span> ames_folds</span>
-<span id="cb46-230"><a href="#cb46-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-231"><a href="#cb46-231" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb46-232"><a href="#cb46-232" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="sc">|&gt;</span></span>
-<span id="cb46-233"><a href="#cb46-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(</span>
-<span id="cb46-234"><a href="#cb46-234" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> ames_folds,</span>
-<span id="cb46-235"><a href="#cb46-235" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> keep_pred</span>
-<span id="cb46-236"><a href="#cb46-236" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> rf_res</span>
-<span id="cb46-237"><a href="#cb46-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-238"><a href="#cb46-238" aria-hidden="true" tabindex="-1"></a>rf_res</span>
-<span id="cb46-239"><a href="#cb46-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-240"><a href="#cb46-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-241"><a href="#cb46-241" aria-hidden="true" tabindex="-1"></a>在<span class="in">`rf_res`</span>中，包含了每次重采样的模型性能评估结果。可以使用<span class="in">`collect_metrics()`</span>函数提取模型性能指标。</span>
-<span id="cb46-242"><a href="#cb46-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-245"><a href="#cb46-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-246"><a href="#cb46-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_2</span></span>
-<span id="cb46-247"><a href="#cb46-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-248"><a href="#cb46-248" aria-hidden="true" tabindex="-1"></a>rf_res <span class="sc">|&gt;</span></span>
-<span id="cb46-249"><a href="#cb46-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span>
-<span id="cb46-250"><a href="#cb46-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-251"><a href="#cb46-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-252"><a href="#cb46-252" aria-hidden="true" tabindex="-1"></a>方法的模型性能评估结果可以使用<span class="in">`collect_predictions()`</span>函数提取。</span>
-<span id="cb46-253"><a href="#cb46-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-256"><a href="#cb46-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-257"><a href="#cb46-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_3</span></span>
-<span id="cb46-258"><a href="#cb46-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-259"><a href="#cb46-259" aria-hidden="true" tabindex="-1"></a>rf_res <span class="sc">|&gt;</span></span>
-<span id="cb46-260"><a href="#cb46-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_predictions</span>() <span class="ot">-&gt;</span> assess_res</span>
-<span id="cb46-261"><a href="#cb46-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-262"><a href="#cb46-262" aria-hidden="true" tabindex="-1"></a>assess_res</span>
-<span id="cb46-263"><a href="#cb46-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-264"><a href="#cb46-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-265"><a href="#cb46-265" aria-hidden="true" tabindex="-1"></a>对性能评估结果<span class="in">`assess_res`</span>进行可视化，如 @fig-resample_1 所示。</span>
-<span id="cb46-266"><a href="#cb46-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-269"><a href="#cb46-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-270"><a href="#cb46-270" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-resample_1</span></span>
-<span id="cb46-271"><a href="#cb46-271" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 重采样性能评估结果(log10)</span></span>
-<span id="cb46-272"><a href="#cb46-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-273"><a href="#cb46-273" aria-hidden="true" tabindex="-1"></a>assess_res <span class="sc">|&gt;</span></span>
-<span id="cb46-274"><a href="#cb46-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span></span>
-<span id="cb46-275"><a href="#cb46-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
-<span id="cb46-276"><a href="#cb46-276" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 把x&lt;4.5的点标记成红色</span></span>
-<span id="cb46-277"><a href="#cb46-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(assess_res, Sale_Price <span class="sc">&lt;</span> <span class="fl">4.5</span>), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb46-278"><a href="#cb46-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb46-279"><a href="#cb46-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>() <span class="sc">+</span></span>
-<span id="cb46-280"><a href="#cb46-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb46-281"><a href="#cb46-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted"</span>)</span>
-<span id="cb46-282"><a href="#cb46-282" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-283"><a href="#cb46-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-284"><a href="#cb46-284" aria-hidden="true" tabindex="-1"></a>@fig-resample_1 中，标红的两个点表示销售价格较低的这两个房屋预测值大大偏高。可以在assess_res中定位到这两个数据，进而分析特定预测性能较差的可能原因。</span>
-<span id="cb46-285"><a href="#cb46-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-288"><a href="#cb46-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-289"><a href="#cb46-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_4</span></span>
-<span id="cb46-290"><a href="#cb46-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-291"><a href="#cb46-291" aria-hidden="true" tabindex="-1"></a>over_predicted <span class="ot">&lt;-</span></span>
-<span id="cb46-292"><a href="#cb46-292" aria-hidden="true" tabindex="-1"></a>  assess_res <span class="sc">|&gt;</span></span>
-<span id="cb46-293"><a href="#cb46-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual =</span> Sale_Price <span class="sc">-</span> .pred) <span class="sc">|&gt;</span> <span class="co"># 计算残差</span></span>
-<span id="cb46-294"><a href="#cb46-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(residual))) <span class="sc">|&gt;</span> <span class="co"># 按残差绝对值降序排列</span></span>
-<span id="cb46-295"><a href="#cb46-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="co"># 取前两个数据</span></span>
-<span id="cb46-296"><a href="#cb46-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-297"><a href="#cb46-297" aria-hidden="true" tabindex="-1"></a>over_predicted</span>
-<span id="cb46-298"><a href="#cb46-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-299"><a href="#cb46-299" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-300"><a href="#cb46-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(over_predicted<span class="sc">$</span>.row) <span class="sc">|&gt;</span> <span class="co"># 取出这两个数据</span></span>
-<span id="cb46-301"><a href="#cb46-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Gr_Liv_Area, Neighborhood, Year_Built, Bedroom_AbvGr, Full_Bath) <span class="co"># 选择感兴趣的变量</span></span>
-<span id="cb46-302"><a href="#cb46-302" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-303"><a href="#cb46-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-304"><a href="#cb46-304" aria-hidden="true" tabindex="-1"></a><span class="fu">### 验证集</span></span>
-<span id="cb46-305"><a href="#cb46-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-306"><a href="#cb46-306" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`fit_resamples()`</span>函数对模型进行重采样训练和评估。</span>
-<span id="cb46-307"><a href="#cb46-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-310"><a href="#cb46-310" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-311"><a href="#cb46-311" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_5</span></span>
-<span id="cb46-312"><a href="#cb46-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-313"><a href="#cb46-313" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">|&gt;</span></span>
-<span id="cb46-314"><a href="#cb46-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_validation_split</span>(<span class="at">prop =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb46-315"><a href="#cb46-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">validation_set</span>() <span class="ot">-&gt;</span> val_set <span class="co"># 划分验证集</span></span>
-<span id="cb46-316"><a href="#cb46-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-317"><a href="#cb46-317" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="sc">|&gt;</span></span>
-<span id="cb46-318"><a href="#cb46-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> val_set) <span class="ot">-&gt;</span> val_res <span class="co"># 对验证集进行重采样训练和评估</span></span>
-<span id="cb46-319"><a href="#cb46-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-320"><a href="#cb46-320" aria-hidden="true" tabindex="-1"></a>val_res</span>
-<span id="cb46-321"><a href="#cb46-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-322"><a href="#cb46-322" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(val_res) <span class="co"># 提取模型性能指标</span></span>
-<span id="cb46-323"><a href="#cb46-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-324"><a href="#cb46-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-325"><a href="#cb46-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## 并行计算</span></span>
-<span id="cb46-326"><a href="#cb46-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-327"><a href="#cb46-327" aria-hidden="true" tabindex="-1"></a><span class="in">`tune`</span>包使用<span class="in">`foreach`</span>包来进行并行计算。</span>
-<span id="cb46-328"><a href="#cb46-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-329"><a href="#cb46-329" aria-hidden="true" tabindex="-1"></a><span class="in">`parallel`</span>包可以计算本机的并行计算能力。</span>
-<span id="cb46-330"><a href="#cb46-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-333"><a href="#cb46-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-334"><a href="#cb46-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: parallel_1</span></span>
-<span id="cb46-335"><a href="#cb46-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-336"><a href="#cb46-336" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">FALSE</span>) <span class="co"># 物理核心数</span></span>
-<span id="cb46-337"><a href="#cb46-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-338"><a href="#cb46-338" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">TRUE</span>) <span class="co"># 逻辑核心数，包括超线程</span></span>
-<span id="cb46-339"><a href="#cb46-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-340"><a href="#cb46-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-341"><a href="#cb46-341" aria-hidden="true" tabindex="-1"></a><span class="in">`doParallel`</span>包可以使用<span class="in">`registerDoParallel()`</span>函数注册并行计算。</span>
-<span id="cb46-342"><a href="#cb46-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-345"><a href="#cb46-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-346"><a href="#cb46-346" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: parallel_2</span></span>
-<span id="cb46-347"><a href="#cb46-347" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
-<span id="cb46-348"><a href="#cb46-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-349"><a href="#cb46-349" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
-<span id="cb46-350"><a href="#cb46-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-351"><a href="#cb46-351" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">4</span>) <span class="co"># 创建4个核心的并行计算集群</span></span>
-<span id="cb46-352"><a href="#cb46-352" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl) <span class="co"># 注册并行计算</span></span>
-<span id="cb46-353"><a href="#cb46-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-354"><a href="#cb46-354" aria-hidden="true" tabindex="-1"></a><span class="do">## 运行fit_resamples()函数----------------</span></span>
-<span id="cb46-355"><a href="#cb46-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-356"><a href="#cb46-356" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl) <span class="co"># 关闭并行计算集群</span></span>
-<span id="cb46-357"><a href="#cb46-357" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-358"><a href="#cb46-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-359"><a href="#cb46-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## 利用重采样方法比较模型</span></span>
-<span id="cb46-360"><a href="#cb46-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-363"><a href="#cb46-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-364"><a href="#cb46-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load_1</span></span>
-<span id="cb46-365"><a href="#cb46-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
-<span id="cb46-366"><a href="#cb46-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-367"><a href="#cb46-367" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
-<span id="cb46-368"><a href="#cb46-368" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/tidymodels_2_1.rda"</span>)</span>
-<span id="cb46-369"><a href="#cb46-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-370"><a href="#cb46-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-371"><a href="#cb46-371" aria-hidden="true" tabindex="-1"></a><span class="fu">### 建立多个模型</span></span>
-<span id="cb46-372"><a href="#cb46-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-373"><a href="#cb46-373" aria-hidden="true" tabindex="-1"></a>建立三个不同的线性回归模型。</span>
-<span id="cb46-374"><a href="#cb46-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-377"><a href="#cb46-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-378"><a href="#cb46-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_1</span></span>
-<span id="cb46-379"><a href="#cb46-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-380"><a href="#cb46-380" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型----------------</span></span>
-<span id="cb46-381"><a href="#cb46-381" aria-hidden="true" tabindex="-1"></a>basic_rec <span class="ot">&lt;-</span></span>
-<span id="cb46-382"><a href="#cb46-382" aria-hidden="true" tabindex="-1"></a>  ames_train <span class="sc">|&gt;</span></span>
-<span id="cb46-383"><a href="#cb46-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
-<span id="cb46-384"><a href="#cb46-384" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude) <span class="sc">|&gt;</span></span>
-<span id="cb46-385"><a href="#cb46-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-386"><a href="#cb46-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-387"><a href="#cb46-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span>
-<span id="cb46-388"><a href="#cb46-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-389"><a href="#cb46-389" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型 + 交互项----------------</span></span>
-<span id="cb46-390"><a href="#cb46-390" aria-hidden="true" tabindex="-1"></a>interaction_rec <span class="ot">&lt;-</span></span>
-<span id="cb46-391"><a href="#cb46-391" aria-hidden="true" tabindex="-1"></a>  basic_rec <span class="sc">|&gt;</span></span>
-<span id="cb46-392"><a href="#cb46-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>))</span>
-<span id="cb46-393"><a href="#cb46-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-394"><a href="#cb46-394" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型 + 交互项 + 自然样条----------------</span></span>
-<span id="cb46-395"><a href="#cb46-395" aria-hidden="true" tabindex="-1"></a>spline_rec <span class="ot">&lt;-</span> </span>
-<span id="cb46-396"><a href="#cb46-396" aria-hidden="true" tabindex="-1"></a>  interaction_rec <span class="sc">|&gt;</span> </span>
-<span id="cb46-397"><a href="#cb46-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, Longitude, <span class="at">deg_free =</span> <span class="dv">50</span>)</span>
-<span id="cb46-398"><a href="#cb46-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-399"><a href="#cb46-399" aria-hidden="true" tabindex="-1"></a><span class="do">## 建立模型----------------</span></span>
-<span id="cb46-400"><a href="#cb46-400" aria-hidden="true" tabindex="-1"></a>preproc <span class="ot">&lt;-</span> </span>
-<span id="cb46-401"><a href="#cb46-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">basic =</span> basic_rec, </span>
-<span id="cb46-402"><a href="#cb46-402" aria-hidden="true" tabindex="-1"></a>       <span class="at">interact =</span> interaction_rec, </span>
-<span id="cb46-403"><a href="#cb46-403" aria-hidden="true" tabindex="-1"></a>       <span class="at">splines =</span> spline_rec</span>
-<span id="cb46-404"><a href="#cb46-404" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-405"><a href="#cb46-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-406"><a href="#cb46-406" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span></span>
-<span id="cb46-407"><a href="#cb46-407" aria-hidden="true" tabindex="-1"></a>  preproc <span class="sc">|&gt;</span></span>
-<span id="cb46-408"><a href="#cb46-408" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_set</span>(<span class="fu">list</span>(<span class="at">lm =</span> <span class="fu">linear_reg</span>()), <span class="at">cross =</span> <span class="cn">FALSE</span>) <span class="co"># 建立线性回归模型，不进行重采样</span></span>
-<span id="cb46-409"><a href="#cb46-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-410"><a href="#cb46-410" aria-hidden="true" tabindex="-1"></a>lm_models</span>
-<span id="cb46-411"><a href="#cb46-411" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-412"><a href="#cb46-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-413"><a href="#cb46-413" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`workflow_map()`</span>函数对三个模型进行重采样。<span class="in">`verbose = TRUE`</span>参数可以显示进度条，<span class="in">`seed = 123`</span>参数可以设置随机种子。</span>
-<span id="cb46-414"><a href="#cb46-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-417"><a href="#cb46-417" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-418"><a href="#cb46-418" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_2</span></span>
-<span id="cb46-419"><a href="#cb46-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-420"><a href="#cb46-420" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span></span>
-<span id="cb46-421"><a href="#cb46-421" aria-hidden="true" tabindex="-1"></a>  lm_models <span class="sc">|&gt;</span></span>
-<span id="cb46-422"><a href="#cb46-422" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_map</span>(</span>
-<span id="cb46-423"><a href="#cb46-423" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fit_resamples"</span>,</span>
-<span id="cb46-424"><a href="#cb46-424" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb46-425"><a href="#cb46-425" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb46-426"><a href="#cb46-426" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> ames_folds,</span>
-<span id="cb46-427"><a href="#cb46-427" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> keep_pred</span>
-<span id="cb46-428"><a href="#cb46-428" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-429"><a href="#cb46-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-430"><a href="#cb46-430" aria-hidden="true" tabindex="-1"></a>lm_models</span>
-<span id="cb46-431"><a href="#cb46-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-432"><a href="#cb46-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-433"><a href="#cb46-433" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`collect_metrics()`</span>函数提取模型性能指标。</span>
-<span id="cb46-434"><a href="#cb46-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-437"><a href="#cb46-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-438"><a href="#cb46-438" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_3</span></span>
-<span id="cb46-439"><a href="#cb46-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-440"><a href="#cb46-440" aria-hidden="true" tabindex="-1"></a>lm_models <span class="sc">|&gt;</span></span>
-<span id="cb46-441"><a href="#cb46-441" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() <span class="sc">|&gt;</span></span>
-<span id="cb46-442"><a href="#cb46-442" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rmse"</span>)</span>
-<span id="cb46-443"><a href="#cb46-443" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-444"><a href="#cb46-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-445"><a href="#cb46-445" aria-hidden="true" tabindex="-1"></a>添加其他模型时，需要提前在其他模型重采样流程中设置<span class="in">`save_workflow = TRUE`</span>。使用<span class="in">`as_workflow_set()`</span>函数将保存的工作流转换为<span class="in">`workflow_set`</span>对象。</span>
-<span id="cb46-446"><a href="#cb46-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-449"><a href="#cb46-449" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-450"><a href="#cb46-450" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_4</span></span>
-<span id="cb46-451"><a href="#cb46-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-452"><a href="#cb46-452" aria-hidden="true" tabindex="-1"></a>four_models <span class="ot">&lt;-</span></span>
-<span id="cb46-453"><a href="#cb46-453" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_workflow_set</span>(<span class="at">random_forest =</span> rf_res) <span class="sc">|&gt;</span></span>
-<span id="cb46-454"><a href="#cb46-454" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(lm_models)</span>
-<span id="cb46-455"><a href="#cb46-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-456"><a href="#cb46-456" aria-hidden="true" tabindex="-1"></a>four_models</span>
-<span id="cb46-457"><a href="#cb46-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-458"><a href="#cb46-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-459"><a href="#cb46-459" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`autoplot()`</span>函数对模型进行可视化。</span>
-<span id="cb46-460"><a href="#cb46-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-463"><a href="#cb46-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb46-464"><a href="#cb46-464" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-model_1</span></span>
-<span id="cb46-465"><a href="#cb46-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-466"><a href="#cb46-466" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb46-467"><a href="#cb46-467" aria-hidden="true" tabindex="-1"></a>four_models <span class="sc">|&gt;</span></span>
-<span id="cb46-468"><a href="#cb46-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">metric =</span> <span class="st">"rsq"</span>) <span class="sc">+</span> <span class="co"># 可视化R^2</span></span>
-<span id="cb46-469"><a href="#cb46-469" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> wflow_id), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span> <span class="co"># 添加模型名称</span></span>
-<span id="cb46-470"><a href="#cb46-470" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># 隐藏图例</span></span>
-<span id="cb46-471"><a href="#cb46-471" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb46-472"><a href="#cb46-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-473"><a href="#cb46-473" aria-hidden="true" tabindex="-1"></a>由 @fig-model_1 可以看出，随机森林模型的R^2^值最高，且随着模型复杂度的增加，R^2^值也在增加，说明线性模型有细微的改进。</span>
-<span id="cb46-474"><a href="#cb46-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-475"><a href="#cb46-475" aria-hidden="true" tabindex="-1"></a><span class="fu">### 比较重采样方法的性能</span></span>
+<div class="sourceCode" id="cb57" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "tidymodels-进阶"</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "一把Fei刀"</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2024-2-11</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> last-modified</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> true</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="an">notebook-view:</span><span class="co"> </span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - notebook: "../notebooks/tidymodels_2.qmd"</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="co">    title: "完整代码笔记本"</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="an">notebook-links:</span><span class="co"> global</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># 代码风格</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># 用于输出</span></span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate) <span class="co"># 调用python</span></span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt) <span class="co"># 输出表格</span></span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## 重采样方法</span></span>
+<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load_tidymodels_0105</span></span>
+<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-34"><a href="#cb57-34" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb57-35"><a href="#cb57-35" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/tidymodels_0105.rda"</span>)</span>
+<span id="cb57-36"><a href="#cb57-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-37"><a href="#cb57-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-40"><a href="#cb57-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb57-41"><a href="#cb57-41" aria-hidden="true" tabindex="-1"></a><span class="in">%%| label: fig-mermaid_1</span></span>
+<span id="cb57-42"><a href="#cb57-42" aria-hidden="true" tabindex="-1"></a><span class="in">%%| echo: false</span></span>
+<span id="cb57-43"><a href="#cb57-43" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
+<span id="cb57-44"><a href="#cb57-44" aria-hidden="true" tabindex="-1"></a><span class="in">title: 重采样方法的数据分割</span></span>
+<span id="cb57-45"><a href="#cb57-45" aria-hidden="true" tabindex="-1"></a><span class="in">---</span></span>
+<span id="cb57-46"><a href="#cb57-46" aria-hidden="true" tabindex="-1"></a><span class="in">flowchart TD</span></span>
+<span id="cb57-47"><a href="#cb57-47" aria-hidden="true" tabindex="-1"></a><span class="in">A(原始数据) --&gt; B[[训练集]]</span></span>
+<span id="cb57-48"><a href="#cb57-48" aria-hidden="true" tabindex="-1"></a><span class="in">A --&gt; C[[测试集]]</span></span>
+<span id="cb57-49"><a href="#cb57-49" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; D{{重采样1}}</span></span>
+<span id="cb57-50"><a href="#cb57-50" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; E{{重采样2}}</span></span>
+<span id="cb57-51"><a href="#cb57-51" aria-hidden="true" tabindex="-1"></a><span class="in">B --&gt; F{{重采样n}}</span></span>
+<span id="cb57-52"><a href="#cb57-52" aria-hidden="true" tabindex="-1"></a><span class="in">D --&gt; G[[分析集]]</span></span>
+<span id="cb57-53"><a href="#cb57-53" aria-hidden="true" tabindex="-1"></a><span class="in">D --&gt; H[[评估集]]</span></span>
+<span id="cb57-54"><a href="#cb57-54" aria-hidden="true" tabindex="-1"></a><span class="in">E --&gt; I[[分析集]]</span></span>
+<span id="cb57-55"><a href="#cb57-55" aria-hidden="true" tabindex="-1"></a><span class="in">E --&gt; J[[评估集]]</span></span>
+<span id="cb57-56"><a href="#cb57-56" aria-hidden="true" tabindex="-1"></a><span class="in">F --&gt; K[[分析集]]</span></span>
+<span id="cb57-57"><a href="#cb57-57" aria-hidden="true" tabindex="-1"></a><span class="in">F --&gt; L[[评估集]]</span></span>
+<span id="cb57-58"><a href="#cb57-58" aria-hidden="true" tabindex="-1"></a><span class="in">D -.- E</span></span>
+<span id="cb57-59"><a href="#cb57-59" aria-hidden="true" tabindex="-1"></a><span class="in">E -.- F</span></span>
+<span id="cb57-60"><a href="#cb57-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-61"><a href="#cb57-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-62"><a href="#cb57-62" aria-hidden="true" tabindex="-1"></a>偏倚*bias*：数据中的真实模式或关系与模型所能模拟的模式类型之间的差异。运用合理的重采样方法，可以有效减小偏倚。</span>
+<span id="cb57-63"><a href="#cb57-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-64"><a href="#cb57-64" aria-hidden="true" tabindex="-1"></a>重采样只在训练集上进行，测试集不参与重采样。每次重采样，训练集都会被划分为分析集和评估集。分析集用于训练模型，评估集用于评估模型的性能，如 @fig-mermaid_1 所示。模型性能的最终估计值是所有评估集重复统计的平均值。</span>
+<span id="cb57-65"><a href="#cb57-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-66"><a href="#cb57-66" aria-hidden="true" tabindex="-1"></a><span class="fu">### 交叉验证CV</span></span>
+<span id="cb57-67"><a href="#cb57-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-68"><a href="#cb57-68" aria-hidden="true" tabindex="-1"></a><span class="fu">#### k折交叉验证k-CV {.unnumbered}</span></span>
+<span id="cb57-69"><a href="#cb57-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-70"><a href="#cb57-70" aria-hidden="true" tabindex="-1"></a>交叉验证是一种重采样方法，最常见的是k折交叉验证。在k折交叉验证中，数据被分为k个子集，其中一个子集被保留作为评估集，其余k-1个子集被用于训练模型。这个过程重复k次，每个子集都有一次机会作为评估集。最后，模型性能的最终估计值是所有评估集重复统计的平均值。</span>
+<span id="cb57-71"><a href="#cb57-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-72"><a href="#cb57-72" aria-hidden="true" tabindex="-1"></a><span class="in">`vfold_cv()`</span>函数可以用于创建k折交叉验证。</span>
+<span id="cb57-73"><a href="#cb57-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-74"><a href="#cb57-74" aria-hidden="true" tabindex="-1"></a>:::callout-important</span>
+<span id="cb57-75"><a href="#cb57-75" aria-hidden="true" tabindex="-1"></a>k值越大，重取样估计值偏倚越小，但方差越大。通常k值取5或10。</span>
+<span id="cb57-76"><a href="#cb57-76" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb57-77"><a href="#cb57-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-80"><a href="#cb57-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-81"><a href="#cb57-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_1</span></span>
+<span id="cb57-82"><a href="#cb57-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-83"><a href="#cb57-83" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb57-84"><a href="#cb57-84" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb57-85"><a href="#cb57-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-86"><a href="#cb57-86" aria-hidden="true" tabindex="-1"></a><span class="co"># 10折交叉验证</span></span>
+<span id="cb57-87"><a href="#cb57-87" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-88"><a href="#cb57-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>) <span class="ot">-&gt;</span> ames_folds</span>
+<span id="cb57-89"><a href="#cb57-89" aria-hidden="true" tabindex="-1"></a>ames_folds</span>
+<span id="cb57-90"><a href="#cb57-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-91"><a href="#cb57-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-92"><a href="#cb57-92" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 重复k折交叉验证repeated k-CV {.unnumbered}</span></span>
+<span id="cb57-93"><a href="#cb57-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-94"><a href="#cb57-94" aria-hidden="true" tabindex="-1"></a>重复k折交叉验证是k折交叉验证的扩展，它重复k折交叉验证多次。重复k折交叉验证的优点是它提供了更准确的模型性能估计，但是计算成本更高。</span>
+<span id="cb57-95"><a href="#cb57-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-96"><a href="#cb57-96" aria-hidden="true" tabindex="-1"></a>在<span class="in">`vfold_cv()`</span>函数中，可以使用<span class="in">`repeats`</span>参数指定重复次数。</span>
+<span id="cb57-97"><a href="#cb57-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-100"><a href="#cb57-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-101"><a href="#cb57-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_2</span></span>
+<span id="cb57-102"><a href="#cb57-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-103"><a href="#cb57-103" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-104"><a href="#cb57-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>, <span class="at">repeats =</span> <span class="dv">5</span>)</span>
+<span id="cb57-105"><a href="#cb57-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-106"><a href="#cb57-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-107"><a href="#cb57-107" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 留一法LOO {.unnumbered}</span></span>
+<span id="cb57-108"><a href="#cb57-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-109"><a href="#cb57-109" aria-hidden="true" tabindex="-1"></a>留一法LOO是k折交叉验证的一个特例，其中k等于训练集的观测数。这时，每个评估集只包含一个观测。LOO的优点是它提供了最小的偏倚，但是计算成本很高。一般来说，LOO不适用于大型数据集。</span>
+<span id="cb57-110"><a href="#cb57-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-111"><a href="#cb57-111" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 蒙特卡罗交叉验证MCCV {.unnumbered}</span></span>
+<span id="cb57-112"><a href="#cb57-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-113"><a href="#cb57-113" aria-hidden="true" tabindex="-1"></a>蒙特卡罗交叉验证是一种重复随机划分数据的方法。在每次重复中，数据被随机划分为训练集和评估集，且最终产生的评估集互斥。这种方法的优点是它可以提供更准确的模型性能估计，但是计算成本更高。</span>
+<span id="cb57-114"><a href="#cb57-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-115"><a href="#cb57-115" aria-hidden="true" tabindex="-1"></a><span class="in">`mc_cv()`</span>函数可以用于创建蒙特卡罗交叉验证。其中，<span class="in">`prop`</span>参数指定训练集的比例，<span class="in">`times`</span>参数指定重复次数。</span>
+<span id="cb57-116"><a href="#cb57-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-119"><a href="#cb57-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-120"><a href="#cb57-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cv_3</span></span>
+<span id="cb57-121"><a href="#cb57-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-122"><a href="#cb57-122" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-123"><a href="#cb57-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mc_cv</span>(<span class="at">prop =</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">10</span>, <span class="at">times =</span> <span class="dv">20</span>)</span>
+<span id="cb57-124"><a href="#cb57-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-125"><a href="#cb57-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-126"><a href="#cb57-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### 验证集</span></span>
+<span id="cb57-127"><a href="#cb57-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-128"><a href="#cb57-128" aria-hidden="true" tabindex="-1"></a>验证集方法其实是只进行一次重采样，将数据分为训练集和验证集。验证集方法的优点是计算成本低，但是它提供的模型性能估计可能不准确。</span>
+<span id="cb57-129"><a href="#cb57-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-132"><a href="#cb57-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-133"><a href="#cb57-133" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: vds</span></span>
+<span id="cb57-134"><a href="#cb57-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-135"><a href="#cb57-135" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">|&gt;</span></span>
+<span id="cb57-136"><a href="#cb57-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_validation_split</span>(<span class="at">prop =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>)) <span class="sc">|&gt;</span> <span class="co"># 训练集60%，验证集20%，测试集20%</span></span>
+<span id="cb57-137"><a href="#cb57-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">validation_set</span>() <span class="co"># 验证集</span></span>
+<span id="cb57-138"><a href="#cb57-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-139"><a href="#cb57-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-140"><a href="#cb57-140" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bootstrap</span></span>
+<span id="cb57-141"><a href="#cb57-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-142"><a href="#cb57-142" aria-hidden="true" tabindex="-1"></a>Bootstrap是一种重采样方法，它通过有放回地抽样来创建新的数据集。在每次重采样中，数据集的大小保持不变，但是每个观测可以被多次抽样。Bootstrap的优点是产生的性能估计方差较小，但是它可能产生较大的偏倚，尤其会低估准确率。</span>
+<span id="cb57-143"><a href="#cb57-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-144"><a href="#cb57-144" aria-hidden="true" tabindex="-1"></a><span class="in">`bootstraps()`</span>函数可以用于创建Bootstrap。</span>
+<span id="cb57-145"><a href="#cb57-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-148"><a href="#cb57-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-149"><a href="#cb57-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: boot_1</span></span>
+<span id="cb57-150"><a href="#cb57-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-151"><a href="#cb57-151" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-152"><a href="#cb57-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bootstraps</span>(<span class="at">times =</span> <span class="dv">10</span>)</span>
+<span id="cb57-153"><a href="#cb57-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-154"><a href="#cb57-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-155"><a href="#cb57-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### 滚动抽样-时间序列</span></span>
+<span id="cb57-156"><a href="#cb57-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-157"><a href="#cb57-157" aria-hidden="true" tabindex="-1"></a>滚动预测原点重采样方法是一种时间序列数据的重采样方法。初始训练集和评估集的大小是指定的。重采样的第一次迭代从序列的起点开始。第二次迭代向后移位一定数量的样本。流程如 @fig-rolling 所示。</span>
+<span id="cb57-158"><a href="#cb57-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-159"><a href="#cb57-159" aria-hidden="true" tabindex="-1"></a><span class="al">![滚动预测原点重采样](../images/rolling.svg)</span>{#fig-rolling}</span>
+<span id="cb57-160"><a href="#cb57-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-161"><a href="#cb57-161" aria-hidden="true" tabindex="-1"></a>假设有一个时间序列数据集，由6组30天的数据块组成。可以设置初始训练集和评估集的大小为30天。第一次迭代，训练集包含第1-30天的数据，评估集包含第31-60天的数据。第二次迭代，训练集包含第31-60天的数据，评估集包含第61-90天的数据。以此类推。</span>
+<span id="cb57-162"><a href="#cb57-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-163"><a href="#cb57-163" aria-hidden="true" tabindex="-1"></a><span class="in">`rolling_origin()`</span>函数可以用于创建滚动预测原点重采样。</span>
+<span id="cb57-164"><a href="#cb57-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-167"><a href="#cb57-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-168"><a href="#cb57-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rolling_1</span></span>
+<span id="cb57-169"><a href="#cb57-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-170"><a href="#cb57-170" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-171"><a href="#cb57-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rolling_origin</span>(<span class="at">initial =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="co"># 初始训练集大小</span></span>
+<span id="cb57-172"><a href="#cb57-172" aria-hidden="true" tabindex="-1"></a>                 <span class="at">assess =</span> <span class="dv">30</span>, <span class="co"># 评估集大小</span></span>
+<span id="cb57-173"><a href="#cb57-173" aria-hidden="true" tabindex="-1"></a>                 <span class="at">skip =</span> <span class="dv">29</span>, <span class="co"># 每次迭代的跳跃步长</span></span>
+<span id="cb57-174"><a href="#cb57-174" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cumulative =</span> <span class="cn">FALSE</span>) <span class="ot">-&gt;</span> time_slices <span class="co"># 是否累积</span></span>
+<span id="cb57-175"><a href="#cb57-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-176"><a href="#cb57-176" aria-hidden="true" tabindex="-1"></a>data_range <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb57-177"><a href="#cb57-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(x, <span class="at">first =</span> <span class="fu">min</span>(x), <span class="at">last =</span> <span class="fu">max</span>(x))</span>
+<span id="cb57-178"><a href="#cb57-178" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-179"><a href="#cb57-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-180"><a href="#cb57-180" aria-hidden="true" tabindex="-1"></a>time_slices<span class="sc">$</span>splits <span class="sc">|&gt;</span></span>
+<span id="cb57-181"><a href="#cb57-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">analysis</span>(.x) <span class="sc">|&gt;</span></span>
+<span id="cb57-182"><a href="#cb57-182" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data_range</span>())</span>
+<span id="cb57-183"><a href="#cb57-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-184"><a href="#cb57-184" aria-hidden="true" tabindex="-1"></a>time_slices<span class="sc">$</span>splits <span class="sc">|&gt;</span></span>
+<span id="cb57-185"><a href="#cb57-185" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">assessment</span>(.x) <span class="sc">|&gt;</span></span>
+<span id="cb57-186"><a href="#cb57-186" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data_range</span>())</span>
+<span id="cb57-187"><a href="#cb57-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-188"><a href="#cb57-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-189"><a href="#cb57-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## 评估重采样性能</span></span>
+<span id="cb57-190"><a href="#cb57-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-191"><a href="#cb57-191" aria-hidden="true" tabindex="-1"></a>首先建立一个随机森林模型。</span>
+<span id="cb57-192"><a href="#cb57-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-195"><a href="#cb57-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-196"><a href="#cb57-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rf_1</span></span>
+<span id="cb57-197"><a href="#cb57-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-198"><a href="#cb57-198" aria-hidden="true" tabindex="-1"></a>rf_model <span class="ot">&lt;-</span> </span>
+<span id="cb57-199"><a href="#cb57-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-200"><a href="#cb57-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-201"><a href="#cb57-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb57-202"><a href="#cb57-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-203"><a href="#cb57-203" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb57-204"><a href="#cb57-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-205"><a href="#cb57-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
+<span id="cb57-206"><a href="#cb57-206" aria-hidden="true" tabindex="-1"></a>    Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span></span>
+<span id="cb57-207"><a href="#cb57-207" aria-hidden="true" tabindex="-1"></a>      Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> Latitude <span class="sc">+</span> Longitude</span>
+<span id="cb57-208"><a href="#cb57-208" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb57-209"><a href="#cb57-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_model)</span>
+<span id="cb57-210"><a href="#cb57-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-211"><a href="#cb57-211" aria-hidden="true" tabindex="-1"></a>rf_fit <span class="ot">&lt;-</span> </span>
+<span id="cb57-212"><a href="#cb57-212" aria-hidden="true" tabindex="-1"></a>  rf_workflow <span class="sc">|&gt;</span></span>
+<span id="cb57-213"><a href="#cb57-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(<span class="at">data =</span> ames_train)</span>
+<span id="cb57-214"><a href="#cb57-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-215"><a href="#cb57-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-216"><a href="#cb57-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### 十折交叉验证</span></span>
+<span id="cb57-217"><a href="#cb57-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-218"><a href="#cb57-218" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`control_resamples()`</span>函数设置模型重采样控制参数；使用<span class="in">`fit_resamples()`</span>函数对模型进行重采样训练和评估。</span>
+<span id="cb57-219"><a href="#cb57-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-222"><a href="#cb57-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-223"><a href="#cb57-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_1</span></span>
+<span id="cb57-224"><a href="#cb57-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-225"><a href="#cb57-225" aria-hidden="true" tabindex="-1"></a>keep_pred <span class="ot">&lt;-</span></span>
+<span id="cb57-226"><a href="#cb57-226" aria-hidden="true" tabindex="-1"></a>  <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-227"><a href="#cb57-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-228"><a href="#cb57-228" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-229"><a href="#cb57-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vfold_cv</span>(<span class="at">v =</span> <span class="dv">10</span>) <span class="ot">-&gt;</span> ames_folds</span>
+<span id="cb57-230"><a href="#cb57-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-231"><a href="#cb57-231" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb57-232"><a href="#cb57-232" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="sc">|&gt;</span></span>
+<span id="cb57-233"><a href="#cb57-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb57-234"><a href="#cb57-234" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> ames_folds,</span>
+<span id="cb57-235"><a href="#cb57-235" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> keep_pred</span>
+<span id="cb57-236"><a href="#cb57-236" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> rf_res</span>
+<span id="cb57-237"><a href="#cb57-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-238"><a href="#cb57-238" aria-hidden="true" tabindex="-1"></a>rf_res</span>
+<span id="cb57-239"><a href="#cb57-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-240"><a href="#cb57-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-241"><a href="#cb57-241" aria-hidden="true" tabindex="-1"></a>在<span class="in">`rf_res`</span>中，包含了每次重采样的模型性能评估结果。可以使用<span class="in">`collect_metrics()`</span>函数提取模型性能指标。</span>
+<span id="cb57-242"><a href="#cb57-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-245"><a href="#cb57-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-246"><a href="#cb57-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_2</span></span>
+<span id="cb57-247"><a href="#cb57-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-248"><a href="#cb57-248" aria-hidden="true" tabindex="-1"></a>rf_res <span class="sc">|&gt;</span></span>
+<span id="cb57-249"><a href="#cb57-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span>
+<span id="cb57-250"><a href="#cb57-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-251"><a href="#cb57-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-252"><a href="#cb57-252" aria-hidden="true" tabindex="-1"></a>方法的模型性能评估结果可以使用<span class="in">`collect_predictions()`</span>函数提取。</span>
+<span id="cb57-253"><a href="#cb57-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-256"><a href="#cb57-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-257"><a href="#cb57-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_3</span></span>
+<span id="cb57-258"><a href="#cb57-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-259"><a href="#cb57-259" aria-hidden="true" tabindex="-1"></a>rf_res <span class="sc">|&gt;</span></span>
+<span id="cb57-260"><a href="#cb57-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_predictions</span>() <span class="ot">-&gt;</span> assess_res</span>
+<span id="cb57-261"><a href="#cb57-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-262"><a href="#cb57-262" aria-hidden="true" tabindex="-1"></a>assess_res</span>
+<span id="cb57-263"><a href="#cb57-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-264"><a href="#cb57-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-265"><a href="#cb57-265" aria-hidden="true" tabindex="-1"></a>对性能评估结果<span class="in">`assess_res`</span>进行可视化，如 @fig-resample_1 所示。</span>
+<span id="cb57-266"><a href="#cb57-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-269"><a href="#cb57-269" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-270"><a href="#cb57-270" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-resample_1</span></span>
+<span id="cb57-271"><a href="#cb57-271" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 重采样性能评估结果(log10)</span></span>
+<span id="cb57-272"><a href="#cb57-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-273"><a href="#cb57-273" aria-hidden="true" tabindex="-1"></a>assess_res <span class="sc">|&gt;</span></span>
+<span id="cb57-274"><a href="#cb57-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span></span>
+<span id="cb57-275"><a href="#cb57-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb57-276"><a href="#cb57-276" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 把x&lt;4.5的点标记成红色</span></span>
+<span id="cb57-277"><a href="#cb57-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(assess_res, Sale_Price <span class="sc">&lt;</span> <span class="fl">4.5</span>), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb57-278"><a href="#cb57-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb57-279"><a href="#cb57-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>() <span class="sc">+</span></span>
+<span id="cb57-280"><a href="#cb57-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb57-281"><a href="#cb57-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predicted"</span>)</span>
+<span id="cb57-282"><a href="#cb57-282" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-283"><a href="#cb57-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-284"><a href="#cb57-284" aria-hidden="true" tabindex="-1"></a>@fig-resample_1 中，标红的两个点表示销售价格较低的这两个房屋预测值大大偏高。可以在assess_res中定位到这两个数据，进而分析特定预测性能较差的可能原因。</span>
+<span id="cb57-285"><a href="#cb57-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-288"><a href="#cb57-288" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-289"><a href="#cb57-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_4</span></span>
+<span id="cb57-290"><a href="#cb57-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-291"><a href="#cb57-291" aria-hidden="true" tabindex="-1"></a>over_predicted <span class="ot">&lt;-</span></span>
+<span id="cb57-292"><a href="#cb57-292" aria-hidden="true" tabindex="-1"></a>  assess_res <span class="sc">|&gt;</span></span>
+<span id="cb57-293"><a href="#cb57-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual =</span> Sale_Price <span class="sc">-</span> .pred) <span class="sc">|&gt;</span> <span class="co"># 计算残差</span></span>
+<span id="cb57-294"><a href="#cb57-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(residual))) <span class="sc">|&gt;</span> <span class="co"># 按残差绝对值降序排列</span></span>
+<span id="cb57-295"><a href="#cb57-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="co"># 取前两个数据</span></span>
+<span id="cb57-296"><a href="#cb57-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-297"><a href="#cb57-297" aria-hidden="true" tabindex="-1"></a>over_predicted</span>
+<span id="cb57-298"><a href="#cb57-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-299"><a href="#cb57-299" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-300"><a href="#cb57-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(over_predicted<span class="sc">$</span>.row) <span class="sc">|&gt;</span> <span class="co"># 取出这两个数据</span></span>
+<span id="cb57-301"><a href="#cb57-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Gr_Liv_Area, Neighborhood, Year_Built, Bedroom_AbvGr, Full_Bath) <span class="co"># 选择感兴趣的变量</span></span>
+<span id="cb57-302"><a href="#cb57-302" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-303"><a href="#cb57-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-304"><a href="#cb57-304" aria-hidden="true" tabindex="-1"></a><span class="fu">### 验证集</span></span>
+<span id="cb57-305"><a href="#cb57-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-306"><a href="#cb57-306" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`fit_resamples()`</span>函数对模型进行重采样训练和评估。</span>
+<span id="cb57-307"><a href="#cb57-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-310"><a href="#cb57-310" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-311"><a href="#cb57-311" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: resample_5</span></span>
+<span id="cb57-312"><a href="#cb57-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-313"><a href="#cb57-313" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">|&gt;</span></span>
+<span id="cb57-314"><a href="#cb57-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_validation_split</span>(<span class="at">prop =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb57-315"><a href="#cb57-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">validation_set</span>() <span class="ot">-&gt;</span> val_set <span class="co"># 划分验证集</span></span>
+<span id="cb57-316"><a href="#cb57-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-317"><a href="#cb57-317" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="sc">|&gt;</span></span>
+<span id="cb57-318"><a href="#cb57-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> val_set) <span class="ot">-&gt;</span> val_res <span class="co"># 对验证集进行重采样训练和评估</span></span>
+<span id="cb57-319"><a href="#cb57-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-320"><a href="#cb57-320" aria-hidden="true" tabindex="-1"></a>val_res</span>
+<span id="cb57-321"><a href="#cb57-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-322"><a href="#cb57-322" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(val_res) <span class="co"># 提取模型性能指标</span></span>
+<span id="cb57-323"><a href="#cb57-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-324"><a href="#cb57-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-325"><a href="#cb57-325" aria-hidden="true" tabindex="-1"></a><span class="fu">## 并行计算</span></span>
+<span id="cb57-326"><a href="#cb57-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-327"><a href="#cb57-327" aria-hidden="true" tabindex="-1"></a><span class="in">`tune`</span>包使用<span class="in">`foreach`</span>包来进行并行计算。</span>
+<span id="cb57-328"><a href="#cb57-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-329"><a href="#cb57-329" aria-hidden="true" tabindex="-1"></a><span class="in">`parallel`</span>包可以计算本机的并行计算能力。</span>
+<span id="cb57-330"><a href="#cb57-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-333"><a href="#cb57-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-334"><a href="#cb57-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: parallel_1</span></span>
+<span id="cb57-335"><a href="#cb57-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-336"><a href="#cb57-336" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">FALSE</span>) <span class="co"># 物理核心数</span></span>
+<span id="cb57-337"><a href="#cb57-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-338"><a href="#cb57-338" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">TRUE</span>) <span class="co"># 逻辑核心数，包括超线程</span></span>
+<span id="cb57-339"><a href="#cb57-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-340"><a href="#cb57-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-341"><a href="#cb57-341" aria-hidden="true" tabindex="-1"></a><span class="in">`doParallel`</span>包可以使用<span class="in">`registerDoParallel()`</span>函数注册并行计算。</span>
+<span id="cb57-342"><a href="#cb57-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-345"><a href="#cb57-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-346"><a href="#cb57-346" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: parallel_2</span></span>
+<span id="cb57-347"><a href="#cb57-347" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
+<span id="cb57-348"><a href="#cb57-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-349"><a href="#cb57-349" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb57-350"><a href="#cb57-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-351"><a href="#cb57-351" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">4</span>) <span class="co"># 创建4个核心的并行计算集群</span></span>
+<span id="cb57-352"><a href="#cb57-352" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl) <span class="co"># 注册并行计算</span></span>
+<span id="cb57-353"><a href="#cb57-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-354"><a href="#cb57-354" aria-hidden="true" tabindex="-1"></a><span class="do">## 运行fit_resamples()函数----------------</span></span>
+<span id="cb57-355"><a href="#cb57-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-356"><a href="#cb57-356" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl) <span class="co"># 关闭并行计算集群</span></span>
+<span id="cb57-357"><a href="#cb57-357" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-358"><a href="#cb57-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-359"><a href="#cb57-359" aria-hidden="true" tabindex="-1"></a><span class="fu">## 利用重采样方法比较模型</span></span>
+<span id="cb57-360"><a href="#cb57-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-363"><a href="#cb57-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-364"><a href="#cb57-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load_1</span></span>
+<span id="cb57-365"><a href="#cb57-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
+<span id="cb57-366"><a href="#cb57-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-367"><a href="#cb57-367" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb57-368"><a href="#cb57-368" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/tidymodels_2_1.rda"</span>)</span>
+<span id="cb57-369"><a href="#cb57-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-370"><a href="#cb57-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-371"><a href="#cb57-371" aria-hidden="true" tabindex="-1"></a><span class="fu">### 建立多个模型</span></span>
+<span id="cb57-372"><a href="#cb57-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-373"><a href="#cb57-373" aria-hidden="true" tabindex="-1"></a>建立三个不同的线性回归模型。</span>
+<span id="cb57-374"><a href="#cb57-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-377"><a href="#cb57-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-378"><a href="#cb57-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_1</span></span>
+<span id="cb57-379"><a href="#cb57-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-380"><a href="#cb57-380" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型----------------</span></span>
+<span id="cb57-381"><a href="#cb57-381" aria-hidden="true" tabindex="-1"></a>basic_rec <span class="ot">&lt;-</span></span>
+<span id="cb57-382"><a href="#cb57-382" aria-hidden="true" tabindex="-1"></a>  ames_train <span class="sc">|&gt;</span></span>
+<span id="cb57-383"><a href="#cb57-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb57-384"><a href="#cb57-384" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude) <span class="sc">|&gt;</span></span>
+<span id="cb57-385"><a href="#cb57-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-386"><a href="#cb57-386" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-387"><a href="#cb57-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span>
+<span id="cb57-388"><a href="#cb57-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-389"><a href="#cb57-389" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型 + 交互项----------------</span></span>
+<span id="cb57-390"><a href="#cb57-390" aria-hidden="true" tabindex="-1"></a>interaction_rec <span class="ot">&lt;-</span></span>
+<span id="cb57-391"><a href="#cb57-391" aria-hidden="true" tabindex="-1"></a>  basic_rec <span class="sc">|&gt;</span></span>
+<span id="cb57-392"><a href="#cb57-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>))</span>
+<span id="cb57-393"><a href="#cb57-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-394"><a href="#cb57-394" aria-hidden="true" tabindex="-1"></a><span class="do">## 基本模型 + 交互项 + 自然样条----------------</span></span>
+<span id="cb57-395"><a href="#cb57-395" aria-hidden="true" tabindex="-1"></a>spline_rec <span class="ot">&lt;-</span> </span>
+<span id="cb57-396"><a href="#cb57-396" aria-hidden="true" tabindex="-1"></a>  interaction_rec <span class="sc">|&gt;</span> </span>
+<span id="cb57-397"><a href="#cb57-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, Longitude, <span class="at">deg_free =</span> <span class="dv">50</span>)</span>
+<span id="cb57-398"><a href="#cb57-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-399"><a href="#cb57-399" aria-hidden="true" tabindex="-1"></a><span class="do">## 建立模型----------------</span></span>
+<span id="cb57-400"><a href="#cb57-400" aria-hidden="true" tabindex="-1"></a>preproc <span class="ot">&lt;-</span> </span>
+<span id="cb57-401"><a href="#cb57-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">basic =</span> basic_rec, </span>
+<span id="cb57-402"><a href="#cb57-402" aria-hidden="true" tabindex="-1"></a>       <span class="at">interact =</span> interaction_rec, </span>
+<span id="cb57-403"><a href="#cb57-403" aria-hidden="true" tabindex="-1"></a>       <span class="at">splines =</span> spline_rec</span>
+<span id="cb57-404"><a href="#cb57-404" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-405"><a href="#cb57-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-406"><a href="#cb57-406" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span></span>
+<span id="cb57-407"><a href="#cb57-407" aria-hidden="true" tabindex="-1"></a>  preproc <span class="sc">|&gt;</span></span>
+<span id="cb57-408"><a href="#cb57-408" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_set</span>(<span class="fu">list</span>(<span class="at">lm =</span> <span class="fu">linear_reg</span>()), <span class="at">cross =</span> <span class="cn">FALSE</span>) <span class="co"># 建立线性回归模型，不进行重采样</span></span>
+<span id="cb57-409"><a href="#cb57-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-410"><a href="#cb57-410" aria-hidden="true" tabindex="-1"></a>lm_models</span>
+<span id="cb57-411"><a href="#cb57-411" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-412"><a href="#cb57-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-413"><a href="#cb57-413" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`workflow_map()`</span>函数对三个模型进行重采样。<span class="in">`verbose = TRUE`</span>参数可以显示进度条，<span class="in">`seed = 123`</span>参数可以设置随机种子。</span>
+<span id="cb57-414"><a href="#cb57-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-417"><a href="#cb57-417" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-418"><a href="#cb57-418" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_2</span></span>
+<span id="cb57-419"><a href="#cb57-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-420"><a href="#cb57-420" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span></span>
+<span id="cb57-421"><a href="#cb57-421" aria-hidden="true" tabindex="-1"></a>  lm_models <span class="sc">|&gt;</span></span>
+<span id="cb57-422"><a href="#cb57-422" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_map</span>(</span>
+<span id="cb57-423"><a href="#cb57-423" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fit_resamples"</span>,</span>
+<span id="cb57-424"><a href="#cb57-424" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb57-425"><a href="#cb57-425" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb57-426"><a href="#cb57-426" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> ames_folds,</span>
+<span id="cb57-427"><a href="#cb57-427" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> keep_pred</span>
+<span id="cb57-428"><a href="#cb57-428" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-429"><a href="#cb57-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-430"><a href="#cb57-430" aria-hidden="true" tabindex="-1"></a>lm_models</span>
+<span id="cb57-431"><a href="#cb57-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-432"><a href="#cb57-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-433"><a href="#cb57-433" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`collect_metrics()`</span>函数提取模型性能指标。</span>
+<span id="cb57-434"><a href="#cb57-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-437"><a href="#cb57-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-438"><a href="#cb57-438" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_3</span></span>
+<span id="cb57-439"><a href="#cb57-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-440"><a href="#cb57-440" aria-hidden="true" tabindex="-1"></a>lm_models <span class="sc">|&gt;</span></span>
+<span id="cb57-441"><a href="#cb57-441" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-442"><a href="#cb57-442" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rmse"</span>)</span>
+<span id="cb57-443"><a href="#cb57-443" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-444"><a href="#cb57-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-445"><a href="#cb57-445" aria-hidden="true" tabindex="-1"></a>添加其他模型时，需要提前在其他模型重采样流程中设置<span class="in">`save_workflow = TRUE`</span>。使用<span class="in">`as_workflow_set()`</span>函数将保存的工作流转换为<span class="in">`workflow_set`</span>对象。</span>
+<span id="cb57-446"><a href="#cb57-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-449"><a href="#cb57-449" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-450"><a href="#cb57-450" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_4</span></span>
+<span id="cb57-451"><a href="#cb57-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-452"><a href="#cb57-452" aria-hidden="true" tabindex="-1"></a>four_models <span class="ot">&lt;-</span></span>
+<span id="cb57-453"><a href="#cb57-453" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_workflow_set</span>(<span class="at">random_forest =</span> rf_res) <span class="sc">|&gt;</span></span>
+<span id="cb57-454"><a href="#cb57-454" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(lm_models)</span>
+<span id="cb57-455"><a href="#cb57-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-456"><a href="#cb57-456" aria-hidden="true" tabindex="-1"></a>four_models</span>
+<span id="cb57-457"><a href="#cb57-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-458"><a href="#cb57-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-459"><a href="#cb57-459" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`autoplot()`</span>函数对模型进行可视化。</span>
+<span id="cb57-460"><a href="#cb57-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-463"><a href="#cb57-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-464"><a href="#cb57-464" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-model_1</span></span>
+<span id="cb57-465"><a href="#cb57-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-466"><a href="#cb57-466" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb57-467"><a href="#cb57-467" aria-hidden="true" tabindex="-1"></a>four_models <span class="sc">|&gt;</span></span>
+<span id="cb57-468"><a href="#cb57-468" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">metric =</span> <span class="st">"rsq"</span>) <span class="sc">+</span> <span class="co"># 可视化R^2</span></span>
+<span id="cb57-469"><a href="#cb57-469" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> wflow_id), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span> <span class="co"># 添加模型名称</span></span>
+<span id="cb57-470"><a href="#cb57-470" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># 隐藏图例</span></span>
+<span id="cb57-471"><a href="#cb57-471" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-472"><a href="#cb57-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-473"><a href="#cb57-473" aria-hidden="true" tabindex="-1"></a>由 @fig-model_1 可以看出，随机森林模型的R^2^值最高，且随着模型复杂度的增加，R^2^值也在增加，说明线性模型有细微的改进。</span>
+<span id="cb57-474"><a href="#cb57-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-475"><a href="#cb57-475" aria-hidden="true" tabindex="-1"></a><span class="fu">### 比较重采样的性能统计</span></span>
+<span id="cb57-476"><a href="#cb57-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-477"><a href="#cb57-477" aria-hidden="true" tabindex="-1"></a>在不同的线性模型之间，R^2^值的差异并不大。但是，这种差异是否具有统计学意义仍需进一步检验。</span>
+<span id="cb57-478"><a href="#cb57-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-479"><a href="#cb57-479" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 假设检验</span></span>
+<span id="cb57-480"><a href="#cb57-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-481"><a href="#cb57-481" aria-hidden="true" tabindex="-1"></a>可以用配对t检验方法检验不同模型之间的R^2^值差异是否具有统计学意义。</span>
+<span id="cb57-482"><a href="#cb57-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-485"><a href="#cb57-485" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-486"><a href="#cb57-486" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model_5</span></span>
+<span id="cb57-487"><a href="#cb57-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-488"><a href="#cb57-488" aria-hidden="true" tabindex="-1"></a>rsq_indiv_estimates <span class="ot">&lt;-</span></span>
+<span id="cb57-489"><a href="#cb57-489" aria-hidden="true" tabindex="-1"></a>  four_models <span class="sc">|&gt;</span></span>
+<span id="cb57-490"><a href="#cb57-490" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>(<span class="at">summarize =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> <span class="co"># 提取模型性能指标</span></span>
+<span id="cb57-491"><a href="#cb57-491" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rsq"</span>) <span class="co"># 提取R^2^值</span></span>
+<span id="cb57-492"><a href="#cb57-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-493"><a href="#cb57-493" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="ot">&lt;-</span></span>
+<span id="cb57-494"><a href="#cb57-494" aria-hidden="true" tabindex="-1"></a>  rsq_indiv_estimates <span class="sc">|&gt;</span></span>
+<span id="cb57-495"><a href="#cb57-495" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(wflow_id, .estimate, id) <span class="sc">|&gt;</span></span>
+<span id="cb57-496"><a href="#cb57-496" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="st">"id"</span>, <span class="at">names_from =</span> <span class="st">"wflow_id"</span>, <span class="at">values_from =</span> <span class="st">".estimate"</span>)</span>
+<span id="cb57-497"><a href="#cb57-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-498"><a href="#cb57-498" aria-hidden="true" tabindex="-1"></a>corrr<span class="sc">::</span><span class="fu">correlate</span>(rsq_wider <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>id), <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="co"># 计算R^2^值的相关系数</span></span>
+<span id="cb57-499"><a href="#cb57-499" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-500"><a href="#cb57-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-503"><a href="#cb57-503" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-504"><a href="#cb57-504" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: paired_t_test</span></span>
+<span id="cb57-505"><a href="#cb57-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-506"><a href="#cb57-506" aria-hidden="true" tabindex="-1"></a><span class="co"># 基本模型和交互模型-------------------------------------------------------</span></span>
+<span id="cb57-507"><a href="#cb57-507" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="sc">|&gt;</span></span>
+<span id="cb57-508"><a href="#cb57-508" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">t.test</span>(splines_lm, basic_lm, <span class="at">paired =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb57-509"><a href="#cb57-509" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-510"><a href="#cb57-510" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, p.value, <span class="fu">starts_with</span>(<span class="st">"conf"</span>)) <span class="co"># 提取估计值、p值和置信区间</span></span>
+<span id="cb57-511"><a href="#cb57-511" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-512"><a href="#cb57-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-513"><a href="#cb57-513" aria-hidden="true" tabindex="-1"></a>根据假设检验结果，p值不显著，且R^2^值差异仅为0.77%。因此，不同模型之间的R^2^值差异不具有统计学意义。</span>
+<span id="cb57-514"><a href="#cb57-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-515"><a href="#cb57-515" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 贝叶斯</span></span>
+<span id="cb57-516"><a href="#cb57-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-517"><a href="#cb57-517" aria-hidden="true" tabindex="-1"></a><span class="fu">##### 随机截距模型</span></span>
+<span id="cb57-518"><a href="#cb57-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-519"><a href="#cb57-519" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`tidyposterior`</span>包中的<span class="in">`perf_mod()`</span>函数可以建立贝叶斯模型，并将其与重采样统计量拟合。</span>
+<span id="cb57-520"><a href="#cb57-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-523"><a href="#cb57-523" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-524"><a href="#cb57-524" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bayes_1</span></span>
+<span id="cb57-525"><a href="#cb57-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-526"><a href="#cb57-526" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyposterior"</span>, <span class="st">"rstanarm"</span>)</span>
+<span id="cb57-527"><a href="#cb57-527" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> packages) {</span>
+<span id="cb57-528"><a href="#cb57-528" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb57-529"><a href="#cb57-529" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-530"><a href="#cb57-530" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-531"><a href="#cb57-531" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-532"><a href="#cb57-532" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-533"><a href="#cb57-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-534"><a href="#cb57-534" aria-hidden="true" tabindex="-1"></a><span class="co"># 建立贝叶斯先验模型--------------------------------------------------------</span></span>
+<span id="cb57-535"><a href="#cb57-535" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="ot">&lt;-</span></span>
+<span id="cb57-536"><a href="#cb57-536" aria-hidden="true" tabindex="-1"></a>  four_models <span class="sc">|&gt;</span></span>
+<span id="cb57-537"><a href="#cb57-537" aria-hidden="true" tabindex="-1"></a>  <span class="fu">perf_mod</span>(</span>
+<span id="cb57-538"><a href="#cb57-538" aria-hidden="true" tabindex="-1"></a>    <span class="at">metric =</span> <span class="st">"rsq"</span>,</span>
+<span id="cb57-539"><a href="#cb57-539" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior_intercept =</span> rstanarm<span class="sc">::</span><span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">1</span>), <span class="co"># 指定拟合模型时用于截距项的先验分布</span></span>
+<span id="cb57-540"><a href="#cb57-540" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb57-541"><a href="#cb57-541" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb57-542"><a href="#cb57-542" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb57-543"><a href="#cb57-543" aria-hidden="true" tabindex="-1"></a>    <span class="at">refresh =</span> <span class="dv">0</span> <span class="co"># 不显示进度条</span></span>
+<span id="cb57-544"><a href="#cb57-544" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-545"><a href="#cb57-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-546"><a href="#cb57-546" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取模型后验信息-----------------------------------------------------------</span></span>
+<span id="cb57-547"><a href="#cb57-547" aria-hidden="true" tabindex="-1"></a>model_post <span class="ot">&lt;-</span></span>
+<span id="cb57-548"><a href="#cb57-548" aria-hidden="true" tabindex="-1"></a>  rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb57-549"><a href="#cb57-549" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">seed =</span> <span class="dv">1103</span>)</span>
+<span id="cb57-550"><a href="#cb57-550" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-551"><a href="#cb57-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-554"><a href="#cb57-554" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-555"><a href="#cb57-555" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-bayes_1</span></span>
+<span id="cb57-556"><a href="#cb57-556" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 后验分布</span></span>
+<span id="cb57-557"><a href="#cb57-557" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-558"><a href="#cb57-558" aria-hidden="true" tabindex="-1"></a>model_post <span class="sc">|&gt;</span></span>
+<span id="cb57-559"><a href="#cb57-559" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(model)) <span class="sc">|&gt;</span> <span class="co"># 对模型名称进行排序</span></span>
+<span id="cb57-560"><a href="#cb57-560" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior)) <span class="sc">+</span></span>
+<span id="cb57-561"><a href="#cb57-561" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb57-562"><a href="#cb57-562" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> model, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb57-563"><a href="#cb57-563" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb57-564"><a href="#cb57-564" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-565"><a href="#cb57-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-566"><a href="#cb57-566" aria-hidden="true" tabindex="-1"></a>@fig-bayes_1 和 @fig-bayes_2 分别展示了不同模型的平均R^2^值的估计概率分布和置信区间。可以看出，各个模型的后验分布有所重叠，尤其是三个线性模型之间，说明不同模型之间的R^2^值差异不具有统计学意义。</span>
+<span id="cb57-567"><a href="#cb57-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-570"><a href="#cb57-570" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-571"><a href="#cb57-571" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-bayes_2</span></span>
+<span id="cb57-572"><a href="#cb57-572" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 后验分布的置信区间</span></span>
+<span id="cb57-573"><a href="#cb57-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-574"><a href="#cb57-574" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb57-575"><a href="#cb57-575" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>() <span class="sc">+</span></span>
+<span id="cb57-576"><a href="#cb57-576" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb57-577"><a href="#cb57-577" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb57-578"><a href="#cb57-578" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-579"><a href="#cb57-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-580"><a href="#cb57-580" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`contrast_models()`</span>函数对不同模型的R^2^差异的后验分布进行比较。</span>
+<span id="cb57-581"><a href="#cb57-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-584"><a href="#cb57-584" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-585"><a href="#cb57-585" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-bayes_3</span></span>
+<span id="cb57-586"><a href="#cb57-586" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 决定系数差异的后验分布</span></span>
+<span id="cb57-587"><a href="#cb57-587" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-588"><a href="#cb57-588" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="ot">&lt;-</span></span>
+<span id="cb57-589"><a href="#cb57-589" aria-hidden="true" tabindex="-1"></a>  rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb57-590"><a href="#cb57-590" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contrast_models</span>(</span>
+<span id="cb57-591"><a href="#cb57-591" aria-hidden="true" tabindex="-1"></a>    <span class="at">list_1 =</span> <span class="st">"splines_lm"</span>,</span>
+<span id="cb57-592"><a href="#cb57-592" aria-hidden="true" tabindex="-1"></a>    <span class="at">list_2 =</span> <span class="st">"basic_lm"</span>,</span>
+<span id="cb57-593"><a href="#cb57-593" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">123</span></span>
+<span id="cb57-594"><a href="#cb57-594" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-595"><a href="#cb57-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-596"><a href="#cb57-596" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="sc">|&gt;</span></span>
+<span id="cb57-597"><a href="#cb57-597" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-598"><a href="#cb57-598" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> difference)) <span class="sc">+</span></span>
+<span id="cb57-599"><a href="#cb57-599" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb57-600"><a href="#cb57-600" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>)</span>
+<span id="cb57-601"><a href="#cb57-601" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-602"><a href="#cb57-602" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-603"><a href="#cb57-603" aria-hidden="true" tabindex="-1"></a>如 @fig-bayes_3 所示，不同模型之间的R^2^值差异的后验分布均值接近于0，且置信区间包含0，说明不同模型之间的R^2^值差异不具有统计学意义。可以进一步使用<span class="in">`summary`</span>函数计算分布的平均值以及可信区间。其中，<span class="in">`probability`</span>表示差异大于0的概率，<span class="in">`mean`</span>表示差异的平均值。</span>
+<span id="cb57-604"><a href="#cb57-604" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-607"><a href="#cb57-607" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-608"><a href="#cb57-608" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bayes_2</span></span>
+<span id="cb57-609"><a href="#cb57-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-610"><a href="#cb57-610" aria-hidden="true" tabindex="-1"></a>rsq_diff <span class="sc">|&gt;</span></span>
+<span id="cb57-611"><a href="#cb57-611" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb57-612"><a href="#cb57-612" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-613"><a href="#cb57-613" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-616"><a href="#cb57-616" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-617"><a href="#cb57-617" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-bayes_4</span></span>
+<span id="cb57-618"><a href="#cb57-618" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 效应大小为 2% 的实际等效概率</span></span>
+<span id="cb57-619"><a href="#cb57-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-620"><a href="#cb57-620" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="sc">|&gt;</span></span>
+<span id="cb57-621"><a href="#cb57-621" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">"ROPE"</span>, <span class="at">size =</span> <span class="fl">0.02</span>) <span class="sc">+</span></span>
+<span id="cb57-622"><a href="#cb57-622" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow)) <span class="sc">+</span></span>
+<span id="cb57-623"><a href="#cb57-623" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb57-624"><a href="#cb57-624" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-625"><a href="#cb57-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-626"><a href="#cb57-626" aria-hidden="true" tabindex="-1"></a>:::callout-tip</span>
+<span id="cb57-627"><a href="#cb57-627" aria-hidden="true" tabindex="-1"></a>重采样的次数越多，后验分布的形状越接近于正态分布。因此，可以通过增加重采样次数来提高模型的稳定性。</span>
+<span id="cb57-628"><a href="#cb57-628" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb57-629"><a href="#cb57-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-630"><a href="#cb57-630" aria-hidden="true" tabindex="-1"></a><span class="fu">## 模型参数调优</span></span>
+<span id="cb57-631"><a href="#cb57-631" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
