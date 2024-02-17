@@ -424,4 +424,145 @@ four_models |>
 
 由 @fig-model_1 可以看出，随机森林模型的R^2^值最高，且随着模型复杂度的增加，R^2^值也在增加，说明线性模型有细微的改进。
 
-### 比较重采样方法的性能
+### 比较重采样的性能统计
+
+在不同的线性模型之间，R^2^值的差异并不大。但是，这种差异是否具有统计学意义仍需进一步检验。
+
+#### 假设检验
+
+可以用配对t检验方法检验不同模型之间的R^2^值差异是否具有统计学意义。
+
+```{r}
+#| label: model_5
+
+rsq_indiv_estimates <-
+  four_models |>
+  collect_metrics(summarize = FALSE) |> # 提取模型性能指标
+  filter(.metric == "rsq") # 提取R^2^值
+
+rsq_wider <-
+  rsq_indiv_estimates |>
+  select(wflow_id, .estimate, id) |>
+  pivot_wider(id_cols = "id", names_from = "wflow_id", values_from = ".estimate")
+
+corrr::correlate(rsq_wider %>% select(-id), quiet = TRUE) # 计算R^2^值的相关系数
+```
+
+```{r}
+#| label: paired_t_test
+
+# 基本模型和交互模型-------------------------------------------------------
+rsq_wider |>
+  with(t.test(splines_lm, basic_lm, paired = TRUE)) |>
+  tidy() |>
+  select(estimate, p.value, starts_with("conf")) # 提取估计值、p值和置信区间
+```
+
+根据假设检验结果，p值不显著，且R^2^值差异仅为0.77%。因此，不同模型之间的R^2^值差异不具有统计学意义。
+
+#### 贝叶斯
+
+##### 随机截距模型
+
+使用`tidyposterior`包中的`perf_mod()`函数可以建立贝叶斯模型，并将其与重采样统计量拟合。
+
+```{r}
+#| label: bayes_1
+
+packages <- c("tidyposterior", "rstanarm")
+for (pkg in packages) {
+  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    install.packages(pkg, dependencies = TRUE)
+    require(pkg, character.only = TRUE, quietly = TRUE)
+  }
+}
+
+# 建立贝叶斯先验模型--------------------------------------------------------
+rsq_anova <-
+  four_models |>
+  perf_mod(
+    metric = "rsq",
+    prior_intercept = rstanarm::student_t(df = 1), # 指定拟合模型时用于截距项的先验分布
+    chains = 4,
+    iter = 5000,
+    seed = 123,
+    refresh = 0 # 不显示进度条
+  )
+
+# 提取模型后验信息-----------------------------------------------------------
+model_post <-
+  rsq_anova |>
+  tidy(seed = 1103)
+```
+
+```{r}
+#| label: fig-bayes_1
+#| fig-cap: 后验分布
+
+model_post |>
+  mutate(model = forcats::fct_inorder(model)) |> # 对模型名称进行排序
+  ggplot(aes(x = posterior)) +
+  geom_histogram(bins = 50, color = "white", fill = "blue", alpha = 0.4) +
+  facet_wrap(~ model, ncol = 1) +
+  theme_bw()
+```
+
+@fig-bayes_1 和 @fig-bayes_2 分别展示了不同模型的平均R^2^值的估计概率分布和置信区间。可以看出，各个模型的后验分布有所重叠，尤其是三个线性模型之间，说明不同模型之间的R^2^值差异不具有统计学意义。
+
+```{r}
+#| label: fig-bayes_2
+#| fig-cap: 后验分布的置信区间
+
+rsq_anova |>
+  autoplot() +
+  geom_text_repel(aes(label = workflow), nudge_x = 1/8, nudge_y = 1/100) +
+  theme(legend.position = "none")
+```
+
+使用`contrast_models()`函数对不同模型的R^2^差异的后验分布进行比较。
+
+```{r}
+#| label: fig-bayes_3
+#| fig-cap: 决定系数差异的后验分布
+
+rsq_diff <-
+  rsq_anova |>
+  contrast_models(
+    list_1 = "splines_lm",
+    list_2 = "basic_lm",
+    seed = 123
+  )
+
+rsq_diff |>
+  as_tibble() |>
+  ggplot(aes(x = difference)) +
+  geom_vline(xintercept = 0, lty = 2) + 
+  geom_histogram(bins = 50, color = "white", fill = "red", alpha = 0.4)
+```
+
+如 @fig-bayes_3 所示，不同模型之间的R^2^值差异的后验分布均值接近于0，且置信区间包含0，说明不同模型之间的R^2^值差异不具有统计学意义。可以进一步使用`summary`函数计算分布的平均值以及可信区间。其中，`probability`表示差异大于0的概率，`mean`表示差异的平均值。
+
+```{r}
+#| label: bayes_2
+
+rsq_diff |>
+  summary()
+```
+
+```{r}
+#| label: fig-bayes_4
+#| fig-cap: 效应大小为 2% 的实际等效概率
+
+rsq_anova |>
+  autoplot(type = "ROPE", size = 0.02) +
+  geom_text_repel(aes(label = workflow)) +
+  theme(legend.position = "none")
+```
+
+:::callout-tip
+重采样的次数越多，后验分布的形状越接近于正态分布。因此，可以通过增加重采样次数来提高模型的稳定性。
+:::
+
+## 模型参数调优
+
+
