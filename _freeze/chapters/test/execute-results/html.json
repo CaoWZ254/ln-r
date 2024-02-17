@@ -1,0 +1,17 @@
+{
+  "hash": "224ee79843db95ec35986004398b2473",
+  "result": {
+    "engine": "knitr",
+    "markdown": "::: {.cell}\n\n```{.r .cell-code}\n# 这是一个R语言的示例代码段\n# 定义一个函数来计算阶乘\nfactorial <- function(n) {\n  if (n <= 1) {\n    return(1)\n  } else {\n    return(n * factorial(n - 1))\n  }\n}\n\n# 创建一个向量\nmy_vector <- c(1, 2, 3, 4, 5)\n\n# 使用for循环打印向量中的元素\nfor (num in my_vector) {\n  print(num)\n}\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n```\n\n\n:::\n\n```{.r .cell-code}\n# 定义一个字符串变量\nmessage <- \"Hello, World!\"\n\n# 打印出字符串\nmessage |>\n  print()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"Hello, World!\"\n```\n\n\n:::\n:::\n",
+    "supporting": [
+      "test_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
