@@ -5,6 +5,8 @@ project:
 
 lang: zh
 
+highlight-style: a11y
+
 book:
   title: "R语言学习笔记"
   author: "一把Fei刀"
