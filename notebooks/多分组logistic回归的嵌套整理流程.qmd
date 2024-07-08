@@ -1,0 +1,60 @@
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+
+```{r}
+#| label: data
+
+rm(list = ls())
+data("ames")
+```
+
+```{r}
+#| label: 嵌套
+
+ames |>
+  mutate(Overall_Cond = fct_relevel(Overall_Cond, "Very_Poor")) |>
+  nest(data = -MS_Zoning) -> nested_data
+```
+
+
+```{r}
+#| label: 建模
+
+# model ----
+model <- multinom_reg() |>
+  set_engine("nnet")
+
+# formula ----
+formula <- as.formula("Overall_Cond ~ Year_Built + Gr_Liv_Area")
+
+# recipe(preprocess) ----
+prep <- recipe(formula = formula, data = ames) |>
+  step_dummy(all_nominal(), -all_outcomes()) |>
+  step_normalize(all_predictors()) |>
+  prep()
+```
+
+```{r}
+#| label: 应用
+
+nested_data |>
+  mutate(tidy = map(data, \(data) {
+    model |>
+      fit(formula = formula,
+          data = prep |>
+            bake(data)) |>
+      tidy(conf.int = TRUE)
+  })) -> nested_data
+
+nested_data |>
+  mutate(tidy = map(tidy, ~filter(., term != "(Intercept)"))) |>
+  select(-data) |>
+  unnest(tidy) -> result
+```
+

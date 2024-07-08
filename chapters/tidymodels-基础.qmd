@@ -377,7 +377,7 @@ load("../data/tidymodels_0103.rda")
 #| eval: false
 
 linear_reg() |>
-  set_engine("lm") -> lm_workflow
+  set_engine("lm") -> lm_model
 ```
 
 ```{r}

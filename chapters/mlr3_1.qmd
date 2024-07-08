@@ -1,0 +1,43 @@
+---
+title: "mlr3-1"
+author: "一把Fei刀"
+date: 2024-0409
+date-modified: last-modified
+number-sections: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse) # 代码风格
+library(knitr) # 用于输出
+library(reticulate) # 调用python
+library(gt) # 输出表格
+library(gtsummary)
+library(mlr3verse)
+library(correlationfunnel)
+```
+
+```{r}
+#| label: model_01
+
+rm(list = ls())
+
+data("mtcars")
+
+mtcars_subset = subset(mtcars, select = c("mpg", "cyl", "disp"))
+
+tsk_mtcars = as_task_regr(mtcars_subset, target = "mpg", id = "cars")
+
+autoplot(tsk_mtcars, type = "pairs")
+
+mtcars_subset |>
+  binarize() -> mtcars_bin
+
+mtcars_bin |>
+  correlate(target = "mpg__-Inf_15.425") |>
+  plot_correlation_funnel(interactive = FALSE)
+```
+
+
+

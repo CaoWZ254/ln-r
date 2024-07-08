@@ -4,10 +4,6 @@ author: "一把Fei刀"
 date: 2024-2-11
 date-modified: last-modified
 number-sections: true
-notebook-view: 
-  - notebook: "../notebooks/tidymodels_2.qmd"
-    title: "完整代码笔记本"
-notebook-links: global
 ---
 
 ```{r}
