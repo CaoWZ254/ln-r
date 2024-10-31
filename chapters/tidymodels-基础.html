@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="一把Fei刀">
 
-<title>R语言学习笔记 - 2&nbsp; tidymodels-基础</title>
+<title>2&nbsp; tidymodels-基础 – R语言学习笔记</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -128,13 +128,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/tidymodels-基础.html">tidymodels</a></li><li class="breadcrumb-item"><a href="../chapters/tidymodels-基础.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">tidymodels-基础</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -167,9 +167,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">tidymodels</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="切換部分">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -184,6 +184,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../chapters/tidymodels-进阶.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">tidymodels-进阶</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">统计分析小tips</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/四分位数低于检出限的表格制作方法.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">四分位数低于检出限的表格制作方法</span></span></a>
   </div>
 </li>
       </ul>
@@ -258,16 +275,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
     <div>
-    <div class="quarto-title-meta-heading">发布日期</div>
+    <div class="quarto-title-meta-heading">发布于</div>
     <div class="quarto-title-meta-contents">
       <p class="date">2024年2月5日</p>
     </div>
   </div>
   
     <div>
-    <div class="quarto-title-meta-heading">修改的</div>
+    <div class="quarto-title-meta-heading">修改于</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024年2月17日</p>
+      <p class="date-modified">2024年10月31日</p>
     </div>
   </div>
     
@@ -366,10 +383,10 @@ F -.-&gt; C
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig_0201</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-0201" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-0201" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-0201-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-0201-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="tidymodels-基础_files/figure-html/fig-0201-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-0201-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="图&nbsp;2.1: 销售价格（美元）"><img src="tidymodels-基础_files/figure-html/fig-0201-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-0201-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.1: 销售价格（美元）
@@ -392,10 +409,10 @@ F -.-&gt; C
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig_0202</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-0202" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-0202" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-0202-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-0202-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="tidymodels-基础_files/figure-html/fig-0202-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-0202-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="图&nbsp;2.2: 对数变换后的销售价格（美元）"><img src="tidymodels-基础_files/figure-html/fig-0202-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-0202-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.2: 对数变换后的销售价格（美元）
@@ -488,10 +505,10 @@ F -.-&gt; C
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>fig_0203</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-0203" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-0203" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-0203-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-0203-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="tidymodels-基础_files/figure-html/fig-0203-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-0203-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="图&nbsp;2.3: 房屋销售价格分布(log)，虚线代表四分位数"><img src="tidymodels-基础_files/figure-html/fig-0203-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-0203-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.3: 房屋销售价格分布(log)，虚线代表四分位数
@@ -706,7 +723,6 @@ Latitude       2.781713  0.1816642  15.31239 1.639312e-50</code></pre>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  gtsummary<span class="sc">::</span><span class="fu">tbl_regression</span>() <span class="co"># 生成模型摘要信息</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div>
 <div id="nhnzqqzgeq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#nhnzqqzgeq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1146,39 +1162,47 @@ Latitude       2.781713  0.1816642  15.31239 1.639312e-50</code></pre>
 #nhnzqqzgeq .gt_indent_5 {
   text-indent: 25px;
 }
+
+#nhnzqqzgeq .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#nhnzqqzgeq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_col_headings">
-<th id="<strong>Characteristic</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="<strong>Beta</strong>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Beta</strong></th>
-<th id="<strong>95% CI</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
-<th id="<strong>p-value</strong>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
+<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="estimate" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Beta</strong></th>
+<th id="conf.low" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="p.value" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">Longitude</td>
 <td class="gt_row gt_center" headers="estimate">-2.0</td>
-<td class="gt_row gt_center" headers="ci">-2.3, -1.8</td>
+<td class="gt_row gt_center" headers="conf.low">-2.3, -1.8</td>
 <td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">Latitude</td>
 <td class="gt_row gt_center" headers="estimate">2.8</td>
-<td class="gt_row gt_center" headers="ci">2.4, 3.1</td>
+<td class="gt_row gt_center" headers="conf.low">2.4, 3.1</td>
 <td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
 <tr class="odd">
-<td colspan="4" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> CI = Confidence Interval</td>
+<td colspan="4" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> CI = Confidence Interval</td>
 </tr>
 </tfoot>
 
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -1272,7 +1296,7 @@ Latitude       2.781713  0.1816642  15.31239 1.639312e-50</code></pre>
 <details open="" class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="ot">-&gt;</span> lm_workflow</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="ot">-&gt;</span> lm_model</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -1300,7 +1324,7 @@ Computational engine: lm </code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-注释
+注记
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1464,10 +1488,10 @@ Coefficients:
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lmer"</span>) <span class="ot">-&gt;</span> multilevel_spec <span class="co"># lmer是lme4包中的函数，用于拟合线性混合效应模型</span></span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> distance, <span class="at">predictors =</span> <span class="fu">c</span>(Sex, age, Subject)) <span class="sc">|&gt;</span> </span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multilevel_spec, </span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> distance, <span class="at">predictors =</span> <span class="fu">c</span>(Sex, age, Subject)) <span class="sc">|&gt;</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multilevel_spec,</span>
 <span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> distance <span class="sc">~</span> Sex <span class="sc">+</span> (age <span class="sc">|</span> Subject)) <span class="ot">-&gt;</span> multilevel_workflow <span class="co"># age | Subject表示age是Subject的随机效应</span></span>
 <span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>multilevel_workflow <span class="sc">|&gt;</span></span>
@@ -1512,7 +1536,7 @@ Fixed Effects:
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> <span class="fu">c</span>(fustat, futime), <span class="at">predictors =</span> <span class="fu">c</span>(age, rx)) <span class="sc">|&gt;</span></span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(parametric_spec, </span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(parametric_spec,</span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> <span class="fu">Surv</span>(futime, fustat) <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">strata</span>(rx)) <span class="ot">-&gt;</span> parametric_workflow</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>parametric_workflow <span class="sc">|&gt;</span></span>
@@ -1709,14 +1733,14 @@ Coefficients:
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
-  id               .pred  .row Sale_Price .config             
-  &lt;chr&gt;            &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;               
-1 train/test split  5.22     2       5.02 Preprocessor1_Model1
-2 train/test split  5.22     3       5.24 Preprocessor1_Model1
-3 train/test split  5.28     5       5.28 Preprocessor1_Model1
-4 train/test split  5.24    28       5.06 Preprocessor1_Model1
-5 train/test split  5.31    39       5.60 Preprocessor1_Model1
-6 train/test split  5.31    44       5.33 Preprocessor1_Model1</code></pre>
+  .pred id                .row Sale_Price .config             
+  &lt;dbl&gt; &lt;chr&gt;            &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;               
+1  5.22 train/test split     2       5.02 Preprocessor1_Model1
+2  5.22 train/test split     3       5.24 Preprocessor1_Model1
+3  5.28 train/test split     5       5.28 Preprocessor1_Model1
+4  5.24 train/test split    28       5.06 Preprocessor1_Model1
+5  5.31 train/test split    39       5.60 Preprocessor1_Model1
+6  5.31 train/test split    44       5.33 Preprocessor1_Model1</code></pre>
 </div>
 </div>
 </section>
@@ -1882,19 +1906,19 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_train, <span class="fu">aes</span>(<span class="at">x =</span> Gr_Liv_Area, <span class="at">y =</span> <span class="dv">10</span><span class="sc">^</span>Sale_Price)) <span class="sc">+</span> </span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Bldg_Type) <span class="sc">+</span> </span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span> </span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> </span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_train, <span class="fu">aes</span>(<span class="at">x =</span> Gr_Liv_Area, <span class="at">y =</span> <span class="dv">10</span><span class="sc">^</span>Sale_Price)) <span class="sc">+</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Bldg_Type) <span class="sc">+</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
 <span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Gross Living Area"</span>, <span class="at">y =</span> <span class="st">"Sale Price (USD)"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-ames-interact" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-ames-interact" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ames-interact-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-ames-interact-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="tidymodels-基础_files/figure-html/fig-ames-interact-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-ames-interact-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="图&nbsp;2.4: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）"><img src="tidymodels-基础_files/figure-html/fig-ames-interact-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ames-interact-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.4: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）
@@ -1957,10 +1981,10 @@ Computational engine: lm </code></pre>
 <span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>( <span class="fu">plot_smoother</span>(<span class="dv">2</span>) <span class="sc">+</span> <span class="fu">plot_smoother</span>(<span class="dv">5</span>) ) <span class="sc">/</span> ( <span class="fu">plot_smoother</span>(<span class="dv">20</span>) <span class="sc">+</span> <span class="fu">plot_smoother</span>(<span class="dv">100</span>) ) <span class="co"># 绘制不同自由度的样条函数</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-ames-spline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-ames-spline" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ames-spline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-ames-spline-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5"><img src="tidymodels-基础_files/figure-html/fig-ames-spline-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-ames-spline-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="图&nbsp;2.5: 销售价格与纬度的关系"><img src="tidymodels-基础_files/figure-html/fig-ames-spline-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ames-spline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.5: 销售价格与纬度的关系
@@ -1977,7 +2001,7 @@ Computational engine: lm </code></pre>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> ames_train) <span class="sc">|&gt;</span></span>
 <span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span></span>
-<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) <span class="sc">|&gt;</span></span>
 <span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, <span class="at">deg_free =</span> <span class="dv">20</span>) <span class="co"># 创建样条函数，自由度为20</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -2066,7 +2090,7 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span></span>
 <span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>         Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">|&gt;</span></span>
 <span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>, <span class="at">id =</span> <span class="st">"my_id"</span>) <span class="sc">|&gt;</span> <span class="co"># 指定id参数</span></span>
@@ -2229,17 +2253,17 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_test_results, <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_test_results, <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span></span>
 <span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="co"># 添加对角线</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
 <span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Predicted Sale Price (log10)"</span>, <span class="at">x =</span> <span class="st">"Sale Price (log10)"</span>) <span class="sc">+</span></span>
 <span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>() <span class="co"># 使x轴和y轴的刻度一致</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-yardstick_01" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-yardstick_01" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-yardstick_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-yardstick_01-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-6" data-gallery="quarto-lightbox-gallery-6"><img src="tidymodels-基础_files/figure-html/fig-yardstick_01-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-yardstick_01-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="图&nbsp;2.6: 预测值和实际值的关系(log10)"><img src="tidymodels-基础_files/figure-html/fig-yardstick_01-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yardstick_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.6: 预测值和实际值的关系(log10)
@@ -2411,10 +2435,10 @@ Prediction Class1 Class2
 <span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-yardstick_02" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-yardstick_02" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-yardstick_02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-yardstick_02-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-7" data-gallery="quarto-lightbox-gallery-7"><img src="tidymodels-基础_files/figure-html/fig-yardstick_02-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-yardstick_02-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="图&nbsp;2.7: ROC曲线"><img src="tidymodels-基础_files/figure-html/fig-yardstick_02-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yardstick_02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.7: ROC曲线
@@ -2511,10 +2535,10 @@ Prediction Class1 Class2
 <span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-yardstick_03" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-yardstick_03" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-yardstick_03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tidymodels-基础_files/figure-html/fig-yardstick_03-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-8" data-gallery="quarto-lightbox-gallery-8"><img src="tidymodels-基础_files/figure-html/fig-yardstick_03-1.png" class="img-fluid figure-img" width="672"></a>
+<a href="tidymodels-基础_files/figure-html/fig-yardstick_03-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="图&nbsp;2.8: 分组ROC曲线"><img src="tidymodels-基础_files/figure-html/fig-yardstick_03-1.png" class="img-fluid figure-img" width="672"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yardstick_03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 图&nbsp;2.8: 分组ROC曲线
@@ -2527,16 +2551,6 @@ Prediction Class1 Class2
 
 <!-- -->
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">图&nbsp;2.1: 销售价格（美元）</span>
-<span class="glightbox-desc lightbox-desc-2">图&nbsp;2.2: 对数变换后的销售价格（美元）</span>
-<span class="glightbox-desc lightbox-desc-3">图&nbsp;2.3: 房屋销售价格分布(log)，虚线代表四分位数</span>
-<span class="glightbox-desc lightbox-desc-4">图&nbsp;2.4: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）</span>
-<span class="glightbox-desc lightbox-desc-5">图&nbsp;2.5: 销售价格与纬度的关系</span>
-<span class="glightbox-desc lightbox-desc-6">图&nbsp;2.6: 预测值和实际值的关系(log10)</span>
-<span class="glightbox-desc lightbox-desc-7">图&nbsp;2.7: ROC曲线</span>
-<span class="glightbox-desc lightbox-desc-8">图&nbsp;2.8: 分组ROC曲线</span>
-</div>
 </section>
 </section>
 
@@ -2720,18 +2734,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -2763,7 +2766,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -2815,6 +2840,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -2849,7 +2892,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -3514,7 +3561,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-429"><a href="#cb135-429" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb135-430"><a href="#cb135-430" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-431"><a href="#cb135-431" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb135-432"><a href="#cb135-432" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="ot">-&gt;</span> lm_workflow</span>
+<span id="cb135-432"><a href="#cb135-432" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="ot">-&gt;</span> lm_model</span>
 <span id="cb135-433"><a href="#cb135-433" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-434"><a href="#cb135-434" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-437"><a href="#cb135-437" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -3607,10 +3654,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-536"><a href="#cb135-536" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-537"><a href="#cb135-537" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb135-538"><a href="#cb135-538" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lmer"</span>) <span class="ot">-&gt;</span> multilevel_spec <span class="co"># lmer是lme4包中的函数，用于拟合线性混合效应模型</span></span>
-<span id="cb135-539"><a href="#cb135-539" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb135-539"><a href="#cb135-539" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-540"><a href="#cb135-540" aria-hidden="true" tabindex="-1"></a><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb135-541"><a href="#cb135-541" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> distance, <span class="at">predictors =</span> <span class="fu">c</span>(Sex, age, Subject)) <span class="sc">|&gt;</span> </span>
-<span id="cb135-542"><a href="#cb135-542" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multilevel_spec, </span>
+<span id="cb135-541"><a href="#cb135-541" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> distance, <span class="at">predictors =</span> <span class="fu">c</span>(Sex, age, Subject)) <span class="sc">|&gt;</span></span>
+<span id="cb135-542"><a href="#cb135-542" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multilevel_spec,</span>
 <span id="cb135-543"><a href="#cb135-543" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> distance <span class="sc">~</span> Sex <span class="sc">+</span> (age <span class="sc">|</span> Subject)) <span class="ot">-&gt;</span> multilevel_workflow <span class="co"># age | Subject表示age是Subject的随机效应</span></span>
 <span id="cb135-544"><a href="#cb135-544" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-545"><a href="#cb135-545" aria-hidden="true" tabindex="-1"></a>multilevel_workflow <span class="sc">|&gt;</span></span>
@@ -3632,7 +3679,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-563"><a href="#cb135-563" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-564"><a href="#cb135-564" aria-hidden="true" tabindex="-1"></a><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="cb135-565"><a href="#cb135-565" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> <span class="fu">c</span>(fustat, futime), <span class="at">predictors =</span> <span class="fu">c</span>(age, rx)) <span class="sc">|&gt;</span></span>
-<span id="cb135-566"><a href="#cb135-566" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(parametric_spec, </span>
+<span id="cb135-566"><a href="#cb135-566" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(parametric_spec,</span>
 <span id="cb135-567"><a href="#cb135-567" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> <span class="fu">Surv</span>(futime, fustat) <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">strata</span>(rx)) <span class="ot">-&gt;</span> parametric_workflow</span>
 <span id="cb135-568"><a href="#cb135-568" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-569"><a href="#cb135-569" aria-hidden="true" tabindex="-1"></a>parametric_workflow <span class="sc">|&gt;</span></span>
@@ -3723,12 +3770,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-666"><a href="#cb135-666" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-667"><a href="#cb135-667" aria-hidden="true" tabindex="-1"></a>特征工程指对预测值进行重新格式化，使其更容易被模型有效利用。特征工程的方法一般分为以下几种：</span>
 <span id="cb135-668"><a href="#cb135-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-669"><a href="#cb135-669" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**dummy**，哑变量，将分类变量分为多个哑变量（0-1变量）。</span>
-<span id="cb135-670"><a href="#cb135-670" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**zv**， zero variance，删除方差为0的变量，也就是只有单一值的变量。</span>
-<span id="cb135-671"><a href="#cb135-671" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**impute**，估算，填补缺失值。</span>
-<span id="cb135-672"><a href="#cb135-672" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**decorrelate**，去相关，删除相关性较高的变量。一般使用PCA方法或者VIF方法。</span>
-<span id="cb135-673"><a href="#cb135-673" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**normalize**，标准化，将变量居中并缩放到单位方差。</span>
-<span id="cb135-674"><a href="#cb135-674" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**transform**，转换，将变量转换成更对称的分布。</span>
+<span id="cb135-669"><a href="#cb135-669" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**dummy**，哑变量，将分类变量分为多个哑变量（0-1变量）。</span>
+<span id="cb135-670"><a href="#cb135-670" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**zv**， zero variance，删除方差为0的变量，也就是只有单一值的变量。</span>
+<span id="cb135-671"><a href="#cb135-671" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**impute**，估算，填补缺失值。</span>
+<span id="cb135-672"><a href="#cb135-672" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**decorrelate**，去相关，删除相关性较高的变量。一般使用PCA方法或者VIF方法。</span>
+<span id="cb135-673"><a href="#cb135-673" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**normalize**，标准化，将变量居中并缩放到单位方差。</span>
+<span id="cb135-674"><a href="#cb135-674" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**transform**，转换，将变量转换成更对称的分布。</span>
 <span id="cb135-675"><a href="#cb135-675" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-676"><a href="#cb135-676" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`recipe`</span>包可以把不同的特征工程方法组合在一起，并应用到数据集上。</span>
 <span id="cb135-677"><a href="#cb135-677" aria-hidden="true" tabindex="-1"></a></span>
@@ -3736,10 +3783,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-679"><a href="#cb135-679" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-680"><a href="#cb135-680" aria-hidden="true" tabindex="-1"></a>从<span class="in">`ames`</span>数据集中挑选以下预测因子：</span>
 <span id="cb135-681"><a href="#cb135-681" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-682"><a href="#cb135-682" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`Neighborhood`</span>，分类变量，指房屋所在的社区，有29个水平。</span>
-<span id="cb135-683"><a href="#cb135-683" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`Gr_Liv_Area`</span>，数值变量，指房屋的居住面积。</span>
-<span id="cb135-684"><a href="#cb135-684" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`Year_Built`</span>，数值变量，指房屋建造的年份。</span>
-<span id="cb135-685"><a href="#cb135-685" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span><span class="in">`Bldg_Type`</span>，分类变量，指房屋的类型，有5个水平，分别是<span class="in">`OneFam`</span>，<span class="in">`TwoFmCon`</span>，<span class="in">`Duplex`</span>，<span class="in">`Twnhs`</span>，<span class="in">`TwnhsE`</span>。</span>
+<span id="cb135-682"><a href="#cb135-682" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span><span class="in">`Neighborhood`</span>，分类变量，指房屋所在的社区，有29个水平。</span>
+<span id="cb135-683"><a href="#cb135-683" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span><span class="in">`Gr_Liv_Area`</span>，数值变量，指房屋的居住面积。</span>
+<span id="cb135-684"><a href="#cb135-684" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span><span class="in">`Year_Built`</span>，数值变量，指房屋建造的年份。</span>
+<span id="cb135-685"><a href="#cb135-685" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span><span class="in">`Bldg_Type`</span>，分类变量，指房屋的类型，有5个水平，分别是<span class="in">`OneFam`</span>，<span class="in">`TwoFmCon`</span>，<span class="in">`Duplex`</span>，<span class="in">`Twnhs`</span>，<span class="in">`TwnhsE`</span>。</span>
 <span id="cb135-686"><a href="#cb135-686" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-687"><a href="#cb135-687" aria-hidden="true" tabindex="-1"></a>使用这些预测因子对<span class="in">`Sale_Price`</span>进行预测，公式如下：</span>
 <span id="cb135-688"><a href="#cb135-688" aria-hidden="true" tabindex="-1"></a></span>
@@ -3763,7 +3810,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-710"><a href="#cb135-710" aria-hidden="true" tabindex="-1"></a>simple_ames</span>
 <span id="cb135-711"><a href="#cb135-711" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-712"><a href="#cb135-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-713"><a href="#cb135-713" aria-hidden="true" tabindex="-1"></a>:::callout-tip</span>
+<span id="cb135-713"><a href="#cb135-713" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb135-714"><a href="#cb135-714" aria-hidden="true" tabindex="-1"></a><span class="in">`all_nominal_predictors()`</span>函数用于选择所有的分类变量。</span>
 <span id="cb135-715"><a href="#cb135-715" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-716"><a href="#cb135-716" aria-hidden="true" tabindex="-1"></a><span class="in">`all_numeric_predictors()`</span>函数用于选择所有的数值变量。</span>
@@ -3817,7 +3864,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-770"><a href="#cb135-770" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-771"><a href="#cb135-771" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 定性变量的处理</span></span>
 <span id="cb135-772"><a href="#cb135-772" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-773"><a href="#cb135-773" aria-hidden="true" tabindex="-1"></a>:::callout-tip</span>
+<span id="cb135-773"><a href="#cb135-773" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb135-774"><a href="#cb135-774" aria-hidden="true" tabindex="-1"></a><span class="in">`step_unknown()`</span>函数用于将缺失值转化为专用因子水平。</span>
 <span id="cb135-775"><a href="#cb135-775" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-776"><a href="#cb135-776" aria-hidden="true" tabindex="-1"></a><span class="in">`step_novel()`</span>函数用于将未知的水平转化为新的水平。</span>
@@ -3837,12 +3884,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-792"><a href="#cb135-792" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-ames-interact</span></span>
 <span id="cb135-793"><a href="#cb135-793" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）</span></span>
 <span id="cb135-794"><a href="#cb135-794" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-795"><a href="#cb135-795" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_train, <span class="fu">aes</span>(<span class="at">x =</span> Gr_Liv_Area, <span class="at">y =</span> <span class="dv">10</span><span class="sc">^</span>Sale_Price)) <span class="sc">+</span> </span>
-<span id="cb135-796"><a href="#cb135-796" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb135-797"><a href="#cb135-797" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Bldg_Type) <span class="sc">+</span> </span>
-<span id="cb135-798"><a href="#cb135-798" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span> </span>
-<span id="cb135-799"><a href="#cb135-799" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> </span>
-<span id="cb135-800"><a href="#cb135-800" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
+<span id="cb135-795"><a href="#cb135-795" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_train, <span class="fu">aes</span>(<span class="at">x =</span> Gr_Liv_Area, <span class="at">y =</span> <span class="dv">10</span><span class="sc">^</span>Sale_Price)) <span class="sc">+</span></span>
+<span id="cb135-796"><a href="#cb135-796" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb135-797"><a href="#cb135-797" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Bldg_Type) <span class="sc">+</span></span>
+<span id="cb135-798"><a href="#cb135-798" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
+<span id="cb135-799"><a href="#cb135-799" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb135-800"><a href="#cb135-800" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
 <span id="cb135-801"><a href="#cb135-801" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Gross Living Area"</span>, <span class="at">y =</span> <span class="st">"Sale Price (USD)"</span>)</span>
 <span id="cb135-802"><a href="#cb135-802" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-803"><a href="#cb135-803" aria-hidden="true" tabindex="-1"></a></span>
@@ -3859,7 +3906,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-816"><a href="#cb135-816" aria-hidden="true" tabindex="-1"></a>simple_ames</span>
 <span id="cb135-817"><a href="#cb135-817" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-818"><a href="#cb135-818" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-819"><a href="#cb135-819" aria-hidden="true" tabindex="-1"></a>:::callout-warning</span>
+<span id="cb135-819"><a href="#cb135-819" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
 <span id="cb135-820"><a href="#cb135-820" aria-hidden="true" tabindex="-1"></a>一般来说，交互项需要在创建哑变量后才能创建，否则可能会报错。</span>
 <span id="cb135-821"><a href="#cb135-821" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb135-822"><a href="#cb135-822" aria-hidden="true" tabindex="-1"></a></span>
@@ -3902,7 +3949,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-863"><a href="#cb135-863" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> ames_train) <span class="sc">|&gt;</span></span>
 <span id="cb135-864"><a href="#cb135-864" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb135-865"><a href="#cb135-865" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">|&gt;</span></span>
-<span id="cb135-866"><a href="#cb135-866" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb135-866"><a href="#cb135-866" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb135-867"><a href="#cb135-867" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) <span class="sc">|&gt;</span></span>
 <span id="cb135-868"><a href="#cb135-868" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, <span class="at">deg_free =</span> <span class="dv">20</span>) <span class="co"># 创建样条函数，自由度为20</span></span>
 <span id="cb135-869"><a href="#cb135-869" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -3925,7 +3972,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-888"><a href="#cb135-888" aria-hidden="true" tabindex="-1"></a><span class="fu">step_pca</span>(<span class="fu">matches</span>(<span class="st">"(SF$)|(Gr_Liv)"</span>))</span>
 <span id="cb135-889"><a href="#cb135-889" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-890"><a href="#cb135-890" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-891"><a href="#cb135-891" aria-hidden="true" tabindex="-1"></a>:::callout-tip</span>
+<span id="cb135-891"><a href="#cb135-891" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb135-892"><a href="#cb135-892" aria-hidden="true" tabindex="-1"></a>特征提取的其他方法还包括独立成分分析（ICA），非负矩阵分解（NMF），多维缩放（MDS），均匀流形近似（UMAP），t-分布邻域嵌入（t-SNE）等。</span>
 <span id="cb135-893"><a href="#cb135-893" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb135-894"><a href="#cb135-894" aria-hidden="true" tabindex="-1"></a></span>
@@ -3933,13 +3980,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-896"><a href="#cb135-896" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-897"><a href="#cb135-897" aria-hidden="true" tabindex="-1"></a>类别不平衡问题是指分类问题中不同类别的样本数量差异较大。在这种情况下，模型可能会偏向于预测样本数量较多的类别，而忽略样本数量较少的类别。针对类别不平衡问题，可以采用子采样技术，它通常不会提高整体性能，但可以生成表现更好的预测类概率分布。子采样技术分类如下：</span>
 <span id="cb135-898"><a href="#cb135-898" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-899"><a href="#cb135-899" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>下抽样(Downsampling)：保留少数类样本，对多数类样本进行随机抽样，以平衡频率。</span>
-<span id="cb135-900"><a href="#cb135-900" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>扩大抽样(Upsampling)：合成新的少数类样本，或直接复制少数类样本，以平衡频率。</span>
-<span id="cb135-901"><a href="#cb135-901" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Hybrid：结合上述两种方法。</span>
+<span id="cb135-899"><a href="#cb135-899" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>下抽样(Downsampling)：保留少数类样本，对多数类样本进行随机抽样，以平衡频率。</span>
+<span id="cb135-900"><a href="#cb135-900" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>扩大抽样(Upsampling)：合成新的少数类样本，或直接复制少数类样本，以平衡频率。</span>
+<span id="cb135-901"><a href="#cb135-901" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Hybrid：结合上述两种方法。</span>
 <span id="cb135-902"><a href="#cb135-902" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-903"><a href="#cb135-903" aria-hidden="true" tabindex="-1"></a>在<span class="in">`themis`</span>包中，<span class="in">`step_downsample()`</span>和<span class="in">`step_upsample()`</span>函数可以实现下抽样和扩大抽样。</span>
 <span id="cb135-904"><a href="#cb135-904" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-905"><a href="#cb135-905" aria-hidden="true" tabindex="-1"></a>:::callout-tip</span>
+<span id="cb135-905"><a href="#cb135-905" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb135-906"><a href="#cb135-906" aria-hidden="true" tabindex="-1"></a><span class="in">`step_filter()`</span>函数可以用于删除不需要的样本，如异常值、缺失值等。</span>
 <span id="cb135-907"><a href="#cb135-907" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-908"><a href="#cb135-908" aria-hidden="true" tabindex="-1"></a><span class="in">`step_sample()`</span>函数可以用于随机抽样。</span>
@@ -3953,7 +4000,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-916"><a href="#cb135-916" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-917"><a href="#cb135-917" aria-hidden="true" tabindex="-1"></a>一般变换是指对数据进行一般性的变换，如对数变换、幂变换、指数变换等。在<span class="in">`recipes`</span>包中，<span class="in">`step_log()`</span>、<span class="in">`step_sqrt()`</span>、<span class="in">`step_YeoJohnson()`</span>、<span class="in">`step_boxcox()`</span>等函数可以实现对数变换、平方根变换、Yeo-Johnson变换、Box-Cox变换等。<span class="in">`step_mutate()`</span>函数可以利用已有变量计算并创建新的变量。</span>
 <span id="cb135-918"><a href="#cb135-918" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-919"><a href="#cb135-919" aria-hidden="true" tabindex="-1"></a>:::callout-warning</span>
+<span id="cb135-919"><a href="#cb135-919" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
 <span id="cb135-920"><a href="#cb135-920" aria-hidden="true" tabindex="-1"></a>进行一般变换是，需要格外注意避免数据泄露。转换应该在拆分数据集之前进行。</span>
 <span id="cb135-921"><a href="#cb135-921" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb135-922"><a href="#cb135-922" aria-hidden="true" tabindex="-1"></a></span>
@@ -3972,7 +4019,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-937"><a href="#cb135-937" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-938"><a href="#cb135-938" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: recipe_08</span></span>
 <span id="cb135-939"><a href="#cb135-939" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-940"><a href="#cb135-940" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb135-940"><a href="#cb135-940" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span></span>
 <span id="cb135-941"><a href="#cb135-941" aria-hidden="true" tabindex="-1"></a>         Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">|&gt;</span></span>
 <span id="cb135-942"><a href="#cb135-942" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb135-943"><a href="#cb135-943" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>, <span class="at">id =</span> <span class="st">"my_id"</span>) <span class="sc">|&gt;</span> <span class="co"># 指定id参数</span></span>
@@ -4024,7 +4071,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-995"><a href="#cb135-995" aria-hidden="true" tabindex="-1"></a>ames_recipe <span class="sc">|&gt;</span></span>
 <span id="cb135-996"><a href="#cb135-996" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(address, <span class="at">new_role =</span> <span class="st">"street address"</span>) <span class="co"># 对于已建好的recipe对象，使用update_role()函数来更新变量的角色，在构建recipe对象时，应使用add_role()函数。</span></span>
 <span id="cb135-997"><a href="#cb135-997" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb135-998"><a href="#cb135-998" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb135-998"><a href="#cb135-998" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1001"><a href="#cb135-1001" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1002"><a href="#cb135-1002" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save_tidymodels_0105</span></span>
 <span id="cb135-1003"><a href="#cb135-1003" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -4042,7 +4089,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1017"><a href="#cb135-1017" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/tidymodels_0105.rda"</span>)</span>
 <span id="cb135-1018"><a href="#cb135-1018" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1019"><a href="#cb135-1019" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1020"><a href="#cb135-1020" aria-hidden="true" tabindex="-1"></a>:::callout-important</span>
+<span id="cb135-1020"><a href="#cb135-1020" aria-hidden="true" tabindex="-1"></a>::: callout-important</span>
 <span id="cb135-1021"><a href="#cb135-1021" aria-hidden="true" tabindex="-1"></a>重采样方法是最有效的验证方法。</span>
 <span id="cb135-1022"><a href="#cb135-1022" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb135-1023"><a href="#cb135-1023" aria-hidden="true" tabindex="-1"></a></span>
@@ -4082,14 +4129,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1063"><a href="#cb135-1063" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-yardstick_01</span></span>
 <span id="cb135-1064"><a href="#cb135-1064" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: 预测值和实际值的关系(log10)</span></span>
 <span id="cb135-1065"><a href="#cb135-1065" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1066"><a href="#cb135-1066" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_test_results, <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span> </span>
+<span id="cb135-1066"><a href="#cb135-1066" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_test_results, <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span></span>
 <span id="cb135-1067"><a href="#cb135-1067" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="co"># 添加对角线</span></span>
-<span id="cb135-1068"><a href="#cb135-1068" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb135-1068"><a href="#cb135-1068" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
 <span id="cb135-1069"><a href="#cb135-1069" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Predicted Sale Price (log10)"</span>, <span class="at">x =</span> <span class="st">"Sale Price (log10)"</span>) <span class="sc">+</span></span>
 <span id="cb135-1070"><a href="#cb135-1070" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>() <span class="co"># 使x轴和y轴的刻度一致</span></span>
 <span id="cb135-1071"><a href="#cb135-1071" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1072"><a href="#cb135-1072" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1073"><a href="#cb135-1073" aria-hidden="true" tabindex="-1"></a>由 @fig-yardstick_01 发现，有几个预测值和实际值的偏差较大。使用<span class="in">`rmse()`</span>函数计算均方根误差，<span class="in">`rsq`</span>函数计算R^2，<span class="in">`mae`</span>函数计算平均绝对误差。</span>
+<span id="cb135-1073"><a href="#cb135-1073" aria-hidden="true" tabindex="-1"></a>由 @fig-yardstick_01 发现，有几个预测值和实际值的偏差较大。使用<span class="in">`rmse()`</span>函数计算均方根误差，<span class="in">`rsq`</span>函数计算R\^2，<span class="in">`mae`</span>函数计算平均绝对误差。</span>
 <span id="cb135-1074"><a href="#cb135-1074" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1077"><a href="#cb135-1077" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1078"><a href="#cb135-1078" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_03</span></span>
@@ -4117,7 +4164,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1102"><a href="#cb135-1102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1103"><a href="#cb135-1103" aria-hidden="true" tabindex="-1"></a>对于logistic回归模型，模型性能评估指标有很多，列举如下：</span>
 <span id="cb135-1104"><a href="#cb135-1104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1105"><a href="#cb135-1105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`conf_mat`</span>：混淆矩阵</span>
+<span id="cb135-1105"><a href="#cb135-1105" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`conf_mat`</span>：混淆矩阵</span>
 <span id="cb135-1106"><a href="#cb135-1106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1109"><a href="#cb135-1109" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1110"><a href="#cb135-1110" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_05</span></span>
@@ -4126,7 +4173,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1113"><a href="#cb135-1113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">conf_mat</span>(<span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
 <span id="cb135-1114"><a href="#cb135-1114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1115"><a href="#cb135-1115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1116"><a href="#cb135-1116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`accuracy`</span>：准确率</span>
+<span id="cb135-1116"><a href="#cb135-1116" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`accuracy`</span>：准确率</span>
 <span id="cb135-1117"><a href="#cb135-1117" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1120"><a href="#cb135-1120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1121"><a href="#cb135-1121" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_06</span></span>
@@ -4135,7 +4182,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1124"><a href="#cb135-1124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(<span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
 <span id="cb135-1125"><a href="#cb135-1125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1126"><a href="#cb135-1126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1127"><a href="#cb135-1127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`mcc`</span>：Matthews相关系数</span>
+<span id="cb135-1127"><a href="#cb135-1127" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`mcc`</span>：Matthews相关系数</span>
 <span id="cb135-1128"><a href="#cb135-1128" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1131"><a href="#cb135-1131" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1132"><a href="#cb135-1132" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_07</span></span>
@@ -4144,7 +4191,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1135"><a href="#cb135-1135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mcc</span>(<span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
 <span id="cb135-1136"><a href="#cb135-1136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1137"><a href="#cb135-1137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1138"><a href="#cb135-1138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`f_meas`</span>：F1值，精确率和召回率的调和平均数</span>
+<span id="cb135-1138"><a href="#cb135-1138" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`f_meas`</span>：F1值，精确率和召回率的调和平均数</span>
 <span id="cb135-1139"><a href="#cb135-1139" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1142"><a href="#cb135-1142" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1143"><a href="#cb135-1143" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_08</span></span>
@@ -4153,7 +4200,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1146"><a href="#cb135-1146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f_meas</span>(<span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
 <span id="cb135-1147"><a href="#cb135-1147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1148"><a href="#cb135-1148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1149"><a href="#cb135-1149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`roc_curve`</span>和<span class="in">`roc_auc`</span>：ROC曲线和AUC</span>
+<span id="cb135-1149"><a href="#cb135-1149" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`roc_curve`</span>和<span class="in">`roc_auc`</span>：ROC曲线和AUC</span>
 <span id="cb135-1150"><a href="#cb135-1150" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1153"><a href="#cb135-1153" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1154"><a href="#cb135-1154" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_09</span></span>
@@ -4189,7 +4236,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1188"><a href="#cb135-1188" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1189"><a href="#cb135-1189" aria-hidden="true" tabindex="-1"></a>其他指标函数包括：</span>
 <span id="cb135-1190"><a href="#cb135-1190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1191"><a href="#cb135-1191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`sensitivity`</span>：灵敏度，需要用<span class="in">`estimator`</span>参数指定函数</span>
+<span id="cb135-1191"><a href="#cb135-1191" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`sensitivity`</span>：灵敏度，需要用<span class="in">`estimator`</span>参数指定函数</span>
 <span id="cb135-1192"><a href="#cb135-1192" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1195"><a href="#cb135-1195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1196"><a href="#cb135-1196" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_11</span></span>
@@ -4204,7 +4251,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1205"><a href="#cb135-1205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sensitivity</span>(<span class="at">truth =</span> obs, <span class="at">estimate =</span> pred, <span class="at">estimator =</span> <span class="st">"macro_weighted"</span>) <span class="co"># macro_weighted表示加权宏平均</span></span>
 <span id="cb135-1206"><a href="#cb135-1206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb135-1207"><a href="#cb135-1207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb135-1208"><a href="#cb135-1208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`roc_auc`</span>：多分类模型的AUC，必须向函数提供所有的类别概率列</span>
+<span id="cb135-1208"><a href="#cb135-1208" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`roc_auc`</span>：多分类模型的AUC，必须向函数提供所有的类别概率列</span>
 <span id="cb135-1209"><a href="#cb135-1209" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb135-1212"><a href="#cb135-1212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb135-1213"><a href="#cb135-1213" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: yardstick_12</span></span>
@@ -4224,33 +4271,40 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb135-1229"><a href="#cb135-1229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(obs, VF, F, M, L) <span class="sc">|&gt;</span></span>
 <span id="cb135-1230"><a href="#cb135-1230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span>
 <span id="cb135-1231"><a href="#cb135-1231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","loop":false});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","loop":false});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 

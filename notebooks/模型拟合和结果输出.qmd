@@ -1,0 +1,245 @@
+---
+title: "简单的回归模型结果输出方法"
+author: cwz
+---
+
+```{r}
+#| label: 加载包
+
+# install.packages(c("tidyverse", "tidymodels", "gtsummary"))
+library(tidyverse)
+library(showtext)
+showtext_auto()
+library(gtsummary) # 提供简洁的表格输出
+library(tidymodels) # 提供统一的模型训练和预测接口
+tidymodels_prefer() # 设置tidymodels函数为默认，解决函数冲突问题
+```
+
+# 读取数据
+
+```{r}
+#| label: 示例数据
+
+rm(list = ls())
+data("ames")
+
+head(ames)
+```
+
+# 拟合模型
+
+## 线性模型
+
+```{r}
+#| label: 选择线性回归模型
+
+parsnip_addin() # 打开模型选择界面
+
+### 界面中选择线性回归模型linear_reg(lm)，括号中是模型使用的包名。
+### 然后点击生成代码，得到如下代码。
+### 选择完成后点击done，关闭界面。
+
+linear_reg_lm_spec <-
+  linear_reg() |>
+  set_engine('lm')
+```
+
+```{r}
+#| label: 拟合线性模型并输出结果
+
+# 自变量和因变量，需要协变量时添加到indipendent_vars中或新建covariate变量 -----
+
+indipendent_vars <- c("Neighborhood", 
+                      "Gr_Liv_Area", 
+                      "Year_Built", 
+                      "Bldg_Type")
+dependent_var <- "Sale_Price"
+
+# 模型公式 -----
+
+lm_formula <- as.formula(paste(dependent_var,
+                               "~", 
+                               paste(indipendent_vars, 
+                                     collapse = " + ")))
+
+# 模型配方 -----
+
+### step_*()函数用于数据预处理，如对数变换、哑变量处理等
+
+lm_recipe <- recipe(lm_formula, data = ames) |>
+  step_log(c(Sale_Price, Gr_Liv_Area)) |>
+  step_dummy(all_nominal_predictors())
+
+# 模型工作流 -----
+
+lm_workflow <- workflow() |>
+  add_model(linear_reg_lm_spec) |>
+  add_recipe(lm_recipe)
+
+# 拟合模型 -----
+
+lm_fit <- lm_workflow |>
+  fit(data = ames)
+
+# 提取模型结果 -----
+
+lm_result <- lm_fit |>
+  tidy(conf.int = TRUE)
+
+lm_result
+```
+
+## logistic回归模型
+
+```{r}
+#| label: 选择logistic回归模型
+
+parsnip_addin() # 打开模型选择界面
+
+### 界面中选择逻辑回归模型logistic_reg(glm)，括号中是模型使用的包名。
+### 然后点击生成代码，得到如下代码。
+### 选择完成后点击done，关闭界面。
+
+logistic_reg_glm_spec <-
+  logistic_reg() |>
+  set_engine('glm')
+```
+
+```{r}
+#| label: 拟合逻辑回归模型并输出结果
+
+# 自变量和因变量，需要协变量时添加到indipendent_vars中或新建covariate变量 -----
+
+dependent_var <- "Street"
+indipendent_vars <- c("Gr_Liv_Area", 
+                      "Year_Built")
+
+# 模型公式 -----
+
+glm_formula <- as.formula(paste(dependent_var,
+                                "~", 
+                                paste(indipendent_vars, 
+                                      collapse = " + ")))
+
+# 模型配方 -----
+
+### step_*()函数用于数据预处理，如对数变换、哑变量处理等
+
+glm_recipe <- recipe(glm_formula, data = ames) |>
+  step_log(Gr_Liv_Area) |>
+  step_dummy(all_nominal_predictors())
+
+# 模型工作流 -----
+
+glm_workflow <- workflow() |>
+  add_model(logistic_reg_glm_spec) |>
+  add_recipe(glm_recipe)
+
+# 拟合模型 -----
+
+glm_result <- glm_workflow |>
+  fit(data = ames) |>
+  extract_fit_parsnip() |>
+  tidy(conf.int = TRUE, exponentiate = TRUE)
+```
+
+# 输出表格
+
+```{r}
+#| label: 输出表格_lm
+
+lm_workflow |>
+  fit(data = ames) |>
+  extract_fit_parsnip() |>
+  _$fit |>
+  tbl_regression(include = c("Gr_Liv_Area")) -> lm_tbl
+
+lm_tbl
+```
+
+```{r}
+#| label: 输出表格_glm
+
+glm_workflow |>
+  fit(data = ames) |>
+  extract_fit_parsnip() |>
+  _$fit |>
+  tbl_regression() -> glm_tbl
+
+glm_tbl
+```
+
+# 输出图片
+
+```{r}
+#| label: 输出森林图_lm
+
+# 用gtsummary包自带的plot()函数绘制简单森林图，不能自定义 -----
+
+lm_tbl |>
+  plot() -> lm_fig_simple
+
+# 用ggplot2包绘制自定义森林图 -----
+
+lm_result |>
+  mutate(p = if_else(p.value < 0.05, 
+                     "p < 0.05", 
+                     "p >= 0.05")) |>
+  filter(term %in% c("Gr_Liv_Area")) |>
+  mutate(term = fct_reorder(term, estimate)) |>
+  ggplot(aes(x = estimate, y = term, color = p)) +
+  geom_errorbarh(aes(xmin = conf.low, 
+                     xmax = conf.high),
+                 height = 0.1) +
+  geom_point() +
+  geom_vline(xintercept = 0, 
+             color = "black", 
+             linetype = "dashed", 
+             alpha = 0.8) +
+  theme_bw() +
+  labs(title = "线性回归模型结果",
+       x = "系数估计值",
+       y = "变量名称",
+       color = "显著性水平") +
+  scale_color_manual(labels = c("p < 0.05", "p >= 0.05"),
+                     values = c("red", "black")) -> lm_fig
+
+lm_fig_simple
+lm_fig
+```
+
+```{r}
+#| label: 输出森林图_glm
+
+# 用gtsummary包自带的plot()函数绘制简单森林图，不能自定义 -----
+
+glm_tbl |>
+  plot() -> glm_fig_simple
+
+# 用ggplot2包绘制自定义森林图 -----
+
+glm_result |>
+  # 删除截距行
+  filter(term != "(Intercept)") |>
+  mutate(type = if_else(p.value < 0.05, 
+                        "red", 
+                        "black")) |>
+  ggplot(aes(x = estimate, xmin = conf.low, xmax = conf.high, y = term, color = type)) +
+  geom_errorbarh(height = 0.1) +
+  geom_point(aes(color = type)) +
+  geom_vline(xintercept = 1, 
+             color = "black", 
+             linetype = "dashed", 
+             alpha = 0.8) +
+  theme_bw() +
+  labs(title = "逻辑回归模型结果",
+       x = "log(OR)",
+       color = "显著性水平") +
+  # x轴log变换
+  scale_x_log10() +
+  scale_color_manual(labels = c("p < 0.05", "p >= 0.05"),
+                     values = c("red", "black")) -> glm_fig
+
+glm_fig_simple
+glm_fig
+```

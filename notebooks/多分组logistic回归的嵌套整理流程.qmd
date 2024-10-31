@@ -1,0 +1,74 @@
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+
+```{r}
+#| label: data
+
+rm(list = ls())
+data("ames")
+
+head(ames)
+```
+
+在这个数据集中，可以用猫的颜色`color`来预测猫的领养情况`event`。
+`nest()`函数可以将数据集按照指定的分组变量进行嵌套，这样可以方便地对每个分组进行处理。
+
+```{r}
+#| label: 嵌套
+
+ames |>
+  mutate(Overall_Cond = fct_relevel(Overall_Cond, "Very_Poor")) |> # 将Overall_Cond变量的水平Very_Poor设置为基准水平
+  nest(data = -MS_Zoning) -> nested_data
+```
+
+```{r}
+#| label: 查看数据
+
+nested_data
+
+nested_data$data[[1]]
+```
+
+使用`nest()`后，data列中的每一行都是一个数据框，后续可以对每个数据框进行处理。
+
+```{r}
+#| label: 建模
+
+# model ----
+model <- multinom_reg() |>
+  set_engine("nnet")
+
+# formula ----
+formula <- as.formula("Overall_Cond ~ Year_Built + Gr_Liv_Area")
+
+# recipe(preprocess) ----
+prep <- recipe(formula = formula, data = ames) |>
+  step_dummy(all_nominal(), -all_outcomes()) |>
+  step_normalize(all_predictors()) |>
+  prep()
+```
+
+```{r}
+#| label: 应用
+
+nested_data |>
+  mutate(tidy = map(data, \(data) {
+    model |>
+      fit(formula = formula,
+          data = prep |>
+            bake(data)) |>
+      tidy(conf.int = TRUE)
+  })) -> nested_data
+
+nested_data |>
+  mutate(tidy = map(tidy, ~filter(., term != "(Intercept)"))) |>
+  select(-data) |>
+  unnest(tidy) -> result
+```
+
