@@ -1,0 +1,233 @@
+---
+title: "四分位数低于检出限的表格制作方法"
+code-annotations: hover
+---
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(gt)
+library(gtsummary)
+```
+
+gtsummary包的`tbl_summary()`函数可以生成统计表，但对于检出限较高，表格中四分位数低于检出限的情况，`tbl_summary()`函数无法直接处理。这里提供一种解决方法，可以把低于检出限的四分位数用“<LOD”表示。
+
+```{r}
+#| label: 数据生成
+
+rm(list = ls())
+
+# 创建一个虚拟的数据集，表示50个样本3个物质的检出浓度，并把这50个样本分为病例和对照两组
+set.seed(123)
+
+data <- tibble(
+  group = factor(sample(c("case", "control"), 50, replace = TRUE)), # <1>
+  A = rnorm(50, 0.5, 0.1), # <2>
+  B = rnorm(50, 0.6, 0.1), # <2>
+  C = rnorm(50, 0.7, 0.1) # <2>
+)
+
+# 模拟检出限
+lod <- tibble(
+  name = c("A", "B", "C"),
+  LOD = c(0.5, 0.56, 0.7) # <3>
+)
+```
+1. 病例和对照
+2. 物质A、B、C的浓度
+3. 检出限
+
+
+先用`tbl_summary()`函数生成四分位数统计表，并在分组的基础上添加总体统计信息和p值。
+
+```{r}
+#| label: tbl_summary
+
+summary_table <- data |>
+  tbl_summary(
+    by = group, # <1>
+    statistic = list(all_continuous() ~ "{median}[{p25}, {p75}]", # <2>
+                     all_categorical() ~ "{n} / {N} ({p}%)"), # <2>
+    digits = list(all_continuous() ~ 3) # <3>
+  ) |>
+  add_overall() |> # <4>
+  add_p() # <5>
+```
+1. 按照group分组
+2. 连续变量用四分位数表示，分类变量用频数和百分比表示
+3. 保留三位小数
+4. 添加总体列
+5. 添加差异检验p值
+
+```{r}
+#| label: tbl-1
+
+summary_table
+gt(lod)
+```
+
+统计表中，有多个物质的四分位数低于检出限，且没有检出限列和检出率列。之后可以用`summarise`函数对data手动处理，制作一个用于数据替换和补充的数据框。
+
+```{r}
+#| label: 手搓数据框
+
+# 手搓一个用“<LOD”替换四分位数的数据框----
+summary_lod_1 <- data |>
+  pivot_longer(cols = -group, names_to = "name", values_to = "value") |> # <1>
+  group_by(group, name) |> # <2>
+  summarise(
+    Q1 = quantile(value, 0.25), # <3>
+    Q2 = quantile(value, 0.5), # <3>
+    Q3 = quantile(value, 0.75) # <3>
+  ) |>
+  mutate(across(Q1:Q3, ~round(., 3))) |> # <4>
+  left_join(lod, by = "name") |> # <5>
+  mutate(across(Q1:Q3, ~ case_when( # <6>
+    . < LOD ~ "<LOD", # <6>
+    TRUE ~ as.character(.) # <6>
+  ))) |>
+  mutate(ci = str_glue("{Q2}[{Q1}, {Q3}]")) |> # <7>
+  select(group, name, ci) |> # <8>
+  pivot_wider(names_from = group, values_from = ci) # <9>
+
+summary_lod_1
+
+# 汇总列也需要替换，上述代码不对group分组即可----
+summary_lod_2 <- data |>
+  pivot_longer(cols = -group, names_to = "name", values_to = "value") |>
+  group_by(name) |>
+  summarise(
+    Q1 = quantile(value, 0.25),
+    Q2 = quantile(value, 0.5),
+    Q3 = quantile(value, 0.75)
+  ) |>
+  mutate(across(Q1:Q3, ~round(., 3))) |>
+  left_join(lod, by = "name") |>
+  mutate(across(Q1:Q3, ~ case_when(
+    . < LOD ~ "<LOD",
+    TRUE ~ as.character(.)
+  ))) |>
+  mutate(ci = str_glue("{Q2}[{Q1}, {Q3}]")) |>
+  select(name, ci)
+
+summary_lod_2
+
+# 检出限和检出率列（分组）----
+summary_3 <- data |>
+  pivot_longer(cols = -group, names_to = "name", values_to = "value") |>
+  group_by(group, name) |>
+  summarise(
+    LOD = first(lod$LOD[match(name, lod$name)]), # <10>
+    detect_rate = mean(value > LOD) # <11>
+  ) |>
+  pivot_wider(names_from = group, values_from = detect_rate)  |># <12>
+  rename(det_rate_case = case, det_rate_control = control) # <13>
+
+summary_3
+
+# 检出率列（总体）----
+summary_4 <- data |>
+  pivot_longer(cols = -group, names_to = "name", values_to = "value") |>
+  group_by(name) |>
+  summarise(
+    LOD = first(lod$LOD[match(name, lod$name)]), # <10>
+    detect_rate = mean(value > LOD) # <11>
+  ) |>
+  rename(det_rate = detect_rate)
+
+summary_4
+```
+1. 宽转长，把物质A、B、C的浓度合并到一列
+2. 按照group和name分组
+3. 计算四分位数，分别列在3列中
+4. 保留三位小数
+5. 与检出限数据框lod合并，也就是把检出限加到数据框中
+6. 这句的`case_when`换成`if_else`会报错，因为替换结果是字符型，和数值型的原始值不匹配
+7. 用`str_glue()`函数把四分位数拼接成字符串，其中{}表示引用变量
+8. 保留group和name列（删除Q1、Q2、Q3列）
+9. 宽转长，转换成和`summary_table`表格一样的形式
+10. 用`match()`函数找到对应的检出限
+11. 计算检出率
+12. 宽转长，转换成和`summary_table`表格一样的形式
+13. 重命名列名
+
+在`gtsummary`的表格对象中，有一个`table_body`属性，可以用`$`符号提取，这就是表格的主体部分。可以直接对其进行修改，也可以在`modify_table_body()`函数中修改，其好处是可以用tidyverse的基础函数直接处理。
+以下是用`modify_table_body()`函数修改表格的方法。
+同时也用了`modify_column_unhide`和`modify_header()`函数修改表头，主要负责修改列名和把新添加的列显示出来。
+
+```{r}
+#| label: 数据替换和补充
+
+# 查看表格主体，主要看需要调整的列及其列名与位置关系
+summary_table$table_body
+
+# 数据替换
+summary_table <- summary_table |>
+  modify_table_body(\(x) { # <1>
+    x |>
+      mutate(
+        stat_0 = summary_lod_2$ci, # <2>
+        stat_1 = summary_lod_1$case, # <2>
+        stat_2 = summary_lod_1$control # <2>
+      ) |>
+      mutate(
+        stat_3 = summary_3$det_rate_case, # <3>
+        stat_4 = summary_3$det_rate_control, # <3>
+        stat_5 = summary_4$det_rate, # <3>
+        stat_6 = summary_4$LOD # <3>
+      )
+  }) |>
+  modify_column_unhide( # <4>
+    columns = c(stat_3, stat_4, stat_5) # <4>
+  ) |>
+  modify_header(
+    label = '**Variable**', # <5>
+    stat_0 = '**Total**', # <6>
+    stat_3 = '**Detection Rate (Case)**', # <6>
+    stat_4 = '**Detection Rate (Control)**', # <6>
+    stat_5 = '**Detection Rate (Total)**', # <6>
+    stat_6 = '**LOD**' # <6>
+  ) |>
+  # _$table_body
+  modify_table_body(\(x) {
+    x |>
+      relocate(stat_3, .after = stat_1) |> # <7>
+      relocate(stat_4, .after = stat_2) |> # <7>
+      relocate(stat_5, .after = stat_0) |> # <7>
+      relocate(stat_6, .after = label) # <7>
+  })
+```
+1. `\(x)`是`function(x)`的简写，`x`是表格的主体部分
+2. 把用“<LOD”替换的数据写入表体的对应列
+3. 把检出率和检出限插入表体
+4. `modify_column_unhide()`函数用于显示隐藏的列，这里显示上一步添加的列
+5. `label`在`modify_header()`函数中表示表头的第一列列名
+6. 修改其余列的列名，注意和`stat_x`的对应关系
+7. 用`relocate()`函数调整列的位置，`.after`参数表示在哪一列后面插入，这里把检出率插入到对应95%置信区间的后面
+
+```{r}
+#| label: tbl-done
+
+summary_table
+```
+
+可以看到，还有一些细节问题可以优化，除了用`gtsummary`的函数，也可以在使用`as_gt()`函数之后，用`gt`包的函数进行修改。
+
+```{r}
+#| label: gt
+
+summary_table |>
+  as_gt() |> # <1>
+  fmt_number(columns = everything(), decimals = 3) -> summary_table # <2>
+```
+1. 用`as_gt()`函数把`gtsummary`的表格对象转换成`gt`的表格对象
+2. 用`fmt_number()`函数格式化数字，保留三位小数
+
+```{r}
+#| label: tbl-done_2
+#| tbl-title: Table1成品
+
+summary_table
+```
+
