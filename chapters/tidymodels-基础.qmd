@@ -470,10 +470,10 @@ data(Orthodont, package = "nlme")
 
 linear_reg() |>
   set_engine("lmer") -> multilevel_spec # lmer是lme4包中的函数，用于拟合线性混合效应模型
-  
+
 workflow() |>
-  add_variables(outcome = distance, predictors = c(Sex, age, Subject)) |> 
-  add_model(multilevel_spec, 
+  add_variables(outcome = distance, predictors = c(Sex, age, Subject)) |>
+  add_model(multilevel_spec,
             formula = distance ~ Sex + (age | Subject)) -> multilevel_workflow # age | Subject表示age是Subject的随机效应
 
 multilevel_workflow |>
@@ -495,7 +495,7 @@ data(cancer, package = "survival")
 
 workflow() |>
   add_variables(outcome = c(fustat, futime), predictors = c(age, rx)) |>
-  add_model(parametric_spec, 
+  add_model(parametric_spec,
             formula = Surv(futime, fustat) ~ age + strata(rx)) -> parametric_workflow
 
 parametric_workflow |>
@@ -586,12 +586,12 @@ load("../data/tidymodels_0104.rda")
 
 特征工程指对预测值进行重新格式化，使其更容易被模型有效利用。特征工程的方法一般分为以下几种：
 
-1. **dummy**，哑变量，将分类变量分为多个哑变量（0-1变量）。
-2. **zv**， zero variance，删除方差为0的变量，也就是只有单一值的变量。
-3. **impute**，估算，填补缺失值。
-4. **decorrelate**，去相关，删除相关性较高的变量。一般使用PCA方法或者VIF方法。
-5. **normalize**，标准化，将变量居中并缩放到单位方差。
-6. **transform**，转换，将变量转换成更对称的分布。
+1.  **dummy**，哑变量，将分类变量分为多个哑变量（0-1变量）。
+2.  **zv**， zero variance，删除方差为0的变量，也就是只有单一值的变量。
+3.  **impute**，估算，填补缺失值。
+4.  **decorrelate**，去相关，删除相关性较高的变量。一般使用PCA方法或者VIF方法。
+5.  **normalize**，标准化，将变量居中并缩放到单位方差。
+6.  **transform**，转换，将变量转换成更对称的分布。
 
 使用`recipe`包可以把不同的特征工程方法组合在一起，并应用到数据集上。
 
@@ -599,10 +599,10 @@ load("../data/tidymodels_0104.rda")
 
 从`ames`数据集中挑选以下预测因子：
 
-1. `Neighborhood`，分类变量，指房屋所在的社区，有29个水平。
-2. `Gr_Liv_Area`，数值变量，指房屋的居住面积。
-3. `Year_Built`，数值变量，指房屋建造的年份。
-4. `Bldg_Type`，分类变量，指房屋的类型，有5个水平，分别是`OneFam`，`TwoFmCon`，`Duplex`，`Twnhs`，`TwnhsE`。
+1.  `Neighborhood`，分类变量，指房屋所在的社区，有29个水平。
+2.  `Gr_Liv_Area`，数值变量，指房屋的居住面积。
+3.  `Year_Built`，数值变量，指房屋建造的年份。
+4.  `Bldg_Type`，分类变量，指房屋的类型，有5个水平，分别是`OneFam`，`TwoFmCon`，`Duplex`，`Twnhs`，`TwnhsE`。
 
 使用这些预测因子对`Sale_Price`进行预测，公式如下：
 
@@ -626,7 +626,7 @@ recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type,
 simple_ames
 ```
 
-:::callout-tip
+::: callout-tip
 `all_nominal_predictors()`函数用于选择所有的分类变量。
 
 `all_numeric_predictors()`函数用于选择所有的数值变量。
@@ -680,7 +680,7 @@ lm_fit |>
 
 #### 定性变量的处理
 
-:::callout-tip
+::: callout-tip
 `step_unknown()`函数用于将缺失值转化为专用因子水平。
 
 `step_novel()`函数用于将未知的水平转化为新的水平。
@@ -700,12 +700,12 @@ lm_fit |>
 #| label: fig-ames-interact
 #| fig-cap: 五种不同类型建筑的总居住面积与销售价格的关系（log10变换后）
 
-ggplot(ames_train, aes(x = Gr_Liv_Area, y = 10^Sale_Price)) + 
-  geom_point(alpha = .2) + 
-  facet_wrap(~ Bldg_Type) + 
-  geom_smooth(method = lm, formula = y ~ x, se = FALSE, color = "lightblue") + 
-  scale_x_log10() + 
-  scale_y_log10() + 
+ggplot(ames_train, aes(x = Gr_Liv_Area, y = 10^Sale_Price)) +
+  geom_point(alpha = .2) +
+  facet_wrap(~ Bldg_Type) +
+  geom_smooth(method = lm, formula = y ~ x, se = FALSE, color = "lightblue") +
+  scale_x_log10() +
+  scale_y_log10() +
   labs(x = "Gross Living Area", y = "Sale Price (USD)")
 ```
 
@@ -722,7 +722,7 @@ recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type,
 simple_ames
 ```
 
-:::callout-warning
+::: callout-warning
 一般来说，交互项需要在创建哑变量后才能创建，否则可能会报错。
 :::
 
@@ -765,7 +765,7 @@ recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + Latitu
          data = ames_train) |>
   step_log(Gr_Liv_Area, base = 10) |>
   step_other(Neighborhood, threshold = 0.01) |>
-  step_dummy(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) %>%
   step_interact( ~ Gr_Liv_Area:starts_with("Bldg_Type_") ) |>
   step_ns(Latitude, deg_free = 20) # 创建样条函数，自由度为20
 ```
@@ -788,7 +788,7 @@ step_normalize(matches("(SF$)|(Gr_Liv)")) |>
 step_pca(matches("(SF$)|(Gr_Liv)"))
 ```
 
-:::callout-tip
+::: callout-tip
 特征提取的其他方法还包括独立成分分析（ICA），非负矩阵分解（NMF），多维缩放（MDS），均匀流形近似（UMAP），t-分布邻域嵌入（t-SNE）等。
 :::
 
@@ -796,13 +796,13 @@ step_pca(matches("(SF$)|(Gr_Liv)"))
 
 类别不平衡问题是指分类问题中不同类别的样本数量差异较大。在这种情况下，模型可能会偏向于预测样本数量较多的类别，而忽略样本数量较少的类别。针对类别不平衡问题，可以采用子采样技术，它通常不会提高整体性能，但可以生成表现更好的预测类概率分布。子采样技术分类如下：
 
-1. 下抽样(Downsampling)：保留少数类样本，对多数类样本进行随机抽样，以平衡频率。
-2. 扩大抽样(Upsampling)：合成新的少数类样本，或直接复制少数类样本，以平衡频率。
-3. Hybrid：结合上述两种方法。
+1.  下抽样(Downsampling)：保留少数类样本，对多数类样本进行随机抽样，以平衡频率。
+2.  扩大抽样(Upsampling)：合成新的少数类样本，或直接复制少数类样本，以平衡频率。
+3.  Hybrid：结合上述两种方法。
 
 在`themis`包中，`step_downsample()`和`step_upsample()`函数可以实现下抽样和扩大抽样。
 
-:::callout-tip
+::: callout-tip
 `step_filter()`函数可以用于删除不需要的样本，如异常值、缺失值等。
 
 `step_sample()`函数可以用于随机抽样。
@@ -816,7 +816,7 @@ step_pca(matches("(SF$)|(Gr_Liv)"))
 
 一般变换是指对数据进行一般性的变换，如对数变换、幂变换、指数变换等。在`recipes`包中，`step_log()`、`step_sqrt()`、`step_YeoJohnson()`、`step_boxcox()`等函数可以实现对数变换、平方根变换、Yeo-Johnson变换、Box-Cox变换等。`step_mutate()`函数可以利用已有变量计算并创建新的变量。
 
-:::callout-warning
+::: callout-warning
 进行一般变换是，需要格外注意避免数据泄露。转换应该在拆分数据集之前进行。
 :::
 
@@ -835,7 +835,7 @@ step_pca(matches("(SF$)|(Gr_Liv)"))
 ```{r}
 #| label: recipe_08
 
-recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
+recipe(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type +
          Latitude + Longitude, data = ames_train) |>
   step_log(Gr_Liv_Area, base = 10) |>
   step_other(Neighborhood, threshold = 0.01, id = "my_id") |> # 指定id参数
@@ -887,7 +887,7 @@ lm_fit |>
 ames_recipe |>
   update_role(address, new_role = "street address") # 对于已建好的recipe对象，使用update_role()函数来更新变量的角色，在构建recipe对象时，应使用add_role()函数。
 ```
-  
+
 ```{r}
 #| label: save_tidymodels_0105
 #| echo: false
@@ -905,7 +905,7 @@ rm(list = ls())
 load("../data/tidymodels_0105.rda")
 ```
 
-:::callout-important
+::: callout-important
 重采样方法是最有效的验证方法。
 :::
 
@@ -945,14 +945,14 @@ ames_test_results |>
 #| label: fig-yardstick_01
 #| fig-cap: 预测值和实际值的关系(log10)
 
-ggplot(ames_test_results, aes(x = Sale_Price, y = .pred)) + 
+ggplot(ames_test_results, aes(x = Sale_Price, y = .pred)) +
   geom_abline(lty = 2) + # 添加对角线
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.5) +
   labs(y = "Predicted Sale Price (log10)", x = "Sale Price (log10)") +
   coord_obs_pred() # 使x轴和y轴的刻度一致
 ```
 
-由 @fig-yardstick_01 发现，有几个预测值和实际值的偏差较大。使用`rmse()`函数计算均方根误差，`rsq`函数计算R^2，`mae`函数计算平均绝对误差。
+由 @fig-yardstick_01 发现，有几个预测值和实际值的偏差较大。使用`rmse()`函数计算均方根误差，`rsq`函数计算R\^2，`mae`函数计算平均绝对误差。
 
 ```{r}
 #| label: yardstick_03
@@ -980,7 +980,7 @@ tibble(two_class_example) |>
 
 对于logistic回归模型，模型性能评估指标有很多，列举如下：
 
-- `conf_mat`：混淆矩阵
+-   `conf_mat`：混淆矩阵
 
 ```{r}
 #| label: yardstick_05
@@ -989,7 +989,7 @@ two_class_example |>
   conf_mat(truth = truth, estimate = predicted)
 ```
 
-- `accuracy`：准确率
+-   `accuracy`：准确率
 
 ```{r}
 #| label: yardstick_06
@@ -998,7 +998,7 @@ two_class_example |>
   accuracy(truth = truth, estimate = predicted)
 ```
 
-- `mcc`：Matthews相关系数
+-   `mcc`：Matthews相关系数
 
 ```{r}
 #| label: yardstick_07
@@ -1007,7 +1007,7 @@ two_class_example |>
   mcc(truth = truth, estimate = predicted)
 ```
 
-- `f_meas`：F1值，精确率和召回率的调和平均数
+-   `f_meas`：F1值，精确率和召回率的调和平均数
 
 ```{r}
 #| label: yardstick_08
@@ -1016,7 +1016,7 @@ two_class_example |>
   f_meas(truth = truth, estimate = predicted)
 ```
 
-- `roc_curve`和`roc_auc`：ROC曲线和AUC
+-   `roc_curve`和`roc_auc`：ROC曲线和AUC
 
 ```{r}
 #| label: yardstick_09
@@ -1052,7 +1052,7 @@ tibble(hpc_cv) |>
 
 其他指标函数包括：
 
-- `sensitivity`：灵敏度，需要用`estimator`参数指定函数
+-   `sensitivity`：灵敏度，需要用`estimator`参数指定函数
 
 ```{r}
 #| label: yardstick_11
@@ -1067,7 +1067,7 @@ hpc_cv |>
   sensitivity(truth = obs, estimate = pred, estimator = "macro_weighted") # macro_weighted表示加权宏平均
 ```
 
-- `roc_auc`：多分类模型的AUC，必须向函数提供所有的类别概率列
+-   `roc_auc`：多分类模型的AUC，必须向函数提供所有的类别概率列
 
 ```{r}
 #| label: yardstick_12

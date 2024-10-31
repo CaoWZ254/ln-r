@@ -38,6 +38,3 @@ mtcars_bin |>
   correlate(target = "mpg__-Inf_15.425") |>
   plot_correlation_funnel(interactive = FALSE)
 ```
-
-
-

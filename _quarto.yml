@@ -20,6 +20,9 @@ book:
       chapters:
         - chapters/tidymodels-基础.qmd
         - chapters/tidymodels-进阶.qmd
+    - part: 统计分析小tips
+      chapters:
+        - chapters/四分位数低于检出限的表格制作方法.qmd
 
 bibliography: references.bib
 
