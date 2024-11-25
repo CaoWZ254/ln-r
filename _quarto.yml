@@ -23,6 +23,7 @@ book:
     - part: 统计分析小tips
       chapters:
         - chapters/四分位数低于检出限的表格制作方法.qmd
+        - chapters/多重插补.qmd
 
 bibliography: references.bib
 
