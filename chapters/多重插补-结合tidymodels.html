@@ -215,10 +215,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量" id="toc-模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量" class="nav-link active" data-scroll-target="#模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量"><span class="header-section-number">5.1</span> 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</a></li>
   <li><a href="#使用mice包生成插补数据集" id="toc-使用mice包生成插补数据集" class="nav-link" data-scroll-target="#使用mice包生成插补数据集"><span class="header-section-number">5.2</span> 使用mice包生成插补数据集</a></li>
-  <li><a href="#使用tidymodels构建线性回归模型" id="toc-使用tidymodels构建线性回归模型" class="nav-link" data-scroll-target="#使用tidymodels构建线性回归模型"><span class="header-section-number">6</span> 使用tidymodels构建线性回归模型</a>
-  <ul class="collapse">
-  <li><a href="#拟合与合并" id="toc-拟合与合并" class="nav-link" data-scroll-target="#拟合与合并"><span class="header-section-number">6.1</span> 拟合与合并</a></li>
-  </ul></li>
+  <li><a href="#使用tidymodels构建线性回归模型" id="toc-使用tidymodels构建线性回归模型" class="nav-link" data-scroll-target="#使用tidymodels构建线性回归模型"><span class="header-section-number">5.3</span> 使用tidymodels构建线性回归模型</a></li>
+  <li><a href="#拟合与合并" id="toc-拟合与合并" class="nav-link" data-scroll-target="#拟合与合并"><span class="header-section-number">5.4</span> 拟合与合并</a></li>
   </ul>
 </nav>
     </div>
@@ -272,14 +270,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>       x1                 x2                y            group 
- Min.   :-2.06882   Min.   :-2.9510   Min.   :-2.59679   1:54  
- 1st Qu.:-0.46528   1st Qu.:-0.7593   1st Qu.:-0.56349   2:46  
- Median : 0.07146   Median :-0.1483   Median : 0.07714         
- Mean   : 0.11671   Mean   :-0.1555   Mean   : 0.09768         
- 3rd Qu.: 0.80949   3rd Qu.: 0.3641   3rd Qu.: 0.88195         
- Max.   : 2.47689   Max.   : 2.2875   Max.   : 2.12863         
- NA's   :20         NA's   :15                                 </code></pre>
+<pre><code>       x1                  x2                  y            group 
+ Min.   :-3.209773   Min.   :-2.930670   Min.   :-2.58763   1:58  
+ 1st Qu.:-0.626074   1st Qu.:-0.651579   1st Qu.:-0.84762   2:42  
+ Median : 0.040428   Median : 0.108055   Median :-0.02751         
+ Mean   : 0.005908   Mean   : 0.005351   Mean   :-0.12757         
+ 3rd Qu.: 0.653889   3rd Qu.: 0.728096   3rd Qu.: 0.53959         
+ Max.   : 2.301930   Max.   : 2.813751   Max.   : 2.09452         
+ NA's   :20          NA's   :15                                   </code></pre>
 </div>
 </div>
 </section>
@@ -345,8 +343,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="使用tidymodels构建线性回归模型" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> 使用tidymodels构建线性回归模型</h1>
+<section id="使用tidymodels构建线性回归模型" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="使用tidymodels构建线性回归模型"><span class="header-section-number">5.3</span> 使用tidymodels构建线性回归模型</h2>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -365,8 +363,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="拟合与合并" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="拟合与合并"><span class="header-section-number">6.1</span> 拟合与合并</h2>
+</section>
+<section id="拟合与合并" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="拟合与合并"><span class="header-section-number">5.4</span> 拟合与合并</h2>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -871,110 +870,110 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">(Intercept)</td>
-<td class="gt_row gt_right" headers="estimate">0.21637020</td>
-<td class="gt_row gt_right" headers="std.error">0.1649101</td>
-<td class="gt_row gt_right" headers="statistic">1.3120493</td>
-<td class="gt_row gt_right" headers="p.value">0.5386612</td>
-<td class="gt_row gt_right" headers="conf.low">-27.06075</td>
-<td class="gt_row gt_right" headers="conf.high">27.49349</td>
-<td class="gt_row gt_right" headers="b">2.163923e-05</td>
-<td class="gt_row gt_right" headers="df">0.4995225</td>
+<td class="gt_row gt_right" headers="estimate">-0.090027163</td>
+<td class="gt_row gt_right" headers="std.error">0.1484613</td>
+<td class="gt_row gt_right" headers="statistic">-0.60640138</td>
+<td class="gt_row gt_right" headers="p.value">0.7178083</td>
+<td class="gt_row gt_right" headers="conf.low">-25.33591</td>
+<td class="gt_row gt_right" headers="conf.high">25.15586</td>
+<td class="gt_row gt_right" headers="b">0.0001113043</td>
+<td class="gt_row gt_right" headers="df">0.4969678</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5719157</td>
-<td class="gt_row gt_right" headers="lambda">0.0009548353</td>
+<td class="gt_row gt_right" headers="fmi">0.5745182</td>
+<td class="gt_row gt_right" headers="lambda">0.006059913</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.0009557478</td>
-<td class="gt_row gt_right" headers="ubar">0.02716938</td>
+<td class="gt_row gt_right" headers="riv">0.006096859</td>
+<td class="gt_row gt_right" headers="ubar">0.02190720</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">x1</td>
-<td class="gt_row gt_right" headers="estimate">0.16515321</td>
-<td class="gt_row gt_right" headers="std.error">0.1675499</td>
-<td class="gt_row gt_right" headers="statistic">0.9856958</td>
-<td class="gt_row gt_right" headers="p.value">0.6137291</td>
-<td class="gt_row gt_right" headers="conf.low">-36.52895</td>
-<td class="gt_row gt_right" headers="conf.high">36.85925</td>
-<td class="gt_row gt_right" headers="b">1.170225e-03</td>
-<td class="gt_row gt_right" headers="df">0.4748478</td>
+<td class="gt_row gt_right" headers="estimate">-0.109107160</td>
+<td class="gt_row gt_right" headers="std.error">0.1687370</td>
+<td class="gt_row gt_right" headers="statistic">-0.64661070</td>
+<td class="gt_row gt_right" headers="p.value">0.7273190</td>
+<td class="gt_row gt_right" headers="conf.low">-107.65366</td>
+<td class="gt_row gt_right" headers="conf.high">107.43544</td>
+<td class="gt_row gt_right" headers="b">0.0046484384</td>
+<td class="gt_row gt_right" headers="df">0.4004975</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5967959</td>
-<td class="gt_row gt_right" headers="lambda">0.0500221784</td>
+<td class="gt_row gt_right" headers="fmi">0.6688370</td>
+<td class="gt_row gt_right" headers="lambda">0.195914954</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.0526561539</td>
-<td class="gt_row gt_right" headers="ubar">0.02666869</td>
+<td class="gt_row gt_right" headers="riv">0.243649543</td>
+<td class="gt_row gt_right" headers="ubar">0.02289406</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">x2</td>
-<td class="gt_row gt_right" headers="estimate">0.10077042</td>
-<td class="gt_row gt_right" headers="std.error">0.1745915</td>
-<td class="gt_row gt_right" headers="statistic">0.5771784</td>
-<td class="gt_row gt_right" headers="p.value">0.7324366</td>
-<td class="gt_row gt_right" headers="conf.low">-37.42057</td>
-<td class="gt_row gt_right" headers="conf.high">37.62212</td>
-<td class="gt_row gt_right" headers="b">1.191310e-03</td>
-<td class="gt_row gt_right" headers="df">0.4764258</td>
+<td class="gt_row gt_right" headers="estimate">-0.031914050</td>
+<td class="gt_row gt_right" headers="std.error">0.1620616</td>
+<td class="gt_row gt_right" headers="statistic">-0.19692548</td>
+<td class="gt_row gt_right" headers="p.value">0.9037807</td>
+<td class="gt_row gt_right" headers="conf.low">-129.12252</td>
+<td class="gt_row gt_right" headers="conf.high">129.05869</td>
+<td class="gt_row gt_right" headers="b">0.0048246543</td>
+<td class="gt_row gt_right" headers="df">0.3879438</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5952212</td>
-<td class="gt_row gt_right" headers="lambda">0.0468986418</td>
+<td class="gt_row gt_right" headers="fmi">0.6806359</td>
+<td class="gt_row gt_right" headers="lambda">0.220438484</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.0492063530</td>
-<td class="gt_row gt_right" headers="ubar">0.02905260</td>
+<td class="gt_row gt_right" headers="riv">0.282772403</td>
+<td class="gt_row gt_right" headers="ubar">0.02047436</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">(Intercept)</td>
-<td class="gt_row gt_right" headers="estimate">0.01766950</td>
-<td class="gt_row gt_right" headers="std.error">0.1332263</td>
-<td class="gt_row gt_right" headers="statistic">0.1326277</td>
-<td class="gt_row gt_right" headers="p.value">0.9291219</td>
-<td class="gt_row gt_right" headers="conf.low">-22.11975</td>
-<td class="gt_row gt_right" headers="conf.high">22.15509</td>
-<td class="gt_row gt_right" headers="b">2.665485e-05</td>
-<td class="gt_row gt_right" headers="df">0.4990988</td>
+<td class="gt_row gt_right" headers="estimate">-0.182437397</td>
+<td class="gt_row gt_right" headers="std.error">0.1270087</td>
+<td class="gt_row gt_right" headers="statistic">-1.43641680</td>
+<td class="gt_row gt_right" headers="p.value">0.5185196</td>
+<td class="gt_row gt_right" headers="conf.low">-21.54582</td>
+<td class="gt_row gt_right" headers="conf.high">21.18095</td>
+<td class="gt_row gt_right" headers="b">0.0000545088</td>
+<td class="gt_row gt_right" headers="df">0.4979715</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5723478</td>
-<td class="gt_row gt_right" headers="lambda">0.0018020949</td>
+<td class="gt_row gt_right" headers="fmi">0.5734964</td>
+<td class="gt_row gt_right" headers="lambda">0.004054909</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.0018053483</td>
-<td class="gt_row gt_right" headers="ubar">0.01771726</td>
+<td class="gt_row gt_right" headers="riv">0.004071418</td>
+<td class="gt_row gt_right" headers="ubar">0.01606579</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">x1</td>
-<td class="gt_row gt_right" headers="estimate">0.03077440</td>
-<td class="gt_row gt_right" headers="std.error">0.1432772</td>
-<td class="gt_row gt_right" headers="statistic">0.2147892</td>
-<td class="gt_row gt_right" headers="p.value">0.8916498</td>
-<td class="gt_row gt_right" headers="conf.low">-54.63289</td>
-<td class="gt_row gt_right" headers="conf.high">54.69444</td>
-<td class="gt_row gt_right" headers="b">2.267289e-03</td>
-<td class="gt_row gt_right" headers="df">0.4329075</td>
+<td class="gt_row gt_right" headers="estimate">0.001920968</td>
+<td class="gt_row gt_right" headers="std.error">0.1340862</td>
+<td class="gt_row gt_right" headers="statistic">0.01432636</td>
+<td class="gt_row gt_right" headers="p.value">0.9925107</td>
+<td class="gt_row gt_right" headers="conf.low">-40.54564</td>
+<td class="gt_row gt_right" headers="conf.high">40.54949</td>
+<td class="gt_row gt_right" headers="b">0.0014986334</td>
+<td class="gt_row gt_right" headers="df">0.4494816</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.6379175</td>
-<td class="gt_row gt_right" headers="lambda">0.1325359698</td>
+<td class="gt_row gt_right" headers="fmi">0.6218280</td>
+<td class="gt_row gt_right" headers="lambda">0.100024942</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.1527855510</td>
-<td class="gt_row gt_right" headers="ubar">0.01780762</td>
+<td class="gt_row gt_right" headers="riv">0.111141904</td>
+<td class="gt_row gt_right" headers="ubar">0.01618076</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">x2</td>
-<td class="gt_row gt_right" headers="estimate">0.04703728</td>
-<td class="gt_row gt_right" headers="std.error">0.1941719</td>
-<td class="gt_row gt_right" headers="statistic">0.2422455</td>
-<td class="gt_row gt_right" headers="p.value">0.8799362</td>
-<td class="gt_row gt_right" headers="conf.low">-92.55490</td>
-<td class="gt_row gt_right" headers="conf.high">92.64898</td>
-<td class="gt_row gt_right" headers="b">5.070933e-03</td>
-<td class="gt_row gt_right" headers="df">0.4181595</td>
+<td class="gt_row gt_right" headers="estimate">0.189414299</td>
+<td class="gt_row gt_right" headers="std.error">0.1258216</td>
+<td class="gt_row gt_right" headers="statistic">1.50542007</td>
+<td class="gt_row gt_right" headers="p.value">0.5163351</td>
+<td class="gt_row gt_right" headers="conf.low">-26.34667</td>
+<td class="gt_row gt_right" headers="conf.high">26.72550</td>
+<td class="gt_row gt_right" headers="b">0.0005773080</td>
+<td class="gt_row gt_right" headers="df">0.4780105</td>
 <td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.6520723</td>
-<td class="gt_row gt_right" headers="lambda">0.1613972661</td>
+<td class="gt_row gt_right" headers="fmi">0.5936376</td>
+<td class="gt_row gt_right" headers="lambda">0.043760141</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.1924597423</td>
-<td class="gt_row gt_right" headers="ubar">0.03161762</td>
+<td class="gt_row gt_right" headers="riv">0.045762724</td>
+<td class="gt_row gt_right" headers="ubar">0.01513829</td>
 </tr>
 </tbody>
 </table>
@@ -986,7 +985,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1699,7 +1697,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>按照<span class="in">`group`</span>和<span class="in">`.imp`</span>分组生成嵌套数据集</span>
 <span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>把5个插补数据集分别放入列表中，这种格式可以直接用于后面的<span class="in">`pool`</span>函数（只是数据框的话不行）</span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu"># 使用tidymodels构建线性回归模型</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## 使用tidymodels构建线性回归模型</span></span>
 <span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model</span></span>
