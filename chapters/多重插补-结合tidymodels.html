@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量 – R语言学习笔记</title>
+<title>5&nbsp; 多重插补-结合tidymodels – R语言学习笔记</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/多重插补.html" rel="prev">
+<link href="../chapters/四分位数低于检出限的表格制作方法.html" rel="prev">
 <link href="../images/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补-结合tidymodels</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -197,14 +197,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/多重插补.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补-结合tidymodels</span></span></a>
   </div>
 </li>
       </ul>
@@ -219,10 +213,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#使用mice包生成插补数据集" id="toc-使用mice包生成插补数据集" class="nav-link active" data-scroll-target="#使用mice包生成插补数据集"><span class="header-section-number">6.1</span> 使用mice包生成插补数据集</a></li>
-  <li><a href="#使用tidymodels构建线性回归模型" id="toc-使用tidymodels构建线性回归模型" class="nav-link" data-scroll-target="#使用tidymodels构建线性回归模型"><span class="header-section-number">7</span> 使用tidymodels构建线性回归模型</a>
+  <li><a href="#模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量" id="toc-模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量" class="nav-link active" data-scroll-target="#模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量"><span class="header-section-number">5.1</span> 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</a></li>
+  <li><a href="#使用mice包生成插补数据集" id="toc-使用mice包生成插补数据集" class="nav-link" data-scroll-target="#使用mice包生成插补数据集"><span class="header-section-number">5.2</span> 使用mice包生成插补数据集</a></li>
+  <li><a href="#使用tidymodels构建线性回归模型" id="toc-使用tidymodels构建线性回归模型" class="nav-link" data-scroll-target="#使用tidymodels构建线性回归模型"><span class="header-section-number">6</span> 使用tidymodels构建线性回归模型</a>
   <ul class="collapse">
-  <li><a href="#拟合与合并" id="toc-拟合与合并" class="nav-link" data-scroll-target="#拟合与合并"><span class="header-section-number">7.1</span> 拟合与合并</a></li>
+  <li><a href="#拟合与合并" id="toc-拟合与合并" class="nav-link" data-scroll-target="#拟合与合并"><span class="header-section-number">6.1</span> 拟合与合并</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -230,9 +225,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补-结合tidymodels</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> 代码</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">显示所有代码</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">隐藏所有代码</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">查看源代码</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补-结合tidymodels</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> 代码</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">显示所有代码</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">隐藏所有代码</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">查看源代码</a></li></ul></div></div>
 </div>
 
 
@@ -254,10 +249,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<section id="模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="模拟带缺失值的数据包括两个自变量和一个因变量并添加分组变量"><span class="header-section-number">5.1</span> 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</h2>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -265,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">as_factor</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
@@ -274,18 +272,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>       x1                  x2                 y                 group     
- Min.   :-2.312476   Min.   :-2.43518   Min.   :-2.428139   Min.   :1.00  
- 1st Qu.:-0.637833   1st Qu.:-0.66590   1st Qu.:-0.599243   1st Qu.:1.00  
- Median : 0.008184   Median : 0.06445   Median :-0.014364   Median :2.00  
- Mean   : 0.010725   Mean   :-0.01175   Mean   : 0.007177   Mean   :1.56  
- 3rd Qu.: 0.793836   3rd Qu.: 0.54900   3rd Qu.: 0.618218   3rd Qu.:2.00  
- Max.   : 1.894516   Max.   : 2.19098   Max.   : 2.158856   Max.   :2.00  
- NA's   :20          NA's   :15                                           </code></pre>
+<pre><code>       x1                 x2                y            group 
+ Min.   :-2.06882   Min.   :-2.9510   Min.   :-2.59679   1:54  
+ 1st Qu.:-0.46528   1st Qu.:-0.7593   1st Qu.:-0.56349   2:46  
+ Median : 0.07146   Median :-0.1483   Median : 0.07714         
+ Mean   : 0.11671   Mean   :-0.1555   Mean   : 0.09768         
+ 3rd Qu.: 0.80949   3rd Qu.: 0.3641   3rd Qu.: 0.88195         
+ Max.   : 2.47689   Max.   : 2.2875   Max.   : 2.12863         
+ NA's   :20         NA's   :15                                 </code></pre>
 </div>
 </div>
-<section id="使用mice包生成插补数据集" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="使用mice包生成插补数据集"><span class="header-section-number">6.1</span> 使用mice包生成插补数据集</h2>
+</section>
+<section id="使用mice包生成插补数据集" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="使用mice包生成插补数据集"><span class="header-section-number">5.2</span> 使用mice包生成插补数据集</h2>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -346,8 +345,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="使用tidymodels构建线性回归模型" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> 使用tidymodels构建线性回归模型</h1>
+<section id="使用tidymodels构建线性回归模型" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> 使用tidymodels构建线性回归模型</h1>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -366,8 +365,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="拟合与合并" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="拟合与合并"><span class="header-section-number">7.1</span> 拟合与合并</h2>
+<section id="拟合与合并" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="拟合与合并"><span class="header-section-number">6.1</span> 拟合与合并</h2>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>代码</summary>
@@ -378,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
 <span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
 <span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>result</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
@@ -396,18 +395,591 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 16
-  group term     estimate std.error statistic p.value conf.low conf.high       b
-  &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-1     2 (Interc… -0.0885      0.127   -0.694    0.687    -21.2      21.0 1.64e-5
-2     2 x1       -0.140       0.131   -1.07     0.591    -24.7      24.4 3.36e-4
-3     2 x2        0.00789     0.153    0.0514   0.974    -68.1      68.2 2.99e-3
-4     1 (Interc…  0.134       0.142    0.948    0.615    -23.5      23.8 4.44e-5
-5     1 x1        0.135       0.158    0.854    0.667    -84.8      85.1 3.68e-3
-6     1 x2        0.121       0.142    0.854    0.664    -67.4      67.6 2.71e-3
-# ℹ 7 more variables: df &lt;dbl&gt;, dfcom &lt;dbl&gt;, fmi &lt;dbl&gt;, lambda &lt;dbl&gt;, m &lt;int&gt;,
-#   riv &lt;dbl&gt;, ubar &lt;dbl&gt;</code></pre>
+<div class="cell-output-display">
+<div id="bxdomberdu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bxdomberdu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#bxdomberdu thead, #bxdomberdu tbody, #bxdomberdu tfoot, #bxdomberdu tr, #bxdomberdu td, #bxdomberdu th {
+  border-style: none;
+}
+
+#bxdomberdu p {
+  margin: 0;
+  padding: 0;
+}
+
+#bxdomberdu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#bxdomberdu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bxdomberdu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bxdomberdu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bxdomberdu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bxdomberdu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bxdomberdu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bxdomberdu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bxdomberdu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#bxdomberdu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#bxdomberdu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bxdomberdu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bxdomberdu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bxdomberdu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bxdomberdu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxdomberdu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#bxdomberdu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#bxdomberdu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#bxdomberdu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxdomberdu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#bxdomberdu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxdomberdu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bxdomberdu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxdomberdu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bxdomberdu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxdomberdu .gt_left {
+  text-align: left;
+}
+
+#bxdomberdu .gt_center {
+  text-align: center;
+}
+
+#bxdomberdu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bxdomberdu .gt_font_normal {
+  font-weight: normal;
+}
+
+#bxdomberdu .gt_font_bold {
+  font-weight: bold;
+}
+
+#bxdomberdu .gt_font_italic {
+  font-style: italic;
+}
+
+#bxdomberdu .gt_super {
+  font-size: 65%;
+}
+
+#bxdomberdu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#bxdomberdu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#bxdomberdu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#bxdomberdu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#bxdomberdu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#bxdomberdu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#bxdomberdu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#bxdomberdu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#bxdomberdu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="group" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">group</th>
+<th id="term" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">term</th>
+<th id="estimate" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">estimate</th>
+<th id="std.error" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">std.error</th>
+<th id="statistic" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">statistic</th>
+<th id="p.value" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">p.value</th>
+<th id="conf.low" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">conf.low</th>
+<th id="conf.high" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">conf.high</th>
+<th id="b" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">b</th>
+<th id="df" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">df</th>
+<th id="dfcom" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">dfcom</th>
+<th id="fmi" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">fmi</th>
+<th id="lambda" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">lambda</th>
+<th id="m" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">m</th>
+<th id="riv" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">riv</th>
+<th id="ubar" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ubar</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="group">2</td>
+<td class="gt_row gt_left" headers="term">(Intercept)</td>
+<td class="gt_row gt_right" headers="estimate">0.21637020</td>
+<td class="gt_row gt_right" headers="std.error">0.1649101</td>
+<td class="gt_row gt_right" headers="statistic">1.3120493</td>
+<td class="gt_row gt_right" headers="p.value">0.5386612</td>
+<td class="gt_row gt_right" headers="conf.low">-27.06075</td>
+<td class="gt_row gt_right" headers="conf.high">27.49349</td>
+<td class="gt_row gt_right" headers="b">2.163923e-05</td>
+<td class="gt_row gt_right" headers="df">0.4995225</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.5719157</td>
+<td class="gt_row gt_right" headers="lambda">0.0009548353</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.0009557478</td>
+<td class="gt_row gt_right" headers="ubar">0.02716938</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="group">2</td>
+<td class="gt_row gt_left" headers="term">x1</td>
+<td class="gt_row gt_right" headers="estimate">0.16515321</td>
+<td class="gt_row gt_right" headers="std.error">0.1675499</td>
+<td class="gt_row gt_right" headers="statistic">0.9856958</td>
+<td class="gt_row gt_right" headers="p.value">0.6137291</td>
+<td class="gt_row gt_right" headers="conf.low">-36.52895</td>
+<td class="gt_row gt_right" headers="conf.high">36.85925</td>
+<td class="gt_row gt_right" headers="b">1.170225e-03</td>
+<td class="gt_row gt_right" headers="df">0.4748478</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.5967959</td>
+<td class="gt_row gt_right" headers="lambda">0.0500221784</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.0526561539</td>
+<td class="gt_row gt_right" headers="ubar">0.02666869</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="group">2</td>
+<td class="gt_row gt_left" headers="term">x2</td>
+<td class="gt_row gt_right" headers="estimate">0.10077042</td>
+<td class="gt_row gt_right" headers="std.error">0.1745915</td>
+<td class="gt_row gt_right" headers="statistic">0.5771784</td>
+<td class="gt_row gt_right" headers="p.value">0.7324366</td>
+<td class="gt_row gt_right" headers="conf.low">-37.42057</td>
+<td class="gt_row gt_right" headers="conf.high">37.62212</td>
+<td class="gt_row gt_right" headers="b">1.191310e-03</td>
+<td class="gt_row gt_right" headers="df">0.4764258</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.5952212</td>
+<td class="gt_row gt_right" headers="lambda">0.0468986418</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.0492063530</td>
+<td class="gt_row gt_right" headers="ubar">0.02905260</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="group">1</td>
+<td class="gt_row gt_left" headers="term">(Intercept)</td>
+<td class="gt_row gt_right" headers="estimate">0.01766950</td>
+<td class="gt_row gt_right" headers="std.error">0.1332263</td>
+<td class="gt_row gt_right" headers="statistic">0.1326277</td>
+<td class="gt_row gt_right" headers="p.value">0.9291219</td>
+<td class="gt_row gt_right" headers="conf.low">-22.11975</td>
+<td class="gt_row gt_right" headers="conf.high">22.15509</td>
+<td class="gt_row gt_right" headers="b">2.665485e-05</td>
+<td class="gt_row gt_right" headers="df">0.4990988</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.5723478</td>
+<td class="gt_row gt_right" headers="lambda">0.0018020949</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.0018053483</td>
+<td class="gt_row gt_right" headers="ubar">0.01771726</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="group">1</td>
+<td class="gt_row gt_left" headers="term">x1</td>
+<td class="gt_row gt_right" headers="estimate">0.03077440</td>
+<td class="gt_row gt_right" headers="std.error">0.1432772</td>
+<td class="gt_row gt_right" headers="statistic">0.2147892</td>
+<td class="gt_row gt_right" headers="p.value">0.8916498</td>
+<td class="gt_row gt_right" headers="conf.low">-54.63289</td>
+<td class="gt_row gt_right" headers="conf.high">54.69444</td>
+<td class="gt_row gt_right" headers="b">2.267289e-03</td>
+<td class="gt_row gt_right" headers="df">0.4329075</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.6379175</td>
+<td class="gt_row gt_right" headers="lambda">0.1325359698</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.1527855510</td>
+<td class="gt_row gt_right" headers="ubar">0.01780762</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="group">1</td>
+<td class="gt_row gt_left" headers="term">x2</td>
+<td class="gt_row gt_right" headers="estimate">0.04703728</td>
+<td class="gt_row gt_right" headers="std.error">0.1941719</td>
+<td class="gt_row gt_right" headers="statistic">0.2422455</td>
+<td class="gt_row gt_right" headers="p.value">0.8799362</td>
+<td class="gt_row gt_right" headers="conf.low">-92.55490</td>
+<td class="gt_row gt_right" headers="conf.high">92.64898</td>
+<td class="gt_row gt_right" headers="b">5.070933e-03</td>
+<td class="gt_row gt_right" headers="df">0.4181595</td>
+<td class="gt_row gt_right" headers="dfcom">1</td>
+<td class="gt_row gt_right" headers="fmi">0.6520723</td>
+<td class="gt_row gt_right" headers="lambda">0.1613972661</td>
+<td class="gt_row gt_right" headers="m">5</td>
+<td class="gt_row gt_right" headers="riv">0.1924597423</td>
+<td class="gt_row gt_right" headers="ubar">0.03161762</td>
+</tr>
+</tbody>
+</table>
+
+</div>
 </div>
 </div>
 
@@ -1071,94 +1643,99 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/多重插补.html" class="pagination-link" aria-label="多重插补">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span>
+      <a href="../chapters/四分位数低于检出限的表格制作方法.html" class="pagination-link" aria-label="四分位数低于检出限的表格制作方法">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">四分位数低于检出限的表格制作方法</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">源代码</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: setup</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| output: false</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="in">library(mice)</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidymodels)</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="in">tidymodels_prefer()</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x2[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">15</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 使用mice包生成插补数据集</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: impute</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mice</span>(<span class="at">m =</span> <span class="dv">5</span>, <span class="at">method =</span> <span class="st">'pmm'</span>, <span class="at">seed =</span> <span class="dv">500</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">.by =</span> <span class="fu">c</span>(group, .imp)) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">data =</span> <span class="fu">list</span>(data), <span class="at">.by =</span> group) <span class="ot">-&gt;</span> data_nest <span class="co"># &lt;4&gt;</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>生成5个插补数据集</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>将数据集转换为长格式，结果是一个tibble，相比原始数据框添加了<span class="in">`.imp`</span>列和<span class="in">`.id`</span>列，分别表示插补数据集的编号和原始数据集的行号</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>按照<span class="in">`group`</span>和<span class="in">`.imp`</span>分组生成嵌套数据集</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>把5个插补数据集分别放入列表中，这种格式可以直接用于后面的<span class="in">`pool`</span>函数（只是数据框的话不行）</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu"># 使用tidymodels构建线性回归模型</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>lm_fun <span class="ot">&lt;-</span> \(data) {</span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step_normalize</span>(x1) <span class="ot">-&gt;</span> rec <span class="co"># 添加预处理步骤</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(rec) <span class="sc">|&gt;</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(lm_spec) <span class="sc">|&gt;</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(data)</span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## 拟合与合并</span></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>result</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>第一个<span class="in">`map`</span>对每行应用函数，第二个<span class="in">`map`</span>对该列表中的每个数据集应用函数</span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>对每组的列表可以直接用<span class="in">`pool`</span>函数</span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`tidy`</span>函数可以直接应用于<span class="in">`pool`</span>结果</span>
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "多重插补-结合tidymodels"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">as_factor</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x2[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">15</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## 使用mice包生成插补数据集</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: impute</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mice</span>(<span class="at">m =</span> <span class="dv">5</span>, <span class="at">method =</span> <span class="st">'pmm'</span>, <span class="at">seed =</span> <span class="dv">500</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">.by =</span> <span class="fu">c</span>(group, .imp)) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">data =</span> <span class="fu">list</span>(data), <span class="at">.by =</span> group) <span class="ot">-&gt;</span> data_nest <span class="co"># &lt;4&gt;</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>生成5个插补数据集</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>将数据集转换为长格式，结果是一个tibble，相比原始数据框添加了<span class="in">`.imp`</span>列和<span class="in">`.id`</span>列，分别表示插补数据集的编号和原始数据集的行号</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>按照<span class="in">`group`</span>和<span class="in">`.imp`</span>分组生成嵌套数据集</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>把5个插补数据集分别放入列表中，这种格式可以直接用于后面的<span class="in">`pool`</span>函数（只是数据框的话不行）</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu"># 使用tidymodels构建线性回归模型</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>lm_fun <span class="ot">&lt;-</span> \(data) {</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step_normalize</span>(x1) <span class="ot">-&gt;</span> rec <span class="co"># 添加预处理步骤</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(rec) <span class="sc">|&gt;</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(lm_spec) <span class="sc">|&gt;</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(data)</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## 拟合与合并</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>第一个<span class="in">`map`</span>对每行应用函数，第二个<span class="in">`map`</span>对该列表中的每个数据集应用函数</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>对每组的列表可以直接用<span class="in">`pool`</span>函数</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`tidy`</span>函数可以直接应用于<span class="in">`pool`</span>结果</span>
 </code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
