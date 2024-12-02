@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-3e476e15ae565c222d94875412ae43a1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d3043699f4f525e226433170f63674df.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8c61161f17dc2267de6a9e08d30b2d7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-3dd02e6c42a368ed35913e865ee2cac2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -209,6 +209,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -272,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">修改于</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024年11月25日</p>
+      <p class="date-modified">2024年12月2日</p>
     </div>
   </div>
     
@@ -1376,8 +1382,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1539,7 +1543,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1706,25 +1709,64 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         }
       };
     }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
+      const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+      for (let i=0; i<annoteTargets.length; i++) {
+        const annoteTarget = annoteTargets[i];
+        const targetCell = annoteTarget.getAttribute("data-target-cell");
+        const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+        const contentFn = () => {
+          const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          if (content) {
+            const tipContent = content.cloneNode(true);
+            tipContent.classList.add("code-annotation-tip-content");
+            return tipContent.outerHTML;
           }
-        });
+        }
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          onShow: (instance) => {
+            selectCodeLines(instance.reference);
+            instance.reference.classList.add('code-annotation-active');
+            window.tippy.hideAll();
+          },
+          onHide: (instance) => {
+            unselectCodeLines();
+            instance.reference.classList.remove('code-annotation-active');
+          },
+          maxWidth: 300,
+          delay: [50, 0],
+          duration: [200, 0],
+          offset: [5, 10],
+          arrow: true,
+          appendTo: function(el) {
+            return el.parentElement.parentElement.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto',
+          placement: 'right',
+          popperOptions: {
+            modifiers: [
+            {
+              name: 'flip',
+              options: {
+                flipVariations: false, // true by default
+                allowedAutoPlacements: ['right'],
+                fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                mainAxis: false,
+                altAxis: false
+              }
+            }
+            ]        
+          }      
+        };
+        window.tippy(annoteTarget, config); 
       }
   const findCites = (el) => {
     const parentEl = el.parentElement;
@@ -2343,7 +2385,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,12 +72,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-3e476e15ae565c222d94875412ae43a1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d3043699f4f525e226433170f63674df.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8c61161f17dc2267de6a9e08d30b2d7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-3dd02e6c42a368ed35913e865ee2cac2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -200,6 +200,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../chapters/多重插补.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span></a>
   </div>
 </li>
       </ul>
@@ -785,7 +791,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 20%">
 </colgroup>
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
 <th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Overall</strong><br> N = 50<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
 <th id="stat_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>case</strong><br> N = 30<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
@@ -816,10 +822,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_center" headers="p.value">0.6</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
-<tr class="even">
+<tr class="odd">
 <td colspan="5" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Median[Q1, Q3]</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td colspan="5" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>2</sup></span> Wilcoxon rank sum exact test</td>
 </tr>
 </tfoot>
@@ -1285,7 +1291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">name</th>
 <th id="LOD" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">LOD</th>
 </tr>
@@ -2017,7 +2023,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 11%">
 </colgroup>
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Variable</strong></th>
 <th id="stat_6" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>LOD</strong></th>
 <th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Total</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
@@ -2064,10 +2070,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_center" headers="p.value">0.6</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
-<tr class="even">
+<tr class="odd">
 <td colspan="9" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Median[Q1, Q3]</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td colspan="9" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>2</sup></span> Wilcoxon rank sum exact test</td>
 </tr>
 </tfoot>
@@ -2567,7 +2573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 11%">
 </colgroup>
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Variable</strong></th>
 <th id="stat_6" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>LOD</strong></th>
 <th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Total</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
@@ -2614,10 +2620,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td class="gt_row gt_center" headers="p.value">0.617</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
-<tr class="even">
+<tr class="odd">
 <td colspan="9" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Median[Q1, Q3]</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td colspan="9" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>2</sup></span> Wilcoxon rank sum exact test</td>
 </tr>
 </tfoot>
@@ -2859,8 +2865,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -3022,7 +3026,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

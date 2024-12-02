@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="一把Fei刀">
 
-<title>R语言学习笔记</title>
+<title>6&nbsp; 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量 – R语言学习笔记</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,26 +57,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./chapters/tidymodels-基础.html" rel="next">
-<link href="./images/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-3e476e15ae565c222d94875412ae43a1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d3043699f4f525e226433170f63674df.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8c61161f17dc2267de6a9e08d30b2d7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-3dd02e6c42a368ed35913e865ee2cac2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/多重插补.html" rel="prev">
+<link href="../images/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-3e476e15ae565c222d94875412ae43a1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d3043699f4f525e226433170f63674df.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8c61161f17dc2267de6a9e08d30b2d7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-3dd02e6c42a368ed35913e865ee2cac2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -124,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">前言</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -139,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">R语言学习笔记</a> 
+      <a href="../">R语言学习笔记</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="切换深色模式"><i class="bi"></i></a>
 </div>
@@ -154,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">前言</span></span></a>
   </div>
 </li>
@@ -169,13 +168,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/tidymodels-基础.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/tidymodels-基础.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">tidymodels-基础</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/tidymodels-进阶.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/tidymodels-进阶.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">tidymodels-进阶</span></span></a>
   </div>
 </li>
@@ -192,19 +191,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/四分位数低于检出限的表格制作方法.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/四分位数低于检出限的表格制作方法.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">四分位数低于检出限的表格制作方法</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/多重插补.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/多重插补.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span></a>
   </div>
 </li>
@@ -220,10 +219,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#笔记集" id="toc-笔记集" class="nav-link active" data-scroll-target="#笔记集">笔记集</a>
+  <li><a href="#使用mice包生成插补数据集" id="toc-使用mice包生成插补数据集" class="nav-link active" data-scroll-target="#使用mice包生成插补数据集"><span class="header-section-number">6.1</span> 使用mice包生成插补数据集</a></li>
+  <li><a href="#使用tidymodels构建线性回归模型" id="toc-使用tidymodels构建线性回归模型" class="nav-link" data-scroll-target="#使用tidymodels构建线性回归模型"><span class="header-section-number">7</span> 使用tidymodels构建线性回归模型</a>
   <ul class="collapse">
-  <li><a href="#quarto" id="toc-quarto" class="nav-link" data-scroll-target="#quarto">Quarto</a></li>
-  <li><a href="#github-pages" id="toc-github-pages" class="nav-link" data-scroll-target="#github-pages">GitHub Pages</a></li>
+  <li><a href="#拟合与合并" id="toc-拟合与合并" class="nav-link" data-scroll-target="#拟合与合并"><span class="header-section-number">7.1</span> 拟合与合并</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -231,35 +230,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/四分位数低于检出限的表格制作方法.html">统计分析小tips</a></li><li class="breadcrumb-item"><a href="../chapters/多重插补-结合tidymodels.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">R语言学习笔记</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> 代码</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> 代码</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">显示所有代码</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">隐藏所有代码</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">查看源代码</a></li></ul></div></div>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">作者</div>
-    <div class="quarto-title-meta-contents">
-             <p>一把Fei刀 </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">发布于</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">2023年2月5日</p>
-    </div>
-  </div>
   
-    <div>
-    <div class="quarto-title-meta-heading">修改于</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024年12月2日</p>
-    </div>
-  </div>
     
   </div>
   
@@ -268,33 +249,165 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="笔记集" class="level1">
-<h1>笔记集</h1>
-<p>本笔记集整理了R语言在数据分析和可视化、统计建模、机器学习等方面的学习笔记，准备记录tidyverse、tidymodels、mlr3、R6、gt等R包的使用方法和实例。</p>
-<p>笔记集使用Quarto编写，并使用GitHub Pages托管，可以通过<a href="https://caowz254.github.io/ln-r/" class="uri">https://caowz254.github.io/ln-r/</a>在线阅读和标注。代码部分除了参考书籍和官方文档，也使用了GitHub Copilot的AI自动补全功能，以提高编写效率。</p>
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto是R Markdown的扩展，支持多种输出格式，包括HTML、PDF、Word等。Render的核心是一个R包，它提供了一些新的语法和功能，以便更好地支持多种输出格式。Quarto的官方文档是<a href="https://quarto.org/docs/guide/" class="uri">https://quarto.org/docs/guide/</a>。</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x2[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">15</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x1                  x2                 y                 group     
+ Min.   :-2.312476   Min.   :-2.43518   Min.   :-2.428139   Min.   :1.00  
+ 1st Qu.:-0.637833   1st Qu.:-0.66590   1st Qu.:-0.599243   1st Qu.:1.00  
+ Median : 0.008184   Median : 0.06445   Median :-0.014364   Median :2.00  
+ Mean   : 0.010725   Mean   :-0.01175   Mean   : 0.007177   Mean   :1.56  
+ 3rd Qu.: 0.793836   3rd Qu.: 0.54900   3rd Qu.: 0.618218   3rd Qu.:2.00  
+ Max.   : 1.894516   Max.   : 2.19098   Max.   : 2.158856   Max.   :2.00  
+ NA's   :20          NA's   :15                                           </code></pre>
+</div>
+</div>
+<section id="使用mice包生成插补数据集" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="使用mice包生成插补数据集"><span class="header-section-number">6.1</span> 使用mice包生成插补数据集</h2>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mice</span>(<span class="at">m =</span> <span class="dv">5</span>, <span class="at">method =</span> <span class="st">'pmm'</span>, <span class="at">seed =</span> <span class="dv">500</span>) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">.by =</span> <span class="fu">c</span>(group, .imp)) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4">4</button><span id="annotated-cell-3-5" class="code-annotation-target"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">data =</span> <span class="fu">list</span>(data), <span class="at">.by =</span> group) <span class="ot">-&gt;</span> data_nest</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">生成5个插补数据集</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="2">将数据集转换为长格式，结果是一个tibble，相比原始数据框添加了<code>.imp</code>列和<code>.id</code>列，分别表示插补数据集的编号和原始数据集的行号</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="4" data-code-annotation="3">按照<code>group</code>和<code>.imp</code>分组生成嵌套数据集</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="5" data-code-annotation="4">把5个插补数据集分别放入列表中，这种格式可以直接用于后面的<code>pool</code>函数（只是数据框的话不行）</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ iter imp variable
+  1   1  x1  x2
+  1   2  x1  x2
+  1   3  x1  x2
+  1   4  x1  x2
+  1   5  x1  x2
+  2   1  x1  x2
+  2   2  x1  x2
+  2   3  x1  x2
+  2   4  x1  x2
+  2   5  x1  x2
+  3   1  x1  x2
+  3   2  x1  x2
+  3   3  x1  x2
+  3   4  x1  x2
+  3   5  x1  x2
+  4   1  x1  x2
+  4   2  x1  x2
+  4   3  x1  x2
+  4   4  x1  x2
+  4   5  x1  x2
+  5   1  x1  x2
+  5   2  x1  x2
+  5   3  x1  x2
+  5   4  x1  x2
+  5   5  x1  x2</code></pre>
+</div>
+</div>
 </section>
-<section id="github-pages" class="level2">
-<h2 class="anchored" data-anchor-id="github-pages">GitHub Pages</h2>
-<p>GitHub Pages是GitHub提供的静态网页托管服务，笔记集在本地撰写和修改，提交到GitHub后，自动构建和发布网页。Quarto有一套完整的功能，可以基本实现网页自动化部署。</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="使用tidymodels构建线性回归模型" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> 使用tidymodels构建线性回归模型</h1>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>lm_fun <span class="ot">&lt;-</span> \(data) {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step_normalize</span>(x1) <span class="ot">-&gt;</span> rec <span class="co"># 添加预处理步骤</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(rec) <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(lm_spec) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(data)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-重要
+<section id="拟合与合并" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="拟合与合并"><span class="header-section-number">7.1</span> 拟合与合并</h2>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>result</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1">第一个<code>map</code>对每行应用函数，第二个<code>map</code>对该列表中的每个数据集应用函数</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">对每组的列表可以直接用<code>pool</code>函数</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><code>tidy</code>函数可以直接应用于<code>pool</code>结果</span>
+</dd>
+</dl>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>部署网页流程，可在RStudio terminal操作：</p>
-<pre class="{bash}"><code>quarto render # 本地完整渲染
-git status # 检查修改情况，每次git后都要检查一下
-git add . # 添加全部文件到暂存区，可跳过
-git commit -a # 将暂存区文件提交到本地仓库
-git push --all # 将本地仓库文件推送到远程仓库</code></pre>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 16
+  group term     estimate std.error statistic p.value conf.low conf.high       b
+  &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+1     2 (Interc… -0.0885      0.127   -0.694    0.687    -21.2      21.0 1.64e-5
+2     2 x1       -0.140       0.131   -1.07     0.591    -24.7      24.4 3.36e-4
+3     2 x2        0.00789     0.153    0.0514   0.974    -68.1      68.2 2.99e-3
+4     1 (Interc…  0.134       0.142    0.948    0.615    -23.5      23.8 4.44e-5
+5     1 x1        0.135       0.158    0.854    0.667    -84.8      85.1 3.68e-3
+6     1 x2        0.121       0.142    0.854    0.664    -67.4      67.6 2.71e-3
+# ℹ 7 more variables: df &lt;dbl&gt;, dfcom &lt;dbl&gt;, fmi &lt;dbl&gt;, lambda &lt;dbl&gt;, m &lt;int&gt;,
+#   riv &lt;dbl&gt;, ubar &lt;dbl&gt;</code></pre>
 </div>
 </div>
 
@@ -958,50 +1071,94 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../chapters/多重插补.html" class="pagination-link" aria-label="多重插补">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/tidymodels-基础.html" class="pagination-link" aria-label="tidymodels-基础">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">tidymodels-基础</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">源代码</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> 前言</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">authors:</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: "一把Fei刀"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> references.bib</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> last-modified</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> false</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># 笔记集</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>本笔记集整理了R语言在数据分析和可视化、统计建模、机器学习等方面的学习笔记，准备记录tidyverse、tidymodels、mlr3、R6、gt等R包的使用方法和实例。</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>笔记集使用Quarto编写，并使用GitHub Pages托管，可以通过<span class="ot">&lt;https://caowz254.github.io/ln-r/&gt;</span>在线阅读和标注。代码部分除了参考书籍和官方文档，也使用了GitHub Copilot的AI自动补全功能，以提高编写效率。</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>Quarto是R Markdown的扩展，支持多种输出格式，包括HTML、PDF、Word等。Render的核心是一个R包，它提供了一些新的语法和功能，以便更好地支持多种输出格式。Quarto的官方文档是<span class="ot">&lt;https://quarto.org/docs/guide/&gt;</span>。</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## GitHub Pages</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>GitHub Pages是GitHub提供的静态网页托管服务，笔记集在本地撰写和修改，提交到GitHub后，自动构建和发布网页。Quarto有一套完整的功能，可以基本实现网页自动化部署。</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>:::callout-important</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>部署网页流程，可在RStudio terminal操作：</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render <span class="co"># 本地完整渲染</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status <span class="co"># 检查修改情况，每次git后都要检查一下</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add . <span class="co"># 添加全部文件到暂存区，可跳过</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-a</span> <span class="co"># 将暂存区文件提交到本地仓库</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--all</span> <span class="co"># 将本地仓库文件推送到远程仓库</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: setup</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| output: false</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="in">library(mice)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidymodels)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="in">tidymodels_prefer()</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x1[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>x2[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">15</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 使用mice包生成插补数据集</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: impute</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mice</span>(<span class="at">m =</span> <span class="dv">5</span>, <span class="at">method =</span> <span class="st">'pmm'</span>, <span class="at">seed =</span> <span class="dv">500</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(<span class="st">"long"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">.by =</span> <span class="fu">c</span>(group, .imp)) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">data =</span> <span class="fu">list</span>(data), <span class="at">.by =</span> group) <span class="ot">-&gt;</span> data_nest <span class="co"># &lt;4&gt;</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>生成5个插补数据集</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>将数据集转换为长格式，结果是一个tibble，相比原始数据框添加了<span class="in">`.imp`</span>列和<span class="in">`.id`</span>列，分别表示插补数据集的编号和原始数据集的行号</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>按照<span class="in">`group`</span>和<span class="in">`.imp`</span>分组生成嵌套数据集</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>把5个插补数据集分别放入列表中，这种格式可以直接用于后面的<span class="in">`pool`</span>函数（只是数据框的话不行）</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu"># 使用tidymodels构建线性回归模型</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: model</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>lm_fun <span class="ot">&lt;-</span> \(data) {</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step_normalize</span>(x1) <span class="ot">-&gt;</span> rec <span class="co"># 添加预处理步骤</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_recipe</span>(rec) <span class="sc">|&gt;</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_model</span>(lm_spec) <span class="sc">|&gt;</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(data)</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## 拟合与合并</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fit</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>result</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>第一个<span class="in">`map`</span>对每行应用函数，第二个<span class="in">`map`</span>对该列表中的每个数据集应用函数</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>对每组的列表可以直接用<span class="in">`pool`</span>函数</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`tidy`</span>函数可以直接应用于<span class="in">`pool`</span>结果</span>
 </code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="曹巍钊">
+<meta name="author" content="一把Fei刀">
 
 <title>5&nbsp; 多重插补 – R语言学习笔记</title>
 <style>
@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../chapters/多重插补-结合tidymodels.html" rel="next">
 <link href="../chapters/四分位数低于检出限的表格制作方法.html" rel="prev">
 <link href="../images/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
@@ -72,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-3e476e15ae565c222d94875412ae43a1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d3043699f4f525e226433170f63674df.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8c61161f17dc2267de6a9e08d30b2d7b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-3dd02e6c42a368ed35913e865ee2cac2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -202,6 +203,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">多重插补</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/多重插补-结合tidymodels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -241,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">作者</div>
     <div class="quarto-title-meta-contents">
-             <p>曹巍钊 </p>
+             <p>一把Fei刀 </p>
           </div>
   </div>
     
@@ -549,18 +556,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 3    age60-99 2 70.077449 25.817663  2.71432191  7.29272 0.028863238
 4         bmi 2  6.006762  1.982587  3.02975940 18.08472 0.007175381
 5      hypyes 2 -4.347543 20.462257 -0.21246647 17.63466 0.834179684
-     conf.low conf.high         riv      lambda       fmi        ubar
-1 -114.082019 120.04099 0.008166507 0.008100355 0.1021574 3081.702712
-2   10.336814  93.67388 0.055814663 0.052864073 0.1500157  367.726421
-3    9.521628 130.63327 0.338109344 0.252676917 0.3978908  498.129498
-4    1.842899  10.17062 0.008456294 0.008385384 0.1024454    3.897692
-5  -47.401078  38.70599 0.024808694 0.024208122 0.1187861  408.567912
-             b           t dfcom
-1  16.77783124 3106.869459    20
-2  13.68301760  388.250947    20
-3 112.28149168  666.551735    20
-4   0.02197335    3.930652    20
-5   6.75735741  418.703948    20</code></pre>
+        2.5 %    97.5 %    conf.low conf.high         riv      lambda       fmi
+1 -114.082019 120.04099 -114.082019 120.04099 0.008166507 0.008100355 0.1021574
+2   10.336814  93.67388   10.336814  93.67388 0.055814663 0.052864073 0.1500157
+3    9.521628 130.63327    9.521628 130.63327 0.338109344 0.252676917 0.3978908
+4    1.842899  10.17062    1.842899  10.17062 0.008456294 0.008385384 0.1024454
+5  -47.401078  38.70599  -47.401078  38.70599 0.024808694 0.024208122 0.1187861
+         ubar            b           t dfcom
+1 3081.702712  16.77783124 3106.869459    20
+2  367.726421  13.68301760  388.250947    20
+3  498.129498 112.28149168  666.551735    20
+4    3.897692   0.02197335    3.930652    20
+5  408.567912   6.75735741  418.703948    20</code></pre>
 </div>
 </div>
 
@@ -796,8 +803,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -959,7 +964,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1126,25 +1130,64 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         }
       };
     }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
+      const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+      for (let i=0; i<annoteTargets.length; i++) {
+        const annoteTarget = annoteTargets[i];
+        const targetCell = annoteTarget.getAttribute("data-target-cell");
+        const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+        const contentFn = () => {
+          const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          if (content) {
+            const tipContent = content.cloneNode(true);
+            tipContent.classList.add("code-annotation-tip-content");
+            return tipContent.outerHTML;
           }
-        });
+        }
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          onShow: (instance) => {
+            selectCodeLines(instance.reference);
+            instance.reference.classList.add('code-annotation-active');
+            window.tippy.hideAll();
+          },
+          onHide: (instance) => {
+            unselectCodeLines();
+            instance.reference.classList.remove('code-annotation-active');
+          },
+          maxWidth: 300,
+          delay: [50, 0],
+          duration: [200, 0],
+          offset: [5, 10],
+          arrow: true,
+          appendTo: function(el) {
+            return el.parentElement.parentElement.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto',
+          placement: 'right',
+          popperOptions: {
+            modifiers: [
+            {
+              name: 'flip',
+              options: {
+                flipVariations: false, // true by default
+                allowedAutoPlacements: ['right'],
+                fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                mainAxis: false,
+                altAxis: false
+              }
+            }
+            ]        
+          }      
+        };
+        window.tippy(annoteTarget, config); 
       }
   const findCites = (el) => {
     const parentEl = el.parentElement;
@@ -1192,11 +1235,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../chapters/多重插补-结合tidymodels.html" class="pagination-link" aria-label="模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模拟带缺失值的数据，包括两个自变量和一个因变量，并添加分组变量</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">源代码</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "多重插补"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> 曹巍钊</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> 一把Fei刀</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">  revealjs:</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
