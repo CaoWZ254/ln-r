@@ -24,6 +24,7 @@ book:
       chapters:
         - chapters/四分位数低于检出限的表格制作方法.qmd
         - chapters/多重插补.qmd
+        - chapters/多重插补-结合tidymodels.qmd
 
 bibliography: references.bib
 
@@ -40,8 +41,9 @@ format:
     lightbox: true
     code-fold: show
     code-overflow: wrap
-    code-link: true
     code-tools: true
+    code-annotations: hover
+
 
 crossref:
   chapters: true

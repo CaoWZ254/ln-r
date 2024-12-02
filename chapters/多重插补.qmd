@@ -1,6 +1,6 @@
 ---
 title: "多重插补"
-author: 曹巍钊
+author: 一把Fei刀
 format: 
   revealjs:
     smaller: true
