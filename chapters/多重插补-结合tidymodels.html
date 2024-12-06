@@ -270,14 +270,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>       x1                  x2                  y            group 
- Min.   :-3.209773   Min.   :-2.930670   Min.   :-2.58763   1:58  
- 1st Qu.:-0.626074   1st Qu.:-0.651579   1st Qu.:-0.84762   2:42  
- Median : 0.040428   Median : 0.108055   Median :-0.02751         
- Mean   : 0.005908   Mean   : 0.005351   Mean   :-0.12757         
- 3rd Qu.: 0.653889   3rd Qu.: 0.728096   3rd Qu.: 0.53959         
- Max.   : 2.301930   Max.   : 2.813751   Max.   : 2.09452         
- NA's   :20          NA's   :15                                   </code></pre>
+<pre><code>       x1                 x2                y            group 
+ Min.   :-2.39687   Min.   :-2.9417   Min.   :-2.76256   1:49  
+ 1st Qu.:-0.55093   1st Qu.:-0.8672   1st Qu.:-0.59813   2:51  
+ Median : 0.02640   Median :-0.1780   Median :-0.03425         
+ Mean   : 0.08588   Mean   :-0.2281   Mean   :-0.05928         
+ 3rd Qu.: 0.74400   3rd Qu.: 0.3174   3rd Qu.: 0.40397         
+ Max.   : 2.27116   Max.   : 3.1440   Max.   : 2.31032         
+ NA's   :20         NA's   :15                                 </code></pre>
 </div>
 </div>
 </section>
@@ -371,12 +371,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
-<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
-<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(fit, \(x) <span class="fu">map</span>(x, extract_fit_engine))) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4">4</button><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
@@ -386,11 +387,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">对每组的列表可以直接用<code>pool</code>函数</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2"><code>extract_fit_engine</code>函数用于提取模型对象，即<code>pool</code>能识别的对象。</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><code>tidy</code>函数可以直接应用于<code>pool</code>结果</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3">对每组的列表可以直接用<code>pool</code>函数</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="4"><code>tidy</code>函数可以直接应用于<code>pool</code>结果</span>
 </dd>
 </dl>
 </div>
@@ -870,115 +875,128 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">(Intercept)</td>
-<td class="gt_row gt_right" headers="estimate">-0.090027163</td>
-<td class="gt_row gt_right" headers="std.error">0.1484613</td>
-<td class="gt_row gt_right" headers="statistic">-0.60640138</td>
-<td class="gt_row gt_right" headers="p.value">0.7178083</td>
-<td class="gt_row gt_right" headers="conf.low">-25.33591</td>
-<td class="gt_row gt_right" headers="conf.high">25.15586</td>
-<td class="gt_row gt_right" headers="b">0.0001113043</td>
-<td class="gt_row gt_right" headers="df">0.4969678</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5745182</td>
-<td class="gt_row gt_right" headers="lambda">0.006059913</td>
+<td class="gt_row gt_right" headers="estimate">-0.104473137</td>
+<td class="gt_row gt_right" headers="std.error">0.1354675</td>
+<td class="gt_row gt_right" headers="statistic">-0.77120469</td>
+<td class="gt_row gt_right" headers="p.value">0.4445470</td>
+<td class="gt_row gt_right" headers="conf.low">-0.3771885</td>
+<td class="gt_row gt_right" headers="conf.high">0.1682422</td>
+<td class="gt_row gt_right" headers="b">1.006426e-04</td>
+<td class="gt_row gt_right" headers="df">45.79143</td>
+<td class="gt_row gt_right" headers="dfcom">48</td>
+<td class="gt_row gt_right" headers="fmi">0.04730206</td>
+<td class="gt_row gt_right" headers="lambda">0.006581021</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.006096859</td>
-<td class="gt_row gt_right" headers="ubar">0.02190720</td>
+<td class="gt_row gt_right" headers="riv">0.006624618</td>
+<td class="gt_row gt_right" headers="ubar">0.01823066</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">x1</td>
-<td class="gt_row gt_right" headers="estimate">-0.109107160</td>
-<td class="gt_row gt_right" headers="std.error">0.1687370</td>
-<td class="gt_row gt_right" headers="statistic">-0.64661070</td>
-<td class="gt_row gt_right" headers="p.value">0.7273190</td>
-<td class="gt_row gt_right" headers="conf.low">-107.65366</td>
-<td class="gt_row gt_right" headers="conf.high">107.43544</td>
-<td class="gt_row gt_right" headers="b">0.0046484384</td>
-<td class="gt_row gt_right" headers="df">0.4004975</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.6688370</td>
-<td class="gt_row gt_right" headers="lambda">0.195914954</td>
+<td class="gt_row gt_right" headers="estimate">0.007551608</td>
+<td class="gt_row gt_right" headers="std.error">0.1401432</td>
+<td class="gt_row gt_right" headers="statistic">0.05388494</td>
+<td class="gt_row gt_right" headers="p.value">0.9572706</td>
+<td class="gt_row gt_right" headers="conf.low">-0.2748827</td>
+<td class="gt_row gt_right" headers="conf.high">0.2899859</td>
+<td class="gt_row gt_right" headers="b">5.462280e-04</td>
+<td class="gt_row gt_right" headers="df">44.03192</td>
+<td class="gt_row gt_right" headers="dfcom">48</td>
+<td class="gt_row gt_right" headers="fmi">0.07447931</td>
+<td class="gt_row gt_right" headers="lambda">0.033374216</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.243649543</td>
-<td class="gt_row gt_right" headers="ubar">0.02289406</td>
+<td class="gt_row gt_right" headers="riv">0.034526511</td>
+<td class="gt_row gt_right" headers="ubar">0.01898465</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">2</td>
 <td class="gt_row gt_left" headers="term">x2</td>
-<td class="gt_row gt_right" headers="estimate">-0.031914050</td>
-<td class="gt_row gt_right" headers="std.error">0.1620616</td>
-<td class="gt_row gt_right" headers="statistic">-0.19692548</td>
-<td class="gt_row gt_right" headers="p.value">0.9037807</td>
-<td class="gt_row gt_right" headers="conf.low">-129.12252</td>
-<td class="gt_row gt_right" headers="conf.high">129.05869</td>
-<td class="gt_row gt_right" headers="b">0.0048246543</td>
-<td class="gt_row gt_right" headers="df">0.3879438</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.6806359</td>
-<td class="gt_row gt_right" headers="lambda">0.220438484</td>
+<td class="gt_row gt_right" headers="estimate">0.106042647</td>
+<td class="gt_row gt_right" headers="std.error">0.1368504</td>
+<td class="gt_row gt_right" headers="statistic">0.77487981</td>
+<td class="gt_row gt_right" headers="p.value">0.4431640</td>
+<td class="gt_row gt_right" headers="conf.low">-0.1709165</td>
+<td class="gt_row gt_right" headers="conf.high">0.3830018</td>
+<td class="gt_row gt_right" headers="b">1.454605e-03</td>
+<td class="gt_row gt_right" headers="df">38.33747</td>
+<td class="gt_row gt_right" headers="dfcom">48</td>
+<td class="gt_row gt_right" headers="fmi">0.13707669</td>
+<td class="gt_row gt_right" headers="lambda">0.093203849</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.282772403</td>
-<td class="gt_row gt_right" headers="ubar">0.02047436</td>
+<td class="gt_row gt_right" headers="riv">0.102783684</td>
+<td class="gt_row gt_right" headers="ubar">0.01698252</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">(Intercept)</td>
-<td class="gt_row gt_right" headers="estimate">-0.182437397</td>
-<td class="gt_row gt_right" headers="std.error">0.1270087</td>
-<td class="gt_row gt_right" headers="statistic">-1.43641680</td>
-<td class="gt_row gt_right" headers="p.value">0.5185196</td>
-<td class="gt_row gt_right" headers="conf.low">-21.54582</td>
-<td class="gt_row gt_right" headers="conf.high">21.18095</td>
-<td class="gt_row gt_right" headers="b">0.0000545088</td>
-<td class="gt_row gt_right" headers="df">0.4979715</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5734964</td>
-<td class="gt_row gt_right" headers="lambda">0.004054909</td>
+<td class="gt_row gt_right" headers="estimate">0.021903574</td>
+<td class="gt_row gt_right" headers="std.error">0.1180037</td>
+<td class="gt_row gt_right" headers="statistic">0.18561764</td>
+<td class="gt_row gt_right" headers="p.value">0.8535982</td>
+<td class="gt_row gt_right" headers="conf.low">-0.2159216</td>
+<td class="gt_row gt_right" headers="conf.high">0.2597287</td>
+<td class="gt_row gt_right" headers="b">3.810853e-05</td>
+<td class="gt_row gt_right" headers="df">43.97233</td>
+<td class="gt_row gt_right" headers="dfcom">46</td>
+<td class="gt_row gt_right" headers="fmi">0.04572249</td>
+<td class="gt_row gt_right" headers="lambda">0.003284066</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.004071418</td>
-<td class="gt_row gt_right" headers="ubar">0.01606579</td>
+<td class="gt_row gt_right" headers="riv">0.003294887</td>
+<td class="gt_row gt_right" headers="ubar">0.01387915</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">x1</td>
-<td class="gt_row gt_right" headers="estimate">0.001920968</td>
-<td class="gt_row gt_right" headers="std.error">0.1340862</td>
-<td class="gt_row gt_right" headers="statistic">0.01432636</td>
-<td class="gt_row gt_right" headers="p.value">0.9925107</td>
-<td class="gt_row gt_right" headers="conf.low">-40.54564</td>
-<td class="gt_row gt_right" headers="conf.high">40.54949</td>
-<td class="gt_row gt_right" headers="b">0.0014986334</td>
-<td class="gt_row gt_right" headers="df">0.4494816</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.6218280</td>
-<td class="gt_row gt_right" headers="lambda">0.100024942</td>
+<td class="gt_row gt_right" headers="estimate">-0.065747067</td>
+<td class="gt_row gt_right" headers="std.error">0.1312048</td>
+<td class="gt_row gt_right" headers="statistic">-0.50110266</td>
+<td class="gt_row gt_right" headers="p.value">0.6198290</td>
+<td class="gt_row gt_right" headers="conf.low">-0.3333113</td>
+<td class="gt_row gt_right" headers="conf.high">0.2018171</td>
+<td class="gt_row gt_right" headers="b">2.135722e-03</td>
+<td class="gt_row gt_right" headers="df">31.08521</td>
+<td class="gt_row gt_right" headers="dfcom">46</td>
+<td class="gt_row gt_right" headers="fmi">0.19881755</td>
+<td class="gt_row gt_right" headers="lambda">0.148876640</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.111141904</td>
-<td class="gt_row gt_right" headers="ubar">0.01618076</td>
+<td class="gt_row gt_right" headers="riv">0.174917817</td>
+<td class="gt_row gt_right" headers="ubar">0.01465183</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="group">1</td>
 <td class="gt_row gt_left" headers="term">x2</td>
-<td class="gt_row gt_right" headers="estimate">0.189414299</td>
-<td class="gt_row gt_right" headers="std.error">0.1258216</td>
-<td class="gt_row gt_right" headers="statistic">1.50542007</td>
-<td class="gt_row gt_right" headers="p.value">0.5163351</td>
-<td class="gt_row gt_right" headers="conf.low">-26.34667</td>
-<td class="gt_row gt_right" headers="conf.high">26.72550</td>
-<td class="gt_row gt_right" headers="b">0.0005773080</td>
-<td class="gt_row gt_right" headers="df">0.4780105</td>
-<td class="gt_row gt_right" headers="dfcom">1</td>
-<td class="gt_row gt_right" headers="fmi">0.5936376</td>
-<td class="gt_row gt_right" headers="lambda">0.043760141</td>
+<td class="gt_row gt_right" headers="estimate">0.050960472</td>
+<td class="gt_row gt_right" headers="std.error">0.1192550</td>
+<td class="gt_row gt_right" headers="statistic">0.42732365</td>
+<td class="gt_row gt_right" headers="p.value">0.6717512</td>
+<td class="gt_row gt_right" headers="conf.low">-0.1911069</td>
+<td class="gt_row gt_right" headers="conf.high">0.2930278</td>
+<td class="gt_row gt_right" headers="b">1.299648e-03</td>
+<td class="gt_row gt_right" headers="df">35.13442</td>
+<td class="gt_row gt_right" headers="dfcom">46</td>
+<td class="gt_row gt_right" headers="fmi">0.15635616</td>
+<td class="gt_row gt_right" headers="lambda">0.109661415</td>
 <td class="gt_row gt_right" headers="m">5</td>
-<td class="gt_row gt_right" headers="riv">0.045762724</td>
-<td class="gt_row gt_right" headers="ubar">0.01513829</td>
+<td class="gt_row gt_right" headers="riv">0.123168216</td>
+<td class="gt_row gt_right" headers="ubar">0.01266217</td>
 </tr>
 </tbody>
 </table>
 
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+警告
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>在这个workflow中跳过<code>extract_fit_workflow</code>函数也可以运行，但最终<code>tidy</code>的可信区间会出错，只能得到点估计的准确结果。</p>
 </div>
 </div>
 
@@ -1724,16 +1742,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>data_nest <span class="sc">|&gt;</span></span>
 <span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(data, \(x) <span class="fu">map</span>(x, lm_fun))) <span class="sc">|&gt;</span> <span class="co"># &lt;1&gt;</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>第一个<span class="in">`map`</span>对每行应用函数，第二个<span class="in">`map`</span>对该列表中的每个数据集应用函数</span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>对每组的列表可以直接用<span class="in">`pool`</span>函数</span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`tidy`</span>函数可以直接应用于<span class="in">`pool`</span>结果</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(fit, \(x) <span class="fu">map</span>(x, extract_fit_engine))) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pool =</span> <span class="fu">map</span>(fit, pool)) <span class="sc">|&gt;</span> <span class="co"># &lt;3&gt;</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tidy =</span> <span class="fu">map</span>(pool, \(x) <span class="fu">tidy</span>(x, <span class="at">conf.int =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> <span class="co"># &lt;4&gt;</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(group, tidy) <span class="sc">|&gt;</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> tidy) <span class="ot">-&gt;</span> result</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(result)</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>第一个<span class="in">`map`</span>对每行应用函数，第二个<span class="in">`map`</span>对该列表中的每个数据集应用函数</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`extract_fit_engine`</span>函数用于提取模型对象，即<span class="in">`pool`</span>能识别的对象。</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>对每组的列表可以直接用<span class="in">`pool`</span>函数</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span><span class="in">`tidy`</span>函数可以直接应用于<span class="in">`pool`</span>结果</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>:::callout-warning</span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>在这个workflow中跳过<span class="in">`extract_fit_workflow`</span>函数也可以运行，但最终<span class="in">`tidy`</span>的可信区间会出错，只能得到点估计的准确结果。</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
