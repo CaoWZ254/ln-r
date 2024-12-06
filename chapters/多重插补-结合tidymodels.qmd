@@ -74,13 +74,21 @@ lm_fun <- \(data) {
 
 data_nest |>
   mutate(fit = map(data, \(x) map(x, lm_fun))) |> # <1>
-  mutate(pool = map(fit, pool)) |> # <2>
-  mutate(tidy = map(pool, \(x) tidy(x, conf.int = TRUE))) |> # <3>
+  mutate(fit = map(fit, \(x) map(x, extract_fit_engine))) |> # <2>
+  mutate(pool = map(fit, pool)) |> # <3>
+  mutate(tidy = map(pool, \(x) tidy(x, conf.int = TRUE))) |> # <4>
   select(group, tidy) |>
   unnest(cols = tidy) -> result
 
 gt(result)
 ```
 1. 第一个`map`对每行应用函数，第二个`map`对该列表中的每个数据集应用函数
-2. 对每组的列表可以直接用`pool`函数
-3. `tidy`函数可以直接应用于`pool`结果
+2. `extract_fit_engine`函数用于提取模型对象，即`pool`能识别的对象。
+3. 对每组的列表可以直接用`pool`函数
+4. `tidy`函数可以直接应用于`pool`结果
+
+:::callout-warning
+
+在这个workflow中跳过`extract_fit_workflow`函数也可以运行，但最终`tidy`的可信区间会出错，只能得到点估计的准确结果。
+
+:::
