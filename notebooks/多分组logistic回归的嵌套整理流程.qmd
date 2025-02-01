@@ -6,7 +6,6 @@ library(tidymodels)
 tidymodels_prefer()
 ```
 
-
 ```{r}
 #| label: data
 
@@ -15,9 +14,6 @@ data("ames")
 
 head(ames)
 ```
-
-在这个数据集中，可以用猫的颜色`color`来预测猫的领养情况`event`。
-`nest()`函数可以将数据集按照指定的分组变量进行嵌套，这样可以方便地对每个分组进行处理。
 
 ```{r}
 #| label: 嵌套
@@ -48,10 +44,21 @@ model <- multinom_reg() |>
 formula <- as.formula("Overall_Cond ~ Year_Built + Gr_Liv_Area")
 
 # recipe(preprocess) ----
-prep <- recipe(formula = formula, data = ames) |>
+rcp <- recipe(formula = formula, data = ames) |>
   step_dummy(all_nominal(), -all_outcomes()) |>
-  step_normalize(all_predictors()) |>
-  prep()
+  step_normalize(all_predictors())
+
+workflow() |>
+  add_model(model) |>
+  add_recipe(rcp) -> wkflow
+
+nested_data |>
+  mutate(tidy = map(data, \(data) {
+    wkflow |>
+      fit(data) |>
+      repair_call(data) |>
+      tidy()
+  }))
 ```
 
 ```{r}
@@ -61,8 +68,9 @@ nested_data |>
   mutate(tidy = map(data, \(data) {
     model |>
       fit(formula = formula,
-          data = prep |>
-            bake(data)) |>
+          data = rcp |>
+            prep() |>
+            juice()) |>
       tidy(conf.int = TRUE)
   })) -> nested_data
 
@@ -71,4 +79,3 @@ nested_data |>
   select(-data) |>
   unnest(tidy) -> result
 ```
-
