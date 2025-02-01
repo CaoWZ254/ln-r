@@ -128,7 +128,8 @@ cor_plot <- function(data, vars, type = "point",
         left = (i - 1) / length(vars),
         right = i / length(vars),
         bottom = 1 - i / length(vars),
-        top = 1 - (i - 1) / length(vars)
+        top = 1 - (i - 1) / length(vars),
+        ignore_tag = TRUE
       ) -> fig
   }
 

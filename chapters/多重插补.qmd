@@ -1,6 +1,6 @@
 ---
 title: "多重插补"
-author: 一把Fei刀
+author: 曹巍钊
 format: 
   revealjs:
     smaller: true
@@ -26,17 +26,16 @@ tidymodels_prefer()
 
 ## 多重插补的一般流程
 
-- 数据有缺失值
-- 用链式方程式多重插补法填补缺失值，得到多个完整数据集
-- 在每个完整数据集上分别进行分析
-- 将分析结果汇总
-![](../images/多重插补原理.jpeg)
+-   数据有缺失值
+-   用链式方程式多重插补法填补缺失值，得到多个完整数据集
+-   在每个完整数据集上分别进行分析
+-   将分析结果汇总 ![](../images/多重插补原理.jpeg)
 
 ## 常见错误
 
-- 插补结束后只用**其中一个**完整数据集进行分析
-- 把多个插补的完整数据集合并成一个**大数据集**直接分析
-- 分别分析后直接**平均**所有统计量
+-   插补结束后只用**其中一个**完整数据集进行分析
+-   把多个插补的完整数据集合并成一个**大数据集**直接分析
+-   分别分析后直接**平均**所有统计量
 
 ## 最简单的代码流程
 
@@ -181,11 +180,10 @@ result_1 |>
 
 ## 复合暴露的多重插补
 
-- **qgcomp**
-  - the weights should ***not*** be pooled because they mean different things depending on their direction
-
-- **wqs**
-  - 需要用到`miwqs`包，有自己的函数`estimate.wqs`和`est.wqs`
+-   **qgcomp**
+    -   the weights should ***not*** be pooled because they mean different things depending on their direction
+-   **wqs**
+    -   需要用到`miwqs`包，有自己的函数`estimate.wqs`和`est.wqs`
 
 ```{r}
 #| label: wqs
@@ -216,14 +214,14 @@ data_nest_1 |>
 
 ## 复合暴露R包的多重插补理念
 
-- 认为暴露混合物有缺失值，如未检出的值
-- 认为协变量无缺失值
-- 需要重新整理代码，不能拿官方的workflow直接用
+-   认为暴露混合物有缺失值，如未检出的值
+-   认为协变量无缺失值
+-   需要重新整理代码，不能拿官方的workflow直接用
 
 ## 中介分析
 
-- **mediation**
-- 有自己的函数`mediations`和`amelidiate`
+-   **mediation**
+-   有自己的函数`mediations`和`amelidiate`
 
 ```{r}
 #| label: mediation
@@ -246,8 +244,8 @@ mutate(mediation = map(list, \(x) {
 
 ## 新的补充
 
-- `mice`包的开发版本有一个新的函数`pool.table`，可以直接对`tidy`的结果进行汇总
-- 需要4个变量，`term`, `estimate`, `std.error`, `df.residual`，前三个可以用`tidy()`提取，自由度可以用`glance()`提取
+-   `mice`包的开发版本有一个新的函数`pool.table`，可以直接对`tidy`的结果进行汇总
+-   需要4个变量，`term`, `estimate`, `std.error`, `df.residual`，前三个可以用`tidy()`提取，自由度可以用`glance()`提取
 
 ```{r}
 #| label: pool.table
@@ -269,4 +267,3 @@ tbl
 pool <- pool.table(tbl, conf.int = TRUE)
 pool
 ```
-

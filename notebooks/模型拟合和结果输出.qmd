@@ -1,6 +1,9 @@
 ---
 title: "简单的回归模型结果输出方法"
 author: cwz
+format: 
+  docx:
+    reference-doc: "D:/曹123/硕士/templates.docx"
 ---
 
 ```{r}
@@ -15,7 +18,7 @@ library(tidymodels) # 提供统一的模型训练和预测接口
 tidymodels_prefer() # 设置tidymodels函数为默认，解决函数冲突问题
 ```
 
-# 读取数据
+## 读取数据
 
 ```{r}
 #| label: 示例数据
@@ -33,7 +36,7 @@ head(ames)
 ```{r}
 #| label: 选择线性回归模型
 
-parsnip_addin() # 打开模型选择界面
+#parsnip_addin() # 打开模型选择界面
 
 ### 界面中选择线性回归模型linear_reg(lm)，括号中是模型使用的包名。
 ### 然后点击生成代码，得到如下代码。
@@ -94,7 +97,7 @@ lm_result
 ```{r}
 #| label: 选择logistic回归模型
 
-parsnip_addin() # 打开模型选择界面
+#parsnip_addin() # 打开模型选择界面
 
 ### 界面中选择逻辑回归模型logistic_reg(glm)，括号中是模型使用的包名。
 ### 然后点击生成代码，得到如下代码。

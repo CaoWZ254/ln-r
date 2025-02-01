@@ -13,7 +13,7 @@ book:
   date: 2023/2/5
   search: true
   page-navigation: true
-  favicon: images/favicon.png
+  favicon: images/logo.png
   chapters:
     - index.qmd
     - part: tidymodels
